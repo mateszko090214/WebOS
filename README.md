@@ -52,7 +52,7 @@ Ctrl+Alt+→	Next workspace
 Esc	Close menus
 Right-click (desktop)	Open context menu
 Double-click titlebar	Maximize window
-🛠️ Architecture
+ Architecture
 Modular vanilla JavaScript single-file architecture:
 
 RetroOS webOS
@@ -75,7 +75,7 @@ Open index.html in any modern browser
 Wait for the boot sequence (~5 seconds)
 Press Enter to login
 Start exploring!
-No build step, no dependencies. Just plain HTML/CSS/JS. 🎉
+No build step, no dependencies. Just plain HTML/CSS/JS. 
 License
 This project is licensed under the MIT License.
 
