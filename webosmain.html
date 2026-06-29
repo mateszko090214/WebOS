@@ -6,21 +6,18 @@
     <title>RetroOS webOS v2.0</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-    <!-- ============================================================
-            CSS STYLES
-            ============================================================ -->
+    <!-- =============================================================
+         1. CSS STYLES - Organized by component
+         ============================================================= -->
     <style>
-        /* ===================== Root Variables ===================== */
+        /* ==================== Root Variables ==================== */
         :root {
             --phosphor: #ffb000;
             --phosphor-dim: #b87a00;
             --phosphor-glow: rgba(255, 176, 0, 0.6);
             --window-bg: #0d0d1f;
-            --panel-bg: #1a1a2e;
-            --panel-light: #2a2a4e;
             --panel-border: #4a4a6e;
             --text-light: #e0e0ff;
-            --text-dim: #8888aa;
             --green-phos: #33ff66;
             --red-phos: #ff4444;
             --magenta: #ff00ff;
@@ -28,108 +25,315 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
-        html, body { width: 100vw; height: 100vh; overflow: hidden; background: #000; font-family: 'Share Tech Mono', monospace; color: var(--text-light); }
 
-        /* ====================== CRT Effects ====================== */
-        #crt-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 99999; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0 1px, transparent 1px 3px); mix-blend-mode: multiply; }
-        #crt-overlay::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%); }
-        #crt-overlay::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent); animation: flicker 0.15s infinite; }
-        #crt-chroma { position: fixed; inset: 0; pointer-events: none; z-index: 99998; background: linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,255,0.03)); mix-blend-mode: screen; }
-        #crt-vignette { position: fixed; inset: 0; pointer-events: none; z-index: 99997; box-shadow: inset 0 0 200px rgba(0,0,0,0.85); }
-        #power-led { position: fixed; bottom: 8px; right: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--green-phos); box-shadow: 0 0 8px var(--green-phos); z-index: 99999; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: .7; } 50% { opacity: 1; } }
-        @keyframes flicker { 0%, 100% { opacity: .95; } 50% { opacity: 1; } }
+        html, body {
+            width: 100vw; height: 100vh; overflow: hidden;
+            background: #000;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-light);
+        }
 
-        /* ======================= Boot Screen ======================= */
-        #boot-screen { position: fixed; inset: 0; background: #000; color: var(--phosphor); font-family: 'VT323', monospace; font-size: 17px; z-index: 10000; padding: 25px; overflow: hidden; text-shadow: 0 0 5px var(--phosphor-glow); }
-        #boot-screen .boot-line { margin: 1px 0; opacity: 0; animation: fadein .2s forwards; white-space: pre; }
+        /* ==================== CRT Effects ==================== */
+        #crt-overlay, #crt-chroma, #crt-vignette {
+            position: fixed; inset: 0; pointer-events: none;
+        }
+        #crt-overlay {
+            z-index: 99999;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0 1px, transparent 1px 3px);
+            mix-blend-mode: multiply;
+        }
+        #crt-overlay::before {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+        }
+        #crt-overlay::after {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
+            animation: flicker 0.15s infinite;
+        }
+        #crt-chroma {
+            z-index: 99998;
+            background: linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,255,0.03));
+            mix-blend-mode: screen;
+        }
+        #crt-vignette {
+            z-index: 99997;
+            box-shadow: inset 0 0 200px rgba(0,0,0,0.85);
+        }
+        #power-led {
+            position: fixed; bottom: 8px; right: 8px;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--green-phos); box-shadow: 0 0 8px var(--green-phos);
+            z-index: 99999; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+        @keyframes flicker { 0%, 100% { opacity: 0.95; } 50% { opacity: 1; } }
         @keyframes fadein { to { opacity: 1; } }
-        .boot-logo { font-family: 'Press Start 2P', monospace; font-size: 28px; text-align: center; margin: 30px 0; color: var(--phosphor); text-shadow: 0 0 20px var(--phosphor-glow); animation: logoglow 1.5s ease-in-out infinite alternate; }
+        @keyframes fadeout { to { opacity: 0; } }
+        @keyframes notifin { from { transform: translateX(380px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* ==================== Boot Screen ==================== */
+        #boot-screen {
+            position: fixed; inset: 0; background: #000;
+            color: var(--phosphor); font-family: 'VT323', monospace; font-size: 17px;
+            z-index: 10000; padding: 25px; overflow: hidden;
+            text-shadow: 0 0 5px var(--phosphor-glow);
+        }
+        .boot-line { margin: 1px 0; opacity: 0; animation: fadein 0.2s forwards; white-space: pre; }
+        .boot-logo {
+            font-family: 'Press Start 2P', monospace; font-size: 28px;
+            text-align: center; margin: 30px 0; color: var(--phosphor);
+            text-shadow: 0 0 20px var(--phosphor-glow);
+            animation: logoglow 1.5s ease-in-out infinite alternate;
+        }
         @keyframes logoglow { from { text-shadow: 0 0 10px var(--phosphor-glow); } to { text-shadow: 0 0 30px var(--phosphor-glow), 0 0 60px var(--phosphor-glow); } }
-        .boot-progress { margin-top: 25px; border: 2px solid var(--phosphor); padding: 3px; width: 400px; box-shadow: 0 0 10px var(--phosphor-glow); }
-        .boot-progress-bar { height: 18px; background: var(--phosphor); width: 0%; transition: width .15s; box-shadow: 0 0 8px var(--phosphor-glow); }
-        .boot-cursor { display: inline-block; width: 9px; height: 16px; background: var(--phosphor); animation: blink 1s infinite; vertical-align: middle; margin-left: 3px; }
+        .boot-progress {
+            margin-top: 25px; border: 2px solid var(--phosphor);
+            padding: 3px; width: 400px; box-shadow: 0 0 10px var(--phosphor-glow);
+        }
+        .boot-progress-bar {
+            height: 18px; background: var(--phosphor); width: 0%;
+            transition: width 0.15s; box-shadow: 0 0 8px var(--phosphor-glow);
+        }
+        .boot-cursor {
+            display: inline-block; width: 9px; height: 16px;
+            background: var(--phosphor); animation: blink 1s infinite;
+            vertical-align: middle; margin-left: 3px;
+        }
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
         .boot-ok::after { content: " [ OK ]"; color: var(--green-phos); }
 
-        /* ======================= Login Screen ======================= */
-        #login-screen { position: fixed; inset: 0; background: radial-gradient(ellipse at center, #1a0a3e 0%, #000 100%); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9000; }
-        #login-screen::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.2) 0 1px, transparent 1px 4px); pointer-events: none; }
-        .login-frame { border: 3px solid var(--phosphor); padding: 35px 50px; background: rgba(10,10,20,.92); box-shadow: 0 0 40px var(--phosphor-glow); text-align: center; }
-        .login-title { font-family: 'Press Start 2P', monospace; font-size: 24px; color: var(--phosphor); text-shadow: 0 0 15px var(--phosphor-glow); margin-bottom: 25px; }
-        .login-avatar { width: 90px; height: 90px; border: 3px solid var(--phosphor); border-radius: 50%; margin: 0 auto 18px; background: linear-gradient(135deg, var(--phosphor), var(--phosphor-dim)); display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 34px; color: #000; }
-        .login-input { background: #000; border: 2px solid var(--phosphor); color: var(--phosphor); font-family: 'VT323', monospace; font-size: 20px; padding: 7px 11px; width: 240px; text-align: center; outline: none; box-shadow: 0 0 10px var(--phosphor-glow); margin-top: 15px; }
-        .login-btn { margin-top: 18px; background: var(--phosphor); color: #000; border: 2px solid var(--phosphor); padding: 7px 28px; font-family: 'Press Start 2P', monospace; font-size: 11px; cursor: pointer; box-shadow: 0 0 15px var(--phosphor-glow); }
+        /* ==================== Login Screen ==================== */
+        #login-screen {
+            position: fixed; inset: 0;
+            background: radial-gradient(ellipse at center, #1a0a3e 0%, #000 100%);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9000;
+        }
+        #login-screen::before {
+            content: ""; position: absolute; inset: 0;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0 1px, transparent 1px 4px);
+            pointer-events: none;
+        }
+        .login-frame {
+            border: 3px solid var(--phosphor); padding: 35px 50px;
+            background: rgba(10,10,20,0.92);
+            box-shadow: 0 0 40px var(--phosphor-glow);
+            text-align: center;
+        }
+        .login-title {
+            font-family: 'Press Start 2P', monospace; font-size: 24px;
+            color: var(--phosphor); text-shadow: 0 0 15px var(--phosphor-glow);
+            margin-bottom: 25px;
+        }
+        .login-avatar {
+            width: 90px; height: 90px; border: 3px solid var(--phosphor);
+            border-radius: 50%; margin: 0 auto 18px;
+            background: linear-gradient(135deg, var(--phosphor), var(--phosphor-dim));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Press Start 2P', monospace; font-size: 34px; color: #000;
+        }
+        .login-input {
+            background: #000; border: 2px solid var(--phosphor);
+            color: var(--phosphor); font-family: 'VT323', monospace; font-size: 20px;
+            padding: 7px 11px; width: 240px; text-align: center; outline: none;
+            box-shadow: 0 0 10px var(--phosphor-glow); margin-top: 15px;
+        }
+        .login-btn {
+            margin-top: 18px; background: var(--phosphor); color: #000;
+            border: 2px solid var(--phosphor); padding: 7px 28px;
+            font-family: 'Press Start 2P', monospace; font-size: 11px;
+            cursor: pointer; box-shadow: 0 0 15px var(--phosphor-glow);
+            transition: all 0.15s;
+        }
+        .login-btn:hover {
+            background: #ffd040; box-shadow: 0 0 25px var(--phosphor-glow);
+            transform: translateY(-2px);
+        }
 
-        /* ======================= Desktop ======================= */
+        /* ==================== Desktop ==================== */
         #desktop { position: fixed; inset: 0; display: none; background: #000; }
         #wallpaper { position: absolute; inset: 0; overflow: hidden; }
-        .wp-default { background: radial-gradient(circle at 20% 30%, rgba(255,0,255,.15) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(0,255,255,.15) 0%, transparent 40%), linear-gradient(180deg, #1a0a3e 0%, #2a1a5e 50%, #0a0a2e 100%); }
-        .wp-default::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,176,0,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,176,0,.05) 1px, transparent 1px); background-size: 40px 40px; animation: gridmove 20s linear infinite; }
+        .wp-default {
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255,0,255,0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(0,255,255,0.15) 0%, transparent 40%),
+                linear-gradient(180deg, #1a0a3e 0%, #2a1a5e 50%, #0a0a2e 100%);
+        }
+        .wp-default::before {
+            content: ""; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,176,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,176,0,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridmove 20s linear infinite;
+        }
         @keyframes gridmove { to { background-position: 40px 40px; } }
-        .wp-sun { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, var(--magenta) 0%, var(--phosphor) 50%, transparent 70%); filter: blur(3px); opacity: .6; animation: sunpulse 4s ease-in-out infinite; }
+        .wp-sun {
+            position: absolute; bottom: 120px; left: 50%;
+            transform: translateX(-50%); width: 280px; height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--magenta) 0%, var(--phosphor) 50%, transparent 70%);
+            filter: blur(3px); opacity: 0.6;
+            animation: sunpulse 4s ease-in-out infinite;
+        }
         @keyframes sunpulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.05); } }
-        .wp-mountains { position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(180deg, transparent 0%, #1a0a3e 100%); clip-path: polygon(0 60%, 15% 30%, 30% 50%, 45% 20%, 60% 40%, 75% 15%, 90% 35%, 100% 25%, 100% 100%, 0 100%); }
+        .wp-mountains {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+            background: linear-gradient(180deg, transparent 0%, #1a0a3e 100%);
+            clip-path: polygon(0 60%, 15% 30%, 30% 50%, 45% 20%, 60% 40%, 75% 15%, 90% 35%, 100% 25%, 100% 100%, 0 100%);
+        }
         .wp-matrix { background: #000; }
         .matrix-canvas { position: absolute; inset: 0; }
         .wp-stars { background: radial-gradient(ellipse at center, #0a0a2e 0%, #000 100%); }
         .stars-canvas { position: absolute; inset: 0; }
 
-        /* ======================= Desktop Icons ======================= */
-        #desktop-icons { position: absolute; inset: 0 0 50px 0; padding: 15px; display: grid; grid-template-columns: repeat(auto-fill, 86px); grid-auto-rows: 96px; gap: 8px; align-content: start; }
-        .desktop-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; border: 2px solid transparent; cursor: pointer; transition: all .15s; text-align: center; }
-        .desktop-icon:hover { background: rgba(255,176,0,.15); border-color: var(--phosphor); transform: translateY(-2px); }
+        #desktop-icons {
+            position: absolute; inset: 0 0 50px 0; padding: 15px;
+            display: grid; grid-template-columns: repeat(auto-fill, 86px);
+            grid-auto-rows: 96px; gap: 8px; align-content: start;
+        }
+        .desktop-icon {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; padding: 6px; border: 2px solid transparent;
+            cursor: pointer; transition: all 0.15s; text-align: center;
+        }
+        .desktop-icon:hover {
+            background: rgba(255,176,0,0.15); border-color: var(--phosphor);
+            transform: translateY(-2px);
+        }
         .desktop-icon-img { font-size: 34px; }
-        .desktop-icon-label { font-family: 'VT323', monospace; font-size: 13px; color: var(--phosphor); text-shadow: 1px 1px 0 #000; }
+        .desktop-icon-label {
+            font-family: 'VT323', monospace; font-size: 13px;
+            color: var(--phosphor); text-shadow: 1px 1px 0 #000;
+        }
 
-        /* ======================= Taskbar ======================= */
-        #taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 44px; background: linear-gradient(180deg, #2a2a5e 0%, #1a1a3e 100%); border-top: 2px solid var(--phosphor); display: flex; align-items: center; padding: 3px; z-index: 5000; }
-        #start-button { height: 38px; padding: 0 14px; background: linear-gradient(180deg, #4a4a7e, #2a2a4e); border: 2px solid var(--phosphor); color: var(--phosphor); font-family: 'Press Start 2P', monospace; font-size: 10px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        #start-button:hover { background: linear-gradient(180deg, #6a6a9e, #4a4a7e); }
+        /* ==================== Taskbar ==================== */
+        #taskbar {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 44px;
+            background: linear-gradient(180deg, #2a2a5e 0%, #1a1a3e 100%);
+            border-top: 2px solid var(--phosphor); display: flex;
+            align-items: center; padding: 3px; z-index: 5000;
+        }
+        #start-button {
+            height: 38px; padding: 0 14px;
+            background: linear-gradient(180deg, #4a4a7e, #2a2a4e);
+            border: 2px solid var(--phosphor); color: var(--phosphor);
+            font-family: 'Press Start 2P', monospace; font-size: 10px;
+            cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
         #taskbar-apps { flex: 1; display: flex; gap: 3px; padding: 0 6px; overflow-x: auto; }
-        .taskbar-app { height: 38px; padding: 0 10px; background: linear-gradient(180deg, #3a3a5e, #1a1a3e); border: 1px solid var(--panel-border); color: var(--text-light); font-family: 'VT323', monospace; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 5px; min-width: 140px; max-width: 220px; white-space: nowrap; overflow: hidden; }
+        .taskbar-app {
+            height: 38px; padding: 0 10px;
+            background: linear-gradient(180deg, #3a3a5e, #1a1a3e);
+            border: 1px solid var(--panel-border); color: var(--text-light);
+            font-family: 'VT323', monospace; font-size: 16px;
+            cursor: pointer; display: flex; align-items: center; gap: 5px;
+            min-width: 140px; max-width: 220px;
+            white-space: nowrap; overflow: hidden;
+        }
         .taskbar-app:hover { background: linear-gradient(180deg, #5a5a7e, #3a3a5e); border-color: var(--phosphor); }
-        .taskbar-app.active { background: linear-gradient(180deg, #5a5a9e, #3a3a6e); border-color: var(--phosphor); box-shadow: inset 0 -2px 0 var(--phosphor); }
+        .taskbar-app.active {
+            background: linear-gradient(180deg, #5a5a9e, #3a3a6e);
+            border-color: var(--phosphor); box-shadow: inset 0 -2px 0 var(--phosphor);
+        }
         .taskbar-app-icon { font-size: 16px; }
         .taskbar-app-title { flex: 1; overflow: hidden; text-overflow: ellipsis; }
-        .taskbar-app-close { background: var(--red-phos); color: #000; border: none; width: 16px; height: 16px; font-size: 10px; cursor: pointer; display: none; }
+        .taskbar-app-close {
+            background: var(--red-phos); color: #000; border: none;
+            width: 16px; height: 16px; font-size: 10px; cursor: pointer; display: none;
+        }
         .taskbar-app:hover .taskbar-app-close { display: flex; }
-        #system-tray { display: flex; align-items: center; gap: 6px; padding: 0 10px; height: 38px; background: rgba(0,0,0,.4); border: 1px solid var(--panel-border); color: var(--phosphor); font-family: 'VT323', monospace; font-size: 16px; }
+        #system-tray {
+            display: flex; align-items: center; gap: 6px;
+            padding: 0 10px; height: 38px;
+            background: rgba(0,0,0,0.4); border: 1px solid var(--panel-border);
+            color: var(--phosphor); font-family: 'VT323', monospace; font-size: 16px;
+        }
         .tray-item { display: flex; align-items: center; gap: 4px; cursor: pointer; padding: 3px 5px; border: 1px solid transparent; }
-        .tray-item:hover { border-color: var(--phosphor); }
-        #clock { color: var(--phosphor); }
+        .tray-item:hover { border-color: var(--phosphor); background: rgba(255,176,0,0.1); }
 
-        /* ======================= Start Menu ======================= */
-        #start-menu { position: fixed; bottom: 48px; left: 3px; width: 520px; background: linear-gradient(180deg, #2a2a5e, #1a1a3e); border: 2px solid var(--phosphor); box-shadow: 0 0 30px rgba(255,176,0,.5); z-index: 6000; display: none; flex-direction: column; max-height: 620px; }
+        /* ==================== Start Menu ==================== */
+        #start-menu {
+            position: fixed; bottom: 48px; left: 3px; width: 520px;
+            background: linear-gradient(180deg, #2a2a5e, #1a1a3e);
+            border: 2px solid var(--phosphor);
+            box-shadow: 0 0 30px rgba(255,176,0,0.5);
+            z-index: 6000; display: none; flex-direction: column; max-height: 620px;
+        }
         #start-menu.show { display: flex; }
-        .start-header { background: linear-gradient(180deg, var(--phosphor), var(--phosphor-dim)); color: #000; padding: 10px 14px; font-family: 'Press Start 2P', monospace; font-size: 13px; display: flex; align-items: center; justify-content: space-between; }
+        .start-header {
+            background: linear-gradient(180deg, var(--phosphor), var(--phosphor-dim));
+            color: #000; padding: 10px 14px;
+            font-family: 'Press Start 2P', monospace; font-size: 13px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
         .start-search { padding: 7px; border-bottom: 1px solid var(--panel-border); }
-        .start-search input { width: 100%; background: #000; border: 1px solid var(--phosphor); color: var(--phosphor); padding: 5px 7px; font-family: 'VT323', monospace; font-size: 15px; outline: none; }
+        .start-search input {
+            width: 100%; background: #000; border: 1px solid var(--phosphor);
+            color: var(--phosphor); padding: 5px 7px;
+            font-family: 'VT323', monospace; font-size: 15px; outline: none;
+        }
         .start-tabs { display: flex; border-bottom: 1px solid var(--panel-border); background: #0a0a1e; }
-        .start-tab { flex: 1; padding: 7px; text-align: center; cursor: pointer; color: var(--phosphor-dim); font-size: 14px; border-bottom: 2px solid transparent; }
-        .start-tab.active { color: var(--phosphor); border-bottom-color: var(--phosphor); background: rgba(255,176,0,.15); }
-        .start-apps { flex: 1; overflow-y: auto; padding: 7px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
-        .start-app { display: flex; flex-direction: column; align-items: center; padding: 10px 3px; border: 1px solid transparent; cursor: pointer; text-align: center; border-radius: 3px; }
-        .start-app:hover { background: rgba(255,176,0,.2); border-color: var(--phosphor); }
+        .start-tab {
+            flex: 1; padding: 7px; text-align: center; cursor: pointer;
+            color: var(--phosphor-dim); font-size: 14px; border-bottom: 2px solid transparent;
+        }
+        .start-tab.active {
+            color: var(--phosphor); border-bottom-color: var(--phosphor);
+            background: rgba(255,176,0,0.15);
+        }
+        .start-apps {
+            flex: 1; overflow-y: auto; padding: 7px;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
+        }
+        .start-app {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 10px 3px; border: 1px solid transparent;
+            cursor: pointer; text-align: center;
+        }
+        .start-app:hover { background: rgba(255,176,0,0.2); border-color: var(--phosphor); }
         .start-app-icon { font-size: 26px; }
         .start-app-name { font-size: 13px; color: var(--phosphor); }
-        .start-footer { border-top: 1px solid var(--panel-border); padding: 6px; display: flex; justify-content: space-between; gap: 6px; }
-        .start-footer-btn { padding: 5px 11px; background: linear-gradient(180deg, #4a4a7e, #2a2a4e); border: 1px solid var(--phosphor); color: var(--phosphor); font-family: 'VT323', monospace; font-size: 14px; cursor: pointer; flex: 1; }
 
-        /* ======================= Windows ======================= */
-        .window { position: absolute; background: var(--window-bg); border: 2px solid var(--phosphor); box-shadow: 0 0 30px rgba(255,176,0,.4); display: flex; flex-direction: column; min-width: 280px; min-height: 180px; overflow: hidden; animation: winopen .25s; resize: both; }
-        @keyframes winopen { from { transform: scale(.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        /* ==================== Windows ==================== */
+        .window {
+            position: absolute; background: var(--window-bg);
+            border: 2px solid var(--phosphor);
+            box-shadow: 0 0 30px rgba(255,176,0,0.4);
+            display: flex; flex-direction: column;
+            min-width: 280px; min-height: 180px; overflow: hidden;
+            animation: winopen 0.25s; resize: both;
+        }
+        @keyframes winopen { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .window.minimized { display: none; }
-        .window-titlebar { padding: 3px 5px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--phosphor); cursor: move; height: 26px; background: linear-gradient(180deg, #3a3a6e, #2a2a4e); }
+        .window-titlebar {
+            padding: 3px 5px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--phosphor); cursor: move; height: 26px;
+            background: linear-gradient(180deg, #3a3a6e, #2a2a4e);
+        }
         .window.active .window-titlebar { background: linear-gradient(180deg, #5a5a9e, #3a3a6e); }
-        .window-titlebar-text { display: flex; align-items: center; gap: 5px; font-family: 'VT323', monospace; font-size: 15px; color: var(--phosphor); flex: 1; padding-left: 4px; }
+        .window-titlebar-text {
+            display: flex; align-items: center; gap: 5px;
+            font-family: 'VT323', monospace; font-size: 15px;
+            color: var(--phosphor); flex: 1; padding-left: 4px;
+        }
         .window-controls { display: flex; gap: 2px; }
-        .win-btn { width: 22px; height: 22px; border: 1px solid var(--panel-border); background: linear-gradient(180deg, #4a4a7e, #2a2a4e); color: var(--phosphor); font-size: 11px; cursor: pointer; }
+        .win-btn {
+            width: 22px; height: 22px; border: 1px solid var(--panel-border);
+            background: linear-gradient(180deg, #4a4a7e, #2a2a4e);
+            color: var(--phosphor); font-size: 11px; cursor: pointer;
+        }
         .win-btn.close:hover { background: var(--red-phos); }
         .window-content { flex: 1; overflow: auto; background: var(--window-bg); }
         .window-content::-webkit-scrollbar { width: 12px; }
         .window-content::-webkit-scrollbar-thumb { background: var(--phosphor); }
-        .window-statusbar { background: linear-gradient(180deg, #2a2a4e, #1a1a3e); border-top: 1px solid var(--panel-border); padding: 2px 7px; font-family: 'VT323', monospace; font-size: 12px; color: var(--phosphor-dim); display: flex; justify-content: space-between; }
+        .window-statusbar {
+            background: linear-gradient(180deg, #2a2a4e, #1a1a3e);
+            border-top: 1px solid var(--panel-border); padding: 2px 7px;
+            font-family: 'VT323', monospace; font-size: 12px;
+            color: var(--phosphor-dim); display: flex; justify-content: space-between;
+        }
         .resize-handle { position: absolute; z-index: 10; }
         .resize-n { top: -3px; left: 8px; right: 8px; height: 6px; cursor: n-resize; }
         .resize-s { bottom: -3px; left: 8px; right: 8px; height: 6px; cursor: s-resize; }
@@ -140,36 +344,99 @@
         .resize-sw { bottom: -3px; left: -3px; width: 12px; height: 12px; cursor: sw-resize; }
         .resize-se { bottom: -3px; right: -3px; width: 12px; height: 12px; cursor: se-resize; }
 
-        /* ======================= Notifications & Context Menu ======================= */
-        #context-menu { position: fixed; background: linear-gradient(180deg, #2a2a5e, #1a1a3e); border: 2px solid var(--phosphor); z-index: 7000; min-width: 200px; font-family: 'VT323', monospace; display: none; padding: 3px; }
+        /* ==================== Notifications & Context Menu ==================== */
+        #context-menu {
+            position: fixed; background: linear-gradient(180deg, #2a2a5e, #1a1a3e);
+            border: 2px solid var(--phosphor); z-index: 7000;
+            min-width: 200px; font-family: 'VT323', monospace;
+            display: none; padding: 3px;
+        }
         #context-menu.show { display: block; }
-        .context-item { padding: 5px 22px 5px 26px; cursor: pointer; color: var(--phosphor); font-size: 14px; display: flex; align-items: center; gap: 7px; }
-        .context-item:hover { background: rgba(255,176,0,.3); }
+        .context-item {
+            padding: 5px 22px 5px 26px; cursor: pointer;
+            color: var(--phosphor); font-size: 14px;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .context-item:hover { background: rgba(255,176,0,0.3); }
         .context-separator { height: 1px; background: var(--panel-border); margin: 3px 7px; }
-        #notification-area { position: fixed; top: 8px; right: 8px; z-index: 8000; display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
-        .notification { background: linear-gradient(180deg, #2a2a5e, #1a1a3e); border: 2px solid var(--phosphor); box-shadow: 0 0 20px var(--phosphor-glow); padding: 10px 14px; min-width: 260px; max-width: 340px; font-family: 'VT323', monospace; animation: notifin .3s; pointer-events: auto; position: relative; }
-        @keyframes notifin { from { transform: translateX(380px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .notif-title { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--phosphor); margin-bottom: 3px; }
+        #notification-area {
+            position: fixed; top: 8px; right: 8px; z-index: 8000;
+            display: flex; flex-direction: column; gap: 6px; pointer-events: none;
+        }
+        .notification {
+            background: linear-gradient(180deg, #2a2a5e, #1a1a3e);
+            border: 2px solid var(--phosphor);
+            box-shadow: 0 0 20px var(--phosphor-glow);
+            padding: 10px 14px; min-width: 260px; max-width: 340px;
+            font-family: 'VT323', monospace;
+            animation: notifin 0.3s; pointer-events: auto; position: relative;
+        }
+        .notif-title {
+            font-family: 'Press Start 2P', monospace; font-size: 9px;
+            color: var(--phosphor); margin-bottom: 3px;
+        }
         .notif-body { color: var(--text-light); font-size: 14px; }
-        .notif-close { position: absolute; top: 3px; right: 3px; background: none; border: none; color: var(--phosphor); cursor: pointer; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); z-index: 9500; display: none; align-items: center; justify-content: center; }
+        .notif-close {
+            position: absolute; top: 3px; right: 3px;
+            background: none; border: none; color: var(--phosphor); cursor: pointer;
+        }
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            z-index: 9500; display: none; align-items: center; justify-content: center;
+        }
         .modal-overlay.show { display: flex; }
-        .modal { background: linear-gradient(180deg, #2a2a5e, #1a1a3e); border: 2px solid var(--phosphor); padding: 22px; min-width: 360px; font-family: 'VT323', monospace; }
-        .modal-title { font-family: 'Press Start 2P', monospace; font-size: 13px; color: var(--phosphor); margin-bottom: 14px; }
+        .modal {
+            background: linear-gradient(180deg, #2a2a5e, #1a1a3e);
+            border: 2px solid var(--phosphor); padding: 22px; min-width: 360px;
+            font-family: 'VT323', monospace;
+        }
+        .modal-title {
+            font-family: 'Press Start 2P', monospace; font-size: 13px;
+            color: var(--phosphor); margin-bottom: 14px;
+        }
         .modal-buttons { display: flex; justify-content: flex-end; gap: 7px; }
-        .settings-btn { padding: 6px 14px; background: linear-gradient(180deg, #4a4a7e, #2a2a4e); border: 1px solid var(--phosphor); color: var(--phosphor); font-family: 'VT323', monospace; font-size: 14px; cursor: pointer; }
+        .settings-btn {
+            padding: 6px 14px; background: linear-gradient(180deg, #4a4a7e, #2a2a4e);
+            border: 1px solid var(--phosphor); color: var(--phosphor);
+            font-family: 'VT323', monospace; font-size: 14px; cursor: pointer;
+        }
         .settings-btn.danger { background: linear-gradient(180deg, var(--red-phos), #aa2222); color: #000; }
         .settings-btn.primary { background: linear-gradient(180deg, var(--phosphor), var(--phosphor-dim)); color: #000; }
-        .toggle { width: 50px; height: 22px; background: #000; border: 1px solid var(--panel-border); border-radius: 11px; position: relative; cursor: pointer; }
+        .toggle {
+            width: 50px; height: 22px; background: #000;
+            border: 1px solid var(--panel-border); border-radius: 11px;
+            position: relative; cursor: pointer;
+        }
         .toggle.on { background: var(--phosphor); }
-        .toggle::after { content: ""; position: absolute; width: 16px; height: 16px; background: var(--phosphor); border-radius: 50%; top: 2px; left: 2px; }
+        .toggle::after {
+            content: ""; position: absolute; width: 16px; height: 16px;
+            background: var(--phosphor); border-radius: 50%;
+            top: 2px; left: 2px;
+        }
         .toggle.on::after { left: 28px; background: #000; }
-        .settings-input, .settings-select { background: #000; border: 1px solid var(--phosphor); color: var(--phosphor); padding: 4px 7px; font-family: 'VT323', monospace; font-size: 14px; outline: none; }
-        .particle { position: fixed; width: 3px; height: 3px; background: var(--phosphor); border-radius: 50%; pointer-events: none; z-index: 99996; box-shadow: 0 0 4px var(--phosphor); }
-        #shutdown-screen { position: fixed; inset: 0; background: #000; color: var(--phosphor); display: none; align-items: center; justify-content: center; flex-direction: column; font-family: 'VT323', monospace; z-index: 9999; }
-
-        /* ======================= Terminal-specific ======================= */
-        .terminal-app { background: #000; color: var(--green-phos); font-family: 'VT323', monospace; font-size: 15px; padding: 10px; height: 100%; overflow-y: auto; text-shadow: 0 0 4px rgba(51,255,102,.6); cursor: text; }
+        .settings-input, .settings-select {
+            background: #000; border: 1px solid var(--phosphor);
+            color: var(--phosphor); padding: 4px 7px;
+            font-family: 'VT323', monospace; font-size: 14px; outline: none;
+        }
+        .particle {
+            position: fixed; width: 3px; height: 3px;
+            background: var(--phosphor); border-radius: 50%;
+            pointer-events: none; z-index: 99996;
+            box-shadow: 0 0 4px var(--phosphor);
+        }
+        #shutdown-screen {
+            position: fixed; inset: 0; background: #000;
+            color: var(--phosphor); display: none; align-items: center;
+            justify-content: center; flex-direction: column;
+            font-family: 'VT323', monospace; z-index: 9999;
+        }
+        .terminal-app {
+            background: #000; color: var(--green-phos);
+            font-family: 'VT323', monospace; font-size: 15px;
+            padding: 10px; height: 100%; overflow-y: auto;
+            text-shadow: 0 0 4px rgba(51,255,102,0.6); cursor: text;
+        }
         .terminal-line { white-space: pre-wrap; }
         .terminal-prompt { color: var(--phosphor); }
         .terminal-info { color: var(--cyan); }
@@ -179,7 +446,7 @@
     </style>
 </head>
 <body>
-    <!-- ==================== CRT OVERLAYS ==================== -->
+    <!-- ===================== CRT OVERLAYS ===================== -->
     <div id="crt-overlay"></div>
     <div id="crt-chroma"></div>
     <div id="crt-vignette"></div>
@@ -187,28 +454,28 @@
     <div id="snap-preview"></div>
     <div id="clipboard-indicator">📋 Copied: <span id="clipboard-text"></span></div>
 
-    <!-- ==================== BOOT SCREEN ==================== -->
+    <!-- ===================== BOOT SCREEN ===================== -->
     <div id="boot-screen">
         <div class="boot-logo">RetroOS webOS v2.0</div>
         <div id="boot-log"></div>
         <div class="boot-progress"><div class="boot-progress-bar" id="boot-progress"></div></div>
-        <div style="margin-top:12px;font-size:14px;color:var(--phosphor-dim)" id="boot-status">Initializing...</div>
+        <div style="margin-top: 12px; font-size: 14px; color: var(--phosphor-dim)" id="boot-status">Initializing...</div>
     </div>
 
-    <!-- ==================== LOGIN SCREEN ==================== -->
+    <!-- ===================== LOGIN SCREEN ===================== -->
     <div id="login-screen">
         <div class="login-frame">
             <div class="login-title">RetroOS webOS</div>
             <div class="login-avatar">R</div>
-            <div style="color:var(--phosphor);font-size:18px">Welcome back, <span id="login-user">retro</span></div>
+            <div style="color: var(--phosphor); font-size: 18px">Welcome back, <span id="login-user">retro</span></div>
             <input type="password" id="login-password" class="login-input" placeholder="****" autocomplete="off">
             <br>
             <button class="login-btn" id="login-btn">LOGIN</button>
-            <div style="margin-top:12px;font-size:14px;color:var(--phosphor-dim)">Press ENTER (any password works)</div>
+            <div style="margin-top: 12px; font-size: 14px; color: var(--phosphor-dim)">Press ENTER (any password works)</div>
         </div>
     </div>
 
-    <!-- ==================== DESKTOP ==================== -->
+    <!-- ===================== DESKTOP ===================== -->
     <div id="desktop">
         <div id="wallpaper"></div>
         <div id="desktop-icons"></div>
@@ -230,7 +497,7 @@
         <div id="start-menu">
             <div class="start-header">
                 <span>▣ RetroOS webOS v2.0</span>
-                <span id="start-user" style="font-size:10px">@retro</span>
+                <span id="start-user" style="font-size: 10px">@retro</span>
             </div>
             <div class="start-search"><input type="text" id="start-search" placeholder="🔍 Search apps..."></div>
             <div class="start-tabs">
@@ -250,7 +517,7 @@
             </div>
         </div>
 
-        <!-- Context Menu & Notifications -->
+        <!-- Other UI Elements -->
         <div id="context-menu"></div>
         <div id="notification-area"></div>
 
@@ -258,7 +525,7 @@
         <div class="modal-overlay" id="power-modal">
             <div class="modal">
                 <div class="modal-title">⏻ POWER OPTIONS</div>
-                <div class="modal-body" style="margin-bottom:15px">Choose action:</div>
+                <div class="modal-body" style="margin-bottom: 15px">Choose action:</div>
                 <div class="modal-buttons">
                     <button class="settings-btn" data-power="sleep">💤 Sleep</button>
                     <button class="settings-btn" data-power="restart">🔄 Restart</button>
@@ -269,48 +536,43 @@
         </div>
     </div>
 
-    <!-- ==================== SHUTDOWN SCREEN ==================== -->
+    <!-- ===================== SHUTDOWN SCREEN ===================== -->
     <div id="shutdown-screen">
-        <div class="boot-logo" style="font-size:18px" id="shutdown-msg">SYSTEM HALTED</div>
+        <div class="boot-logo" style="font-size: 18px" id="shutdown-msg">SYSTEM HALTED</div>
         <div class="boot-cursor"></div>
-        <div style="margin-top:25px;color:var(--phosphor-dim)">It is now safe to power off</div>
-        <button class="login-btn" style="margin-top:25px" onclick="location.reload()">REBOOT</button>
+        <div style="margin-top: 25px; color: var(--phosphor-dim)">It is now safe to power off</div>
+        <button class="login-btn" style="margin-top: 25px" onclick="location.reload()">REBOOT</button>
     </div>
 
-    <!-- ============================================================
-            JAVASCRIPT - MODULAR ARCHITECTURE
-            ============================================================ -->
+    <!-- =============================================================
+         2. JAVASCRIPT - 10 Modular Sections
+         ============================================================= -->
     <script>
     'use strict';
 
-    /* ============================================================
-        1. STORAGE MODULE - localStorage persistence
-       ============================================================ */
+    // ===================================================================
+    // MODULE 1: STORAGE - localStorage persistence layer
+    // ===================================================================
     const Storage = {
         KEY: 'retroos_state_v2',
-
         save(data) {
-            try { localStorage.setItem(this.KEY, JSON.stringify(data)); } 
+            try { localStorage.setItem(this.KEY, JSON.stringify(data)); }
             catch (e) { console.warn('Storage save failed:', e); }
         },
-
         load() {
             try {
                 const data = localStorage.getItem(this.KEY);
                 return data ? JSON.parse(data) : null;
-            } 
-            catch (e) { return null; }
+            } catch (e) { return null; }
         },
-
         clear() { localStorage.removeItem(this.KEY); }
     };
 
-    /* ============================================================
-        2. AUDIO MODULE - Web Audio API sound effects
-       ============================================================ */
+    // ===================================================================
+    // MODULE 2: AUDIO - Web Audio API sound system
+    // ===================================================================
     const Audio = {
         ctx: null,
-
         init() {
             if (!this.ctx) {
                 try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
@@ -318,7 +580,6 @@
             }
             if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
         },
-
         beep(freq = 800, dur = 50, type = 'square', vol = 0.04) {
             if (!this.ctx) return;
             try {
@@ -333,25 +594,14 @@
                 osc.stop(this.ctx.currentTime + dur / 1000);
             } catch (e) {}
         },
-
-        startup() {
-            this.init();
-            this.beep(800, 100);
-            setTimeout(() => this.beep(1200, 150), 150);
-        },
-
+        startup() { this.init(); this.beep(800, 100); setTimeout(() => this.beep(1200, 150), 150); },
         click() { this.init(); this.beep(1500, 15, 'square', 0.02); },
-
-        notify() {
-            this.init();
-            this.beep(880, 80);
-            setTimeout(() => this.beep(1320, 80), 100);
-        }
+        notify() { this.init(); this.beep(880, 80); setTimeout(() => this.beep(1320, 80), 100); }
     };
 
-    /* ============================================================
-        3. KERNEL MODULE - Luna Service Bus & Process Management
-       ============================================================ */
+    // ===================================================================
+    // MODULE 3: KERNEL - Luna Service Bus & process management
+    // ===================================================================
     const Kernel = {
         services: {},
         processes: [],
@@ -359,11 +609,10 @@
         bootTime: Date.now(),
 
         init() {
-            // Register Luna services
-            const svcList = ['audio', 'video', 'system', 'applicationManager', 'settings', 'power',
-                            'bluetooth', 'network', 'storage', 'notification', 'display',
-                            'input', 'activityManager', 'clipboard'];
-
+            // Register Luna Service Bus services
+            const svcList = ['audio', 'video', 'system', 'applicationManager', 'settings',
+                            'power', 'bluetooth', 'network', 'storage', 'notification',
+                            'display', 'input', 'activityManager', 'clipboard'];
             svcList.forEach(name => {
                 this.services[name] = {
                     uri: 'com.webos.service.' + name,
@@ -373,7 +622,7 @@
                 };
             });
 
-            // Init system processes
+            // Initialize system processes
             this.processes = [
                 { pid: 1, name: 'init', user: 'root', cpu: 0.1, mem: 8, status: 'running', system: true },
                 { pid: this.nextPid++, name: 'luna-bus', user: 'root', cpu: 1.5, mem: 42, status: 'running', system: true },
@@ -393,7 +642,6 @@
             if (!svc) return { returnValue: false, error: 'Service not found' };
             svc.calls++;
 
-            // Service handlers
             const handlers = {
                 audio: {
                     getStatus: () => ({ returnValue: true, volume: State.settings.volume }),
@@ -414,21 +662,15 @@
                     listApps: () => ({ returnValue: true, apps: AppRegistry.list.filter(a => a.installed).map(a => ({ id: a.id, title: a.title })) }),
                     closeApp: (p) => { const w = State.windows.find(w => w.appId === p.id); if (w) OS.closeWindow(w.id); return { returnValue: true }; }
                 },
-                network: {
-                    getStatus: () => ({ returnValue: true, ssid: 'RETRO_NET', ip: '192.168.1.42' })
-                },
+                network: { getStatus: () => ({ returnValue: true, ssid: 'RETRO_NET', ip: '192.168.1.42' }) },
                 storage: {
                     listDir: (p) => {
                         const r = FS.resolve(p.path || '/home/retro');
                         return r ? { returnValue: true, entries: Object.keys(r.node.children) } : { returnValue: false };
                     }
                 },
-                clipboard: {
-                    setText: (p) => { OS.clipboard = p.text; OS.showClipboard(p.text); return { returnValue: true }; }
-                },
-                notification: {
-                    create: (p) => { OS.notify(p.title, p.body); return { returnValue: true }; }
-                }
+                clipboard: { setText: (p) => { OS.clipboard = p.text; OS.showClipboard(p.text); return { returnValue: true }; } },
+                notification: { create: (p) => { OS.notify(p.title, p.body); return { returnValue: true }; } }
             };
 
             const handler = handlers[name] && handlers[name][method];
@@ -452,9 +694,9 @@
         }
     };
 
-    /* ============================================================
-        4. FILESYSTEM MODULE - Virtual filesystem
-       ============================================================ */
+    // ===================================================================
+    // MODULE 4: FILESYSTEM - Virtual FS
+    // ===================================================================
     const FS = {
         root: null,
         defaults: {
@@ -497,9 +739,9 @@
         }
     };
 
-    /* ============================================================
-        5. STATE MODULE - Global application state
-       ============================================================ */
+    // ===================================================================
+    // MODULE 5: STATE - Global application state
+    // ===================================================================
     const State = {
         windows: [],
         activeWindow: null,
@@ -511,13 +753,9 @@
         notifications: [],
         particleEnabled: true,
         settings: {
-            volume: 75,
-            brightness: 80,
-            theme: 'amber',
-            scanlines: true,
-            wallpaper: 'default',
-            username: 'retro',
-            hostname: 'retroos-pc'
+            volume: 75, brightness: 80, theme: 'amber',
+            scanlines: true, wallpaper: 'default',
+            username: 'retro', hostname: 'retroos-pc'
         },
         persist: {},
 
@@ -526,15 +764,15 @@
             if (saved) {
                 Object.assign(this.settings, saved.settings || {});
                 this.workspace = saved.workspace || 0;
+                if (saved.fileSystem) this.persist = saved;
             }
         }
     };
 
-    /* ============================================================
-        6. APP REGISTRY - Installed & available applications
-       ============================================================ */
+    // ===================================================================
+    // MODULE 6: APP REGISTRY - Installed & available apps
+    // ===================================================================
     const AppRegistry = {
-        // Installed apps
         list: [
             { id: 'terminal', title: 'Terminal', icon: '💻', w: 720, h: 460, category: 'system', installed: true },
             { id: 'filemanager', title: 'File Manager', icon: '📁', w: 820, h: 520, category: 'system', installed: true },
@@ -549,23 +787,17 @@
             { id: 'minesweeper', title: 'Minesweeper', icon: '💣', w: 420, h: 470, category: 'games', installed: true },
             { id: 'snake', title: 'Snake', icon: '🐍', w: 440, h: 520, category: 'games', installed: true },
             { id: 'spaceshooter', title: 'Space Shooter', icon: '🚀', w: 680, h: 600, category: 'games', installed: true },
-            { id: 'paint', title: 'Retro Paint', icon: '🎨', w: 700, h: 520, category: 'utility', installed: true }
+            { id: 'doom', title: 'Doom-Like FPS', icon: '👹', w: 700, h: 550, category: 'games', installed: false }
         ],
 
-        // Apps available in store
         available: [
-            { id: 'doom', name: 'Doom-Like', icon: '👹', category: 'games', desc: 'Classic FPS retro shooter' },
-            { id: 'radio', name: 'Retro Radio', icon: '📻', category: 'media', desc: 'Stream synthwave radio' },
-            { id: 'chat', name: 'RetroChat', icon: '💬', category: 'utility', desc: 'IRC-style chat client' }
+            { id: 'doom', name: 'Doom-Like FPS', icon: '👹', category: 'games', desc: 'Retro raycaster FPS with 5 enemy types and 3 weapons', version: '2.0' },
+            { id: 'radio', name: 'Retro Radio', icon: '📻', category: 'media', desc: 'Stream synthwave radio stations', version: '1.0' },
+            { id: 'chat', name: 'RetroChat', icon: '💬', category: 'utility', desc: 'IRC-style retro chat client', version: '1.0' }
         ],
 
         get(id) { return this.list.find(a => a.id === id); },
-
-        isInstalled(id) {
-            const app = this.get(id);
-            return app && app.installed;
-        },
-
+        isInstalled(id) { const app = this.get(id); return app && app.installed; },
         install(id) {
             const app = this.get(id);
             if (app) { app.installed = true; return true; }
@@ -573,11 +805,11 @@
         }
     };
 
-    /* ============================================================
-        7. OS MODULE - Main orchestrator (boot, login, windows)
-       ============================================================ */
+    // ===================================================================
+    // MODULE 7: OS ORCHESTRATOR - Boot, login, windows, events
+    // ===================================================================
     const OS = {
-        // ---------- Boot Sequence ----------
+        // ----- Boot Sequence -----
         async boot() {
             State.loadDefaults();
             FS.init();
@@ -589,30 +821,16 @@
 
         async runBootSequence() {
             const messages = [
-                'RetroOS-BIOS v3.14.159',
-                'CPU: RetroCore i9 @ 5.5GHz [OK]',
-                'Memory Test: 65536 KB [OK]',
-                'HDD: 1TB [OK]',
-                'Booting...',
-                'Linux v6.7.0-retro loaded',
-                'Memory available [OK]',
-                'Console VGA+ [OK]',
-                'Root FS mounted [OK]',
-                '[OK] systemd-logind',
-                '[OK] NetworkManager',
-                '[OK] luna-bus',
-                '[OK] luna-service-manager: 14 services',
-                '[OK] weston-retro compositor',
-                '[OK] User session',
-                '[OK] Launcher ready',
-                'Welcome to RetroOS webOS v2.0!',
-                '[OK] All systems operational'
+                'RetroOS-BIOS v3.14.159', 'CPU: RetroCore i9 @ 5.5GHz [OK]', 'Memory Test: 65536 KB [OK]',
+                'HDD: 1TB [OK]', 'Booting...', 'Linux v6.7.0-retro loaded', 'Memory available [OK]',
+                'Console VGA+ [OK]', 'Root FS mounted [OK]', '[OK] systemd-logind', '[OK] NetworkManager',
+                '[OK] luna-bus', '[OK] luna-service-manager: 14 services',
+                '[OK] weston-retro compositor', '[OK] User session', '[OK] Launcher ready',
+                'Welcome to RetroOS webOS v2.0!', '[OK] All systems operational'
             ];
-
             const log = document.getElementById('boot-log');
             const progress = document.getElementById('boot-progress');
             const status = document.getElementById('boot-status');
-
             for (let i = 0; i < messages.length; i++) {
                 const line = document.createElement('div');
                 line.className = 'boot-line' + (messages[i].includes('[OK]') ? ' boot-ok' : '');
@@ -644,6 +862,9 @@
             Audio.notify();
         },
 
+        sleep(ms) { return new Promise(r => setTimeout(r, ms)); },
+
+        // ----- UI Initialization -----
         initUI() {
             this.renderDesktop();
             this.renderWallpaper();
@@ -654,20 +875,17 @@
             document.getElementById('start-user').textContent = '@' + State.settings.username;
         },
 
-        sleep(ms) { return new Promise(r => setTimeout(r, ms)); },
-
-        // ---------- Desktop & Wallpaper ----------
         renderDesktop() {
-            const container = document.getElementById('desktop-icons');
-            container.innerHTML = '';
-            ['terminal', 'filemanager', 'browser', 'spaceshooter', 'settings', 'appstore', 'taskmgr', 'minesweeper'].forEach(id => {
+            const c = document.getElementById('desktop-icons');
+            c.innerHTML = '';
+            ['terminal', 'filemanager', 'browser', 'spaceshooter', 'doom', 'settings', 'appstore', 'taskmgr', 'minesweeper'].forEach(id => {
                 const app = AppRegistry.get(id);
                 if (!app || !app.installed) return;
                 const el = document.createElement('div');
                 el.className = 'desktop-icon';
                 el.innerHTML = `<div class="desktop-icon-img">${app.icon}</div><div class="desktop-icon-label">${app.title}</div>`;
                 el.ondblclick = () => this.openApp(id);
-                container.appendChild(el);
+                c.appendChild(el);
             });
         },
 
@@ -675,7 +893,6 @@
             const wp = document.getElementById('wallpaper');
             wp.innerHTML = '';
             const t = State.settings.wallpaper || 'default';
-
             if (t === 'default') {
                 wp.className = 'wp-default';
                 wp.innerHTML = '<div class="wp-sun"></div><div class="wp-mountains"></div>';
@@ -683,33 +900,28 @@
                 wp.className = 'wp-matrix';
                 const canvas = document.createElement('canvas');
                 canvas.className = 'matrix-canvas';
-                canvas.width = innerWidth;
-                canvas.height = innerHeight;
+                canvas.width = innerWidth; canvas.height = innerHeight;
                 wp.appendChild(canvas);
                 this.startMatrix(canvas);
             } else if (t === 'stars') {
                 wp.className = 'wp-stars';
                 const canvas = document.createElement('canvas');
                 canvas.className = 'stars-canvas';
-                canvas.width = innerWidth;
-                canvas.height = innerHeight;
+                canvas.width = innerWidth; canvas.height = innerHeight;
                 wp.appendChild(canvas);
             }
         },
 
         startMatrix(canvas) {
             const ctx = canvas.getContext('2d');
-            const chars = 'ｱｲｳｴｵRETROOS01234567890<>=';
-            const fs = 14;
-            const cols = Math.floor(canvas.width / fs);
+            const chars = 'RETROOS01234567890<>=';
+            const fs = 14, cols = Math.floor(canvas.width / fs);
             const drops = Array(cols).fill(0);
-
-            setInterval(() => {
+            const draw = () => {
                 ctx.fillStyle = 'rgba(0,0,0,0.06)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.font = fs + 'px monospace';
-                ctx.shadowColor = '#0f0';
-                ctx.shadowBlur = 4;
+                ctx.shadowColor = '#0f0'; ctx.shadowBlur = 4;
                 for (let i = 0; i < drops.length; i++) {
                     const text = chars[Math.floor(Math.random() * chars.length)];
                     ctx.fillStyle = drops[i] * fs > canvas.height * 0.7 ? '#fff' : '#0f0';
@@ -717,7 +929,8 @@
                     if (drops[i] * fs > canvas.height && Math.random() > 0.975) drops[i] = 0;
                     drops[i]++;
                 }
-            }, 50);
+            };
+            setInterval(draw, 50);
         },
 
         applyWallpaper(type) {
@@ -725,17 +938,15 @@
             this.renderWallpaper();
         },
 
-        // ---------- Global Events ----------
+        // ----- Global Events -----
         bindGlobalEvents() {
             const self = this;
 
-            // Start button
             document.getElementById('start-button').onclick = (e) => {
                 e.stopPropagation();
                 self.toggleStartMenu();
             };
 
-            // Click outside menus
             document.addEventListener('click', (e) => {
                 if (!e.target.closest('#start-menu') && !e.target.closest('#start-button')) {
                     self.toggleStartMenu(false);
@@ -745,7 +956,6 @@
                 }
             });
 
-            // Right-click on desktop
             document.getElementById('desktop').addEventListener('contextmenu', (e) => {
                 if (e.target.closest('.window')) return;
                 e.preventDefault();
@@ -753,12 +963,12 @@
                     { icon: '💻', text: 'New Terminal', action: () => self.openApp('terminal') },
                     { icon: '📁', text: 'File Manager', action: () => self.openApp('filemanager') },
                     { icon: '🚀', text: 'Space Shooter', action: () => self.openApp('spaceshooter') },
+                    { icon: '👹', text: 'Doom-Like', action: () => self.openApp('doom') },
                     { separator: true },
                     { icon: '⚙️', text: 'Settings', action: () => self.openApp('settings') }
                 ]);
             });
 
-            // Start menu search & tabs
             document.getElementById('start-search').oninput = (e) => self.filterStartMenu(e.target.value);
             document.querySelectorAll('.start-tab').forEach(t => {
                 t.onclick = () => {
@@ -768,25 +978,21 @@
                 };
             });
 
-            // Start footer buttons
             document.querySelectorAll('.start-footer-btn').forEach(b => {
                 b.onclick = () => {
                     self.toggleStartMenu(false);
-                    const action = b.dataset.action;
-                    if (action === 'power') document.getElementById('power-modal').classList.add('show');
-                    else self.openApp(action);
+                    const a = b.dataset.action;
+                    if (a === 'power') document.getElementById('power-modal').classList.add('show');
+                    else self.openApp(a);
                 };
             });
 
-            // Power modal
             document.querySelectorAll('[data-power]').forEach(b => b.onclick = () => self[b.dataset.power]());
             document.getElementById('power-cancel').onclick = () => document.getElementById('power-modal').classList.remove('show');
 
-            // Tray items
             document.getElementById('tray-volume').onclick = () => this.openApp('settings');
             document.getElementById('clock').onclick = () => this.openApp('settings');
 
-            // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
                 Audio.init();
                 if (e.key === 'Escape') {
@@ -811,11 +1017,10 @@
                 }
             });
 
-            // Mouse particles
             document.addEventListener('mousemove', (e) => State.particleEnabled && this.spawnParticle(e.clientX, e.clientY));
         },
 
-        // ---------- Start Menu ----------
+        // ----- Start Menu -----
         toggleStartMenu(force) {
             const menu = document.getElementById('start-menu');
             const show = force !== undefined ? force : !menu.classList.contains('show');
@@ -828,8 +1033,8 @@
         },
 
         renderStartMenu() {
-            const container = document.getElementById('start-apps');
-            container.innerHTML = '';
+            const c = document.getElementById('start-apps');
+            c.innerHTML = '';
             AppRegistry.list.filter(a => a.installed).forEach(app => {
                 const el = document.createElement('div');
                 el.className = 'start-app';
@@ -840,7 +1045,7 @@
                     this.toggleStartMenu(false);
                     Audio.click();
                 };
-                container.appendChild(el);
+                c.appendChild(el);
             });
         },
 
@@ -852,7 +1057,7 @@
             });
         },
 
-        // ---------- Context Menu ----------
+        // ----- Context Menu -----
         showContextMenu(x, y, items) {
             const menu = document.getElementById('context-menu');
             menu.innerHTML = '';
@@ -874,43 +1079,41 @@
             menu.classList.add('show');
         },
 
-        // ---------- Workspaces ----------
+        // ----- Workspaces -----
         switchWorkspace(idx) {
             State.workspace = idx;
             State.windows.forEach(w => {
                 if (w.element) w.element.style.display = (w.workspace || 0) === idx ? '' : 'none';
             });
-            this.notify('Workspace', `Switched to workspace ${idx + 1}`, 'system');
+            this.notify('Workspace', `Switched to ${idx + 1}`, 'system');
         },
 
-        // ---------- Window Management ----------
+        // ----- Window Management -----
         openApp(appId, params = {}) {
             const app = AppRegistry.get(appId);
-            if (!app || !app.installed) { this.notify('Not installed', appId); return; }
-
+            if (!app) { this.notify('Error', `${appId} not found`, 'error'); return; }
+            if (!app.installed) {
+                this.notify('Not Installed', `${app.title} - Visit App Store`, 'error');
+                this.openApp('appstore');
+                return;
+            }
             const existing = State.windows.find(w => w.appId === appId && w.workspace === State.workspace);
             if (existing && !params.newWindow) {
                 if (existing.minimized) this.unminimizeWindow(existing.id);
                 this.focusWindow(existing.id);
                 return;
             }
-
             const win = {
-                id: State.nextWindowId++,
-                appId, title: app.title, icon: app.icon,
+                id: State.nextWindowId++, appId, title: app.title, icon: app.icon,
                 x: 80 + (State.windows.length * 30) % 250,
                 y: 50 + (State.windows.length * 30) % 180,
-                w: app.w, h: app.h,
-                zIndex: State.nextZIndex++,
-                pid: Kernel.nextPid++,
-                workspace: State.workspace
+                w: app.w, h: app.h, zIndex: State.nextZIndex++,
+                pid: Kernel.nextPid++, workspace: State.workspace
             };
-
             State.windows.push(win);
             this.renderWindow(win, params);
             this.renderTaskbar();
             setTimeout(() => this.focusWindow(win.id), 10);
-
             Kernel.addProcess({ pid: win.pid, name: appId, user: State.settings.username, cpu: Math.random() * 3, mem: 30, status: 'running', time: Date.now() });
             this.notify('App Launched', `${app.title} (PID: ${win.pid})`, 'system');
         },
@@ -919,17 +1122,10 @@
             const el = document.createElement('div');
             el.className = 'window';
             el.id = 'window-' + win.id;
-            el.style.left = win.x + 'px';
-            el.style.top = win.y + 'px';
-            el.style.width = win.w + 'px';
-            el.style.height = win.h + 'px';
-            el.style.zIndex = win.zIndex;
-
+            el.style.cssText = `left:${win.x}px;top:${win.y}px;width:${win.w}px;height:${win.h}px;z-index:${win.zIndex}`;
             el.innerHTML = `
-                <div class="window-titlebar" data-win="${win.id}">
-                    <div class="window-titlebar-text">
-                        <span>${win.icon}</span><span>${win.title}</span>
-                    </div>
+                <div class="window-titlebar">
+                    <div class="window-titlebar-text"><span>${win.icon}</span><span>${win.title}</span></div>
                     <div class="window-controls">
                         <button class="win-btn minimize">_</button>
                         <button class="win-btn maximize">▢</button>
@@ -937,66 +1133,44 @@
                     </div>
                 </div>
                 <div class="window-content" id="content-${win.id}"></div>
-                <div class="window-statusbar">
-                    <span>PID: ${win.pid} | ${win.appId}</span>
-                    <span>●</span>
-                </div>
-                <div class="resize-handle resize-n"></div>
-                <div class="resize-handle resize-s"></div>
-                <div class="resize-handle resize-w"></div>
-                <div class="resize-handle resize-e"></div>
-                <div class="resize-handle resize-nw"></div>
-                <div class="resize-handle resize-ne"></div>
-                <div class="resize-handle resize-sw"></div>
-                <div class="resize-handle resize-se"></div>
-            `;
-
+                <div class="window-statusbar"><span>PID: ${win.pid} | ${win.appId}</span><span>●</span></div>
+                <div class="resize-handle resize-n"></div><div class="resize-handle resize-s"></div>
+                <div class="resize-handle resize-w"></div><div class="resize-handle resize-e"></div>
+                <div class="resize-handle resize-nw"></div><div class="resize-handle resize-ne"></div>
+                <div class="resize-handle resize-sw"></div><div class="resize-handle resize-se"></div>`;
             document.getElementById('windows-container').appendChild(el);
             win.element = el;
             this.renderAppContent(win, params);
-
-            // Bind controls
             el.querySelector('.close').onclick = () => this.closeWindow(win.id);
             el.querySelector('.minimize').onclick = () => this.minimizeWindow(win.id);
             el.querySelector('.maximize').onclick = () => this.toggleMaximize(win.id);
-            el.querySelector('.window-titlebar').ondblclick = (e) => {
-                if (!e.target.closest('.win-btn')) this.toggleMaximize(win.id);
-            };
+            el.querySelector('.window-titlebar').ondblclick = (e) => { if (!e.target.closest('.win-btn')) this.toggleMaximize(win.id); };
             el.onmousedown = () => this.focusWindow(win.id);
-
-            // Make draggable & resizable
             this.makeDraggable(el, win);
             this.makeResizable(el, win);
         },
 
         makeDraggable(el, win) {
             const titleBar = el.querySelector('.window-titlebar');
-            let dragging = false, startX, startY, startLeft, startTop;
-
             titleBar.addEventListener('mousedown', (e) => {
                 if (e.target.closest('.win-btn') || win.maximized) return;
-                dragging = true;
-                startX = e.clientX;
-                startY = e.clientY;
-                startLeft = win.x;
-                startTop = win.y;
+                let dragging = true;
+                const startX = e.clientX, startY = e.clientY;
+                const startLeft = win.x, startTop = win.y;
                 document.body.style.cursor = 'move';
-
-                const onMove = (e) => {
+                const onMove = (ev) => {
                     if (!dragging) return;
-                    win.x = Math.max(0, startLeft + e.clientX - startX);
-                    win.y = Math.max(0, startTop + e.clientY - startY);
+                    win.x = Math.max(0, startLeft + ev.clientX - startX);
+                    win.y = Math.max(0, startTop + ev.clientY - startY);
                     el.style.left = win.x + 'px';
                     el.style.top = win.y + 'px';
                 };
-
                 const onUp = () => {
                     dragging = false;
                     document.body.style.cursor = '';
                     document.removeEventListener('mousemove', onMove);
                     document.removeEventListener('mouseup', onUp);
                 };
-
                 document.addEventListener('mousemove', onMove);
                 document.addEventListener('mouseup', onUp);
             });
@@ -1011,22 +1185,19 @@
                     let resizing = true;
                     const startX = e.clientX, startY = e.clientY;
                     const startW = win.w, startH = win.h;
-
-                    const onMove = (e) => {
+                    const onMove = (ev) => {
                         if (!resizing) return;
-                        const dx = e.clientX - startX, dy = e.clientY - startY;
+                        const dx = ev.clientX - startX, dy = ev.clientY - startY;
                         if (dirs.includes('e')) win.w = Math.max(280, startW + dx);
                         if (dirs.includes('s')) win.h = Math.max(180, startH + dy);
                         el.style.width = win.w + 'px';
                         el.style.height = win.h + 'px';
                     };
-
                     const onUp = () => {
                         resizing = false;
                         document.removeEventListener('mousemove', onMove);
                         document.removeEventListener('mouseup', onUp);
                     };
-
                     document.addEventListener('mousemove', onMove);
                     document.addEventListener('mouseup', onUp);
                 });
@@ -1048,8 +1219,8 @@
             const idx = State.windows.findIndex(w => w.id === id);
             if (idx === -1) return;
             const win = State.windows[idx];
-            win.element.style.transition = 'all .2s';
-            win.element.style.transform = 'scale(.8)';
+            win.element.style.transition = 'all 0.2s';
+            win.element.style.transform = 'scale(0.8)';
             win.element.style.opacity = '0';
             setTimeout(() => {
                 win.element.remove();
@@ -1062,20 +1233,12 @@
 
         minimizeWindow(id) {
             const w = State.windows.find(w => w.id === id);
-            if (w) {
-                w.minimized = true;
-                w.element.classList.add('minimized');
-                this.renderTaskbar();
-            }
+            if (w) { w.minimized = true; w.element.classList.add('minimized'); this.renderTaskbar(); }
         },
 
         unminimizeWindow(id) {
             const w = State.windows.find(w => w.id === id);
-            if (w) {
-                w.minimized = false;
-                w.element.classList.remove('minimized');
-                this.focusWindow(id);
-            }
+            if (w) { w.minimized = false; w.element.classList.remove('minimized'); this.focusWindow(id); }
         },
 
         toggleMaximize(id) {
@@ -1083,8 +1246,7 @@
             if (!w) return;
             if (!w.maximized) {
                 w.oldBounds = { x: w.x, y: w.y, w: w.w, h: w.h };
-                w.x = 0; w.y = 0;
-                w.w = innerWidth; w.h = innerHeight - 44;
+                w.x = 0; w.y = 0; w.w = innerWidth; w.h = innerHeight - 44;
                 w.maximized = true;
             } else {
                 w.x = w.oldBounds.x; w.y = w.oldBounds.y;
@@ -1105,8 +1267,8 @@
         },
 
         renderTaskbar() {
-            const container = document.getElementById('taskbar-apps');
-            container.innerHTML = '';
+            const c = document.getElementById('taskbar-apps');
+            c.innerHTML = '';
             State.windows.filter(w => w.workspace === State.workspace).forEach(win => {
                 const el = document.createElement('div');
                 el.className = 'taskbar-app' + (win.id === State.activeWindow && !win.minimized ? ' active' : '');
@@ -1119,11 +1281,11 @@
                         else this.focusWindow(win.id);
                     }
                 };
-                container.appendChild(el);
+                c.appendChild(el);
             });
         },
 
-        // ---------- App Dispatcher ----------
+        // ----- App Dispatcher -----
         renderAppContent(win, params) {
             const content = document.getElementById('content-' + win.id);
             const dispatch = {
@@ -1138,13 +1300,14 @@
                 pixelart: () => Apps.pixelart(win, content),
                 spaceshooter: () => Apps.spaceshooter(win, content),
                 snake: () => Apps.snake(win, content),
+                doom: () => Apps.doom(win, content),
                 taskmgr: () => Apps.taskmgr(win, content),
                 appstore: () => Apps.appstore(win, content)
             };
             if (dispatch[win.appId]) dispatch[win.appId]();
         },
 
-        // ---------- Notifications & Effects ----------
+        // ----- Notifications -----
         notify(title, body) {
             const el = document.createElement('div');
             el.className = 'notification';
@@ -1188,10 +1351,10 @@
             }, 2000);
         },
 
-        // ---------- Power ----------
+        // ----- Power -----
         sleep() {
             document.getElementById('power-modal').classList.remove('show');
-            document.getElementById('desktop').style.opacity = '.05';
+            document.getElementById('desktop').style.opacity = '0.05';
             const wake = () => {
                 document.getElementById('desktop').style.opacity = '1';
                 document.removeEventListener('click', wake);
@@ -1213,12 +1376,12 @@
         }
     };
 
-    /* ============================================================
-        8. APPS MODULE - Individual application implementations
-       ============================================================ */
+    // ===================================================================
+    // MODULE 8: APPS - Individual application implementations
+    // ===================================================================
     const Apps = {};
 
-    // ==================== TERMINAL ====================
+    // ----- Terminal -----
     Apps.terminal = function(win, container) {
         container.innerHTML = '<div class="terminal-app"></div>';
         const term = container.querySelector('.terminal-app');
@@ -1243,8 +1406,7 @@
                     const cmd = input.value;
                     line.querySelector('span:last-child').remove();
                     print(`${State.settings.username}@${State.settings.hostname}:${cwd}$ ${cmd}`, 'terminal-prompt');
-                    history.push(cmd);
-                    histIdx = history.length;
+                    history.push(cmd); histIdx = history.length;
                     exec(cmd);
                     newPrompt();
                     term.scrollTop = term.scrollHeight;
@@ -1267,9 +1429,7 @@
             const c = parts[0], args = parts.slice(1);
             if (!c) return;
             switch (c) {
-                case 'help':
-                    print('Commands: help ls cd pwd cat whoami ps ls2 clear exit reboot shutdown', 'terminal-info');
-                    break;
+                case 'help': print('Commands: help ls cd pwd cat whoami ps ls2 clear exit reboot shutdown', 'terminal-info'); break;
                 case 'pwd': print(cwd); break;
                 case 'whoami': print(State.settings.username); break;
                 case 'ls': {
@@ -1280,9 +1440,9 @@
                 case 'cd': {
                     let target = args[0] || '/home/retro';
                     if (target === '..') {
-                        const parts = cwd.split('/').filter(p => p);
-                        parts.pop();
-                        target = parts.length ? '/' + parts.join('/') : '/';
+                        const p = cwd.split('/').filter(p => p);
+                        p.pop();
+                        target = p.length ? '/' + p.join('/') : '/';
                     } else if (!target.startsWith('/')) {
                         target = cwd === '/' ? '/' + target : cwd + '/' + target;
                     }
@@ -1316,35 +1476,26 @@
         newPrompt();
     };
 
-    // ==================== CALCULATOR ====================
+    // ----- Calculator -----
     Apps.calculator = function(win, container) {
-        const compute = (a, b, op) => {
-            switch (op) {
-                case '+': return a + b;
-                case '-': return a - b;
-                case '*': return a * b;
-                case '/': return b === 0 ? 'Err' : a / b;
-            }
+        const compute = (a, b, o) => {
+            if (o === '+') return a + b;
+            if (o === '-') return a - b;
+            if (o === '*') return a * b;
+            if (o === '/') return b === 0 ? 'Err' : a / b;
         };
 
         const buttons = [
             { label: 'AC', action: 'clear', type: 'clear' },
-            { label: '±', action: 'sign' },
-            { label: '%', action: 'percent' },
-            { label: '÷', action: '/', type: 'op' },
-            { label: '7', action: '7' }, { label: '8', action: '8' }, { label: '9', action: '9' },
-            { label: '×', action: '*', type: 'op' },
-            { label: '4', action: '4' }, { label: '5', action: '5' }, { label: '6', action: '6' },
-            { label: '−', action: '-', type: 'op' },
-            { label: '1', action: '1' }, { label: '2', action: '2' }, { label: '3', action: '3' },
-            { label: '+', action: '+', type: 'op' },
-            { label: '0', action: '0', span: 2 },
-            { label: '.', action: '.' },
-            { label: '=', action: '=', type: 'eq' }
+            { label: '±', action: 'sign' }, { label: '%', action: 'percent' }, { label: '÷', action: '/', type: 'op' },
+            { label: '7', action: '7' }, { label: '8', action: '8' }, { label: '9', action: '9' }, { label: '×', action: '*', type: 'op' },
+            { label: '4', action: '4' }, { label: '5', action: '5' }, { label: '6', action: '6' }, { label: '−', action: '-', type: 'op' },
+            { label: '1', action: '1' }, { label: '2', action: '2' }, { label: '3', action: '3' }, { label: '+', action: '+', type: 'op' },
+            { label: '0', action: '0', span: 2 }, { label: '.', action: '.' }, { label: '=', action: '=', type: 'eq' }
         ];
 
         container.innerHTML = `
-            <div style="display:flex;flex-direction:column;height:100%;padding:10px;background:var(--window-bg)">
+            <div style="display:flex;flex-direction:column;height:100%;padding:10px">
                 <div id="calc-d" style="background:#000;border:2px solid var(--phosphor);color:var(--green-phos);padding:14px;font-size:30px;text-align:right;margin-bottom:10px;min-height:70px">0</div>
                 <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
                     ${buttons.map(b => `<button class="settings-btn calc-btn" data-act="${b.action}" style="font-size:20px;${b.span?'grid-column:span 2':''}${b.type==='op'?'background:linear-gradient(180deg,var(--phosphor),var(--phosphor-dim));color:#000':''}${b.type==='eq'?'background:linear-gradient(180deg,var(--green-phos),#228844);color:#000':''}${b.type==='clear'?'background:linear-gradient(180deg,var(--red-phos),#aa2222);color:#000':''}">${b.label}</button>`).join('')}
@@ -1384,14 +1535,13 @@
         });
     };
 
-    // ==================== FILE MANAGER ====================
+    // ----- File Manager -----
     Apps.filemanager = function(win, container, path) {
         const shortcuts = ['/home/retro', '/home/retro/Documents', '/', '/etc/retroos'];
-
         container.innerHTML = `
             <div style="display:flex;height:100%">
                 <div style="width:170px;background:#0a0a1e;border-right:1px solid var(--panel-border);padding:7px;color:var(--phosphor);font-family:'VT323',monospace">
-                    ${shortcuts.map(p => `<div class="fm-side" data-path="${p}" style="padding:4px 6px;cursor:pointer">${p.split('/').pop() || 'Root'}</div>`).join('')}
+                    ${shortcuts.map(p => `<div style="padding:4px 6px;cursor:pointer" class="fm-side" data-path="${p}">${p.split('/').pop() || 'Root'}</div>`).join('')}
                 </div>
                 <div style="flex:1;display:flex;flex-direction:column">
                     <div style="background:#1a1a3e;padding:4px 6px;display:flex;gap:3px;border-bottom:1px solid var(--panel-border)">
@@ -1403,49 +1553,35 @@
             </div>`;
 
         let currentPath = path;
-
         const render = (p) => {
             const r = FS.resolve(p);
             const c = container.querySelector('#fm-content');
             container.querySelector('#fm-path').value = p;
-
-            if (!r) {
-                c.innerHTML = `<div style="color:var(--red-phos);padding:15px">Cannot access ${p}</div>`;
-                return;
-            }
-
+            if (!r) { c.innerHTML = `<div style="color:var(--red-phos);padding:15px">Cannot access ${p}</div>`; return; }
             currentPath = p;
             c.innerHTML = '';
             const items = Object.entries(r.node.children);
-
             items.forEach(([name, node]) => {
                 const item = document.createElement('div');
                 item.style.cssText = 'padding:7px 4px;cursor:pointer;border:1px solid transparent;text-align:center';
-                const icon = node.type === 'dir' ? '📁' : '📄';
-                item.innerHTML = `<div style="font-size:32px">${icon}</div><div style="font-size:12px">${name}</div>`;
-
+                item.innerHTML = `<div style="font-size:32px">${node.type === 'dir' ? '📁' : '📄'}</div><div style="font-size:12px">${name}</div>`;
                 item.ondblclick = () => {
-                    if (node.type === 'dir') {
-                        render((p === '/' ? '' : p) + '/' + name);
-                    } else if (name.endsWith('.txt')) {
-                        OS.openApp('editor', { file: { name, content: node.content } });
-                    }
+                    if (node.type === 'dir') render((p === '/' ? '' : p) + '/' + name);
+                    else if (name.endsWith('.txt')) OS.openApp('editor', { file: { name, content: node.content } });
                 };
                 c.appendChild(item);
             });
         };
-
         container.querySelectorAll('.fm-side').forEach(el => el.onclick = () => render(el.dataset.path));
         container.querySelector('#fm-up').onclick = () => {
             const parts = currentPath.split('/').filter(x => x);
             parts.pop();
             render('/' + parts.join('/'));
         };
-
         render(path);
     };
 
-    // ==================== SETTINGS ====================
+    // ----- Settings -----
     Apps.settings = function(win, container) {
         const sections = [
             { id: 'display', icon: '🖥️', title: 'Display' },
@@ -1465,11 +1601,10 @@
 
         const renderSection = (id) => {
             container.querySelectorAll('.set-nav').forEach(n => n.classList.toggle('active', n.dataset.nav === id));
-
             if (id === 'display') {
                 content.innerHTML = `
                     <h3 style="color:var(--phosphor);font-family:'Press Start 2P',monospace;font-size:12px">🖥️ Display</h3>
-                    <div style="background:rgba(255,176,0,.05);border:1px solid var(--panel-border);padding:12px;margin-top:10px">
+                    <div style="background:rgba(255,176,0,0.05);border:1px solid var(--panel-border);padding:12px;margin-top:10px">
                         <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Brightness</span><input type="range" min="20" max="100" value="${State.settings.brightness}" id="set-bri"></div>
                         <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Theme</span><select class="settings-select" id="set-thm">
                             <option value="amber" ${State.settings.theme === 'amber' ? 'selected' : ''}>Amber</option>
@@ -1486,20 +1621,18 @@
             } else if (id === 'user') {
                 content.innerHTML = `
                     <h3 style="color:var(--phosphor);font-family:'Press Start 2P',monospace;font-size:12px">👤 User</h3>
-                    <div style="background:rgba(255,176,0,.05);border:1px solid var(--panel-border);padding:12px;margin-top:10px">
+                    <div style="background:rgba(255,176,0,0.05);border:1px solid var(--panel-border);padding:12px;margin-top:10px">
                         <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Username</span><input class="settings-input" id="set-user" value="${State.settings.username}"></div>
                         <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Hostname</span><input class="settings-input" id="set-host" value="${State.settings.hostname}"></div>
                     </div>`;
             } else if (id === 'luna') {
-                let html = '<h3 style="color:var(--phosphor);font-family:\'Press Start 2P\',monospace;font-size:12px">🌙 Luna Services</h3><div style="background:rgba(255,176,0,.05);border:1px solid var(--panel-border);padding:8px;margin-top:10px">';
+                let html = '<h3 style="color:var(--phosphor);font-family:\'Press Start 2P\',monospace;font-size:12px">🌙 Luna Services</h3><div style="background:rgba(255,176,0,0.05);border:1px solid var(--panel-border);padding:8px;margin-top:10px">';
                 Object.entries(Kernel.services).forEach(([name, svc]) => {
-                    html += `<div style="display:flex;justify-content:space-between;padding:5px 8px;border-bottom:1px solid rgba(255,176,0,.05);font-size:13px">
-                        <span>${name}</span><span style="color:var(--green-phos)">● running</span></div>`;
+                    html += `<div style="display:flex;justify-content:space-between;padding:5px 8px;border-bottom:1px solid rgba(255,176,0,0.05);font-size:13px"><span>${name}</span><span style="color:var(--green-phos)">● running</span></div>`;
                 });
                 html += '</div>';
                 content.innerHTML = html;
             }
-
             bindHandlers();
         };
 
@@ -1509,7 +1642,6 @@
                 State.settings.brightness = e.target.value;
                 document.getElementById('crt-overlay').style.opacity = (100 - e.target.value) / 100 * 0.5 + 0.5;
             };
-
             const thm = container.querySelector('#set-thm');
             if (thm) thm.onchange = e => {
                 State.settings.theme = e.target.value;
@@ -1518,20 +1650,16 @@
                 document.documentElement.style.setProperty('--phosphor-dim', c[1]);
                 document.documentElement.style.setProperty('--phosphor-glow', c[0] + '99');
             };
-
             const scan = container.querySelector('#set-scan');
             if (scan) scan.onclick = () => {
                 State.settings.scanlines = !State.settings.scanlines;
                 scan.classList.toggle('on');
                 document.getElementById('crt-overlay').style.display = State.settings.scanlines ? '' : 'none';
             };
-
             const wp = container.querySelector('#set-wp');
             if (wp) wp.onchange = e => OS.applyWallpaper(e.target.value);
-
             const u = container.querySelector('#set-user');
             if (u) u.onchange = e => State.settings.username = e.target.value;
-
             const h = container.querySelector('#set-host');
             if (h) h.onchange = e => State.settings.hostname = e.target.value;
         };
@@ -1540,18 +1668,16 @@
         renderSection('display');
     };
 
-    // ==================== TASK MANAGER ====================
+    // ----- Task Manager -----
     Apps.taskmgr = function(win, container) {
         container.innerHTML = `
             <div style="display:flex;flex-direction:column;height:100%">
                 <div style="padding:10px;background:#1a1a3e;border-bottom:1px solid var(--panel-border);display:flex;gap:15px">
-                    <div style="padding:5px 10px;background:rgba(255,176,0,.1);border:1px solid var(--phosphor)">
-                        <div style="font-size:11px">CPU</div>
-                        <div id="tm-cpu" style="font-size:20px;color:var(--phosphor)">--%</div>
+                    <div style="padding:5px 10px;background:rgba(255,176,0,0.1);border:1px solid var(--phosphor)">
+                        <div style="font-size:11px">CPU</div><div id="tm-cpu" style="font-size:20px;color:var(--phosphor)">--%</div>
                     </div>
-                    <div style="padding:5px 10px;background:rgba(255,176,0,.1);border:1px solid var(--phosphor)">
-                        <div style="font-size:11px">PROCS</div>
-                        <div id="tm-procs" style="font-size:20px;color:var(--phosphor)">--</div>
+                    <div style="padding:5px 10px;background:rgba(255,176,0,0.1);border:1px solid var(--phosphor)">
+                        <div style="font-size:11px">PROCS</div><div id="tm-procs" style="font-size:20px;color:var(--phosphor)">--</div>
                     </div>
                 </div>
                 <div id="tm-list" style="flex:1;overflow-y:auto;padding:5px"></div>
@@ -1561,14 +1687,13 @@
             </div>`;
 
         let sel = null;
-
         const refresh = () => {
             const list = container.querySelector('#tm-list');
-            list.innerHTML = '<div style="display:grid;grid-template-columns:50px 1fr 80px 80px 80px 80px;padding:5px 8px;border-bottom:1px solid var(--panel-border);color:var(--phosphor);font-family:Press Start 2P; font-size:10px"><span>PID</span><span>NAME</span><span>USER</span><span>CPU%</span><span>MEM</span></div>';
+            list.innerHTML = '<div style="display:grid;grid-template-columns:50px 1fr 80px 80px 80px 80px;padding:5px 8px;border-bottom:1px solid var(--panel-border);color:var(--phosphor);font-family:Press Start 2P;font-size:10px"><span>PID</span><span>NAME</span><span>USER</span><span>CPU%</span><span>MEM</span></div>';
             Kernel.processes.forEach(p => {
                 const row = document.createElement('div');
-                row.style.cssText = 'display:grid;grid-template-columns:50px 1fr 80px 80px 80px 80px;padding:5px 8px;border-bottom:1px solid rgba(255,176,0,.1);font-family:VT323;font-size:14px;cursor:pointer';
-                if (sel === p.pid) row.style.background = 'rgba(255,176,0,.3)';
+                row.style.cssText = 'display:grid;grid-template-columns:50px 1fr 80px 80px 80px 80px;padding:5px 8px;border-bottom:1px solid rgba(255,176,0,0.1);font-family:VT323;font-size:14px;cursor:pointer';
+                if (sel === p.pid) row.style.background = 'rgba(255,176,0,0.3)';
                 row.innerHTML = `<span>${p.pid}</span><span>${p.name}</span><span>${p.user}</span><span>${p.cpu.toFixed(1)}</span><span>${p.mem}MB</span>`;
                 row.onclick = () => { sel = p.pid; refresh(); };
                 list.appendChild(row);
@@ -1584,57 +1709,42 @@
                 refresh();
             }
         };
-
         refresh();
         win._cleanup = setInterval(refresh, 2000);
     };
 
-    // ==================== APP STORE ====================
+    // ----- App Store -----
     Apps.appstore = function(win, container) {
         container.innerHTML = `
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:15px;height:100%;overflow-y:auto">
-                ${AppRegistry.available.map(a => `
-                    <div style="padding:15px;background:rgba(255,176,0,.05);border:1px solid var(--panel-border);display:flex;flex-direction:column;align-items:center;text-align:center">
-                        <div style="font-size:48px">${a.icon}</div>
-                        <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--phosphor);margin-bottom:5px">${a.name}</div>
-                        <div style="font-size:13px;color:var(--text-dim);margin-bottom:10px">${a.desc}</div>
-                        <button class="settings-btn primary" data-id="${a.id}" style="font-family:'Press Start 2P',monospace;font-size:9px">INSTALL</button>
-                    </div>`).join('')}
+            <div style="padding:15px;height:100%;overflow-y:auto">
+                <h2 style="color:var(--phosphor);font-family:'Press Start 2P',monospace;font-size:14px;margin-bottom:15px">🛒 APP STORE</h2>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+                    ${AppRegistry.available.map(a => `
+                        <div style="padding:15px;background:rgba(255,176,0,0.05);border:1px solid var(--panel-border);display:flex;flex-direction:column;align-items:center;text-align:center">
+                            <div style="font-size:48px;margin-bottom:8px">${a.icon}</div>
+                            <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--phosphor);margin-bottom:8px">${a.name}</div>
+                            <div style="font-size:12px;color:var(--phosphor-dim);margin-bottom:12px;min-height:30px">${a.desc}</div>
+                            <div style="font-size:10px;color:var(--phosphor-dim);margin-bottom:8px">v${a.version}</div>
+                            <button class="settings-btn primary appstore-install" data-id="${a.id}" style="font-family:'Press Start 2P',monospace;font-size:9px;padding:8px 18px">INSTALL</button>
+                        </div>`).join('')}
+                </div>
             </div>`;
 
-        container.querySelectorAll('button[data-id]').forEach(b => b.onclick = () => {
+        container.querySelectorAll('.appstore-install').forEach(b => b.onclick = () => {
             AppRegistry.install(b.dataset.id);
             OS.renderDesktop();
-            OS.notify('Installed', b.dataset.id);
+            OS.notify('Installed', b.dataset.id + ' ready to play!');
         });
     };
 
-    // ==================== EDITOR (simplified) ====================
-    Apps.editor = function(win, container, params) {
-        const content = params.file ? params.file.content : '';
-        const filename = params.file ? params.file.name : 'Untitled.txt';
-
-        container.innerHTML = `
-            <div style="display:flex;flex-direction:column;height:100%">
-                <div style="background:#1a1a3e;padding:4px 7px;border-bottom:1px solid var(--panel-border);color:var(--phosphor);font-family:VT323">
-                    ${filename} | <span id="ed-info">${content.length} chars</span>
-                </div>
-                <textarea id="ed-ta" style="flex:1;background:#000;color:var(--phosphor);border:none;outline:none;padding:12px;font-family:'VT323',monospace;font-size:15px;resize:none">${content}</textarea>
-            </div>`;
-
-        const ta = container.querySelector('#ed-ta');
-        ta.oninput = () => container.querySelector('#ed-info').textContent = ta.value.length + ' chars';
-        setTimeout(() => ta.focus(), 50);
-    };
-
-    // ==================== BROWSER (simplified) ====================
+    // ----- Browser -----
     Apps.browser = function(win, container) {
         const pages = {
-            'retro://home': '<div style="background:linear-gradient(135deg,#ff00ff,#00ffff);padding:40px;text-align:center;color:#000"><h1 style="font-family:Press Start 2P">RETRO.NET</h1></div><div style="padding:20px;color:#00ffff;font-family:VT323;background:#000;height:calc(100% - 100px)"><p>Welcome to the retro web! Try navigating to retro://news, retro://music, retro://docs, retro://shop</p></div>',
-            'retro://news': '<div style="padding:20px;background:#000;color:#00ffff;height:100%;font-family:VT323"><h2>News</h2><p>Synthwave hits 50B plays!</p></div>',
-            'retro://music': '<div style="padding:20px;background:#000;color:#ff00ff;height:100%;font-family:VT323"><h2>SYNTHFM</h2><p>Now playing: Neon Dreams</p></div>',
-            'retro://docs': '<div style="padding:20px;background:#000;color:#ffb000;height:100%;font-family:VT323"><h2>Docs</h2><pre>Use Luna Service Bus:\nluna://com.webos.service.X/method</pre></div>',
-            'retro://shop': '<div style="padding:20px;background:#000;color:#33ff66;height:100%;font-family:VT323"><h2>Shop</h2><p>CRT Monitors, Keyboards, Headphones</p></div>'
+            'retro://home': '<div style="background:linear-gradient(135deg,#ff00ff,#00ffff);padding:40px;text-align:center;color:#000"><h1 style="font-family:Press Start 2P">RETRO.NET</h1></div><div style="padding:20px;color:#00ffff;font-family:VT323"><p>Welcome! Try: retro://news, retro://music, retro://docs, retro://shop</p></div>',
+            'retro://news': '<div style="padding:20px;background:#000;color:#00ffff;height:100%;font-family:VT323"><h2>📰 News</h2><p>Synthwave hits 50B plays!</p></div>',
+            'retro://music': '<div style="padding:20px;background:#000;color:#ff00ff;height:100%;font-family:VT323"><h2>🎵 SYNTHFM</h2><p>Now playing: Neon Dreams</p></div>',
+            'retro://docs': '<div style="padding:20px;background:#000;color:#ffaa00;height:100%;font-family:VT323"><h2>📚 Docs</h2><pre>Use Luna Bus:\nluna://com.webos.service.X/method</pre></div>',
+            'retro://shop': '<div style="padding:20px;background:#000;color:#33ff66;height:100%;font-family:VT323"><h2>🛒 Shop</h2><p>CRT Monitors, Keyboards, Headphones</p></div>'
         };
 
         container.innerHTML = `
@@ -1645,18 +1755,30 @@
                 </div>
                 <div id="br-view" style="flex:1;overflow-y:auto;color:#fff"></div>
             </div>`;
-
         const view = container.querySelector('#br-view');
         const render = (url) => {
             container.querySelector('#br-url').value = url;
             view.innerHTML = pages[url] || '<div style="padding:40px;text-align:center">404 Not Found</div>';
         };
-
         container.querySelector('#br-go').onclick = () => render(container.querySelector('#br-url').value);
         render('retro://home');
     };
 
-    // ==================== MINESWEEPER ====================
+    // ----- Editor -----
+    Apps.editor = function(win, container, params) {
+        const content = params.file ? params.file.content : '';
+        const filename = params.file ? params.file.name : 'Untitled.txt';
+        container.innerHTML = `
+            <div style="display:flex;flex-direction:column;height:100%">
+                <div style="background:#1a1a3e;padding:4px 7px;border-bottom:1px solid var(--panel-border);color:var(--phosphor);font-family:VT323">${filename} | <span id="ed-info">${content.length} chars</span></div>
+                <textarea id="ed-ta" style="flex:1;background:#000;color:var(--phosphor);border:none;outline:none;padding:12px;font-family:'VT323',monospace;font-size:15px;resize:none">${content}</textarea>
+            </div>`;
+        const ta = container.querySelector('#ed-ta');
+        ta.oninput = () => container.querySelector('#ed-info').textContent = ta.value.length + ' chars';
+        setTimeout(() => ta.focus(), 50);
+    };
+
+    // ----- Minesweeper -----
     Apps.minesweeper = function(win, container) {
         const SIZE = 10, MINES = 15;
         let board = [], revealed = [], flagged = [], over = false, won = false;
@@ -1666,90 +1788,64 @@
             revealed = Array.from({ length: SIZE }, () => Array(SIZE).fill(false));
             flagged = Array.from({ length: SIZE }, () => Array(SIZE).fill(false));
             over = false; won = false;
-
             let placed = 0;
             while (placed < MINES) {
                 const x = Math.floor(Math.random() * SIZE), y = Math.floor(Math.random() * SIZE);
                 if (board[y][x] !== -1) { board[y][x] = -1; placed++; }
             }
-
-            for (let y = 0; y < SIZE; y++) {
-                for (let x = 0; x < SIZE; x++) {
-                    if (board[y][x] === -1) continue;
-                    let count = 0;
-                    for (let dy = -1; dy <= 1; dy++) {
-                        for (let dx = -1; dx <= 1; dx++) {
-                            if (!dy && !dx) continue;
-                            const ny = y + dy, nx = x + dx;
-                            if (ny >= 0 && ny < SIZE && nx >= 0 && nx < SIZE && board[ny][nx] === -1) count++;
-                        }
-                    }
-                    board[y][x] = count;
+            for (let y = 0; y < SIZE; y++) for (let x = 0; x < SIZE; x++) {
+                if (board[y][x] === -1) continue;
+                let c = 0;
+                for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+                    if (!dy && !dx) continue;
+                    const ny = y + dy, nx = x + dx;
+                    if (ny >= 0 && ny < SIZE && nx >= 0 && nx < SIZE && board[ny][nx] === -1) c++;
                 }
+                board[y][x] = c;
             }
         };
 
         const render = () => {
             const colors = ['', '#0000ff', '#008000', '#ff0000', '#000080', '#800000', '#008080', '#000', '#808080'];
-            let html = `<div style="padding:12px;height:100%;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--phosphor);font-family:VT323">
-                <div>Mines: ${MINES - flagged.flat().filter(f => f).length} | ${over ? (won ? '🏆 WIN' : '💥 LOSE') : 'Playing'}</div>
-                <div style="display:grid;grid-template-columns:repeat(${SIZE},26px);gap:1px;border:3px solid var(--phosphor);padding:3px;background:#000">`;
-
-            for (let y = 0; y < SIZE; y++) {
-                for (let x = 0; x < SIZE; x++) {
-                    let bg = '#3a3a5e', content = '', color = '#ffb000';
-                    if (revealed[y][x]) {
-                        if (board[y][x] === -1) { bg = '#ff4444'; content = '💣'; }
-                        else if (board[y][x] > 0) { color = colors[board[y][x]]; content = board[y][x]; bg = '#1a1a3e'; }
-                        else bg = '#1a1a3e';
-                    } else if (flagged[y][x]) { content = '🚩'; bg = '#5a5a7e'; }
-
-                    html += `<div data-x="${x}" data-y="${y}" style="width:26px;height:26px;background:${bg};display:flex;align-items:center;justify-content:center;color:${color};cursor:pointer;font-weight:bold">${content}</div>`;
-                }
+            let html = `<div style="padding:12px;height:100%;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--phosphor);font-family:VT323"><div>Mines: ${MINES - flagged.flat().filter(f => f).length} | ${over ? (won ? '🏆 WIN' : '💥 LOSE') : 'Playing'}</div><div style="display:grid;grid-template-columns:repeat(${SIZE},26px);gap:1px;border:3px solid var(--phosphor);padding:3px;background:#000">`;
+            for (let y = 0; y < SIZE; y++) for (let x = 0; x < SIZE; x++) {
+                let bg = '#3a3a5e', content = '', c = '#ffb000';
+                if (revealed[y][x]) {
+                    if (board[y][x] === -1) { bg = '#ff4444'; content = '💣'; }
+                    else if (board[y][x] > 0) { c = colors[board[y][x]]; content = board[y][x]; bg = '#1a1a3e'; }
+                    else bg = '#1a1a3e';
+                } else if (flagged[y][x]) { content = '🚩'; bg = '#5a5a7e'; }
+                html += `<div data-x="${x}" data-y="${y}" style="width:26px;height:26px;background:${bg};display:flex;align-items:center;justify-content:center;color:${c};cursor:pointer;font-weight:bold">${content}</div>`;
             }
-
             html += `</div></div>`;
             container.innerHTML = html;
-
             container.querySelectorAll('[data-x]').forEach(cell => {
                 const x = parseInt(cell.dataset.x), y = parseInt(cell.dataset.y);
-
                 cell.onclick = () => {
                     if (over || revealed[y][x] || flagged[y][x]) return;
-
                     if (board[y][x] === -1) {
-                        revealed[y][x] = true;
-                        over = true;
-                        for (let yy = 0; yy < SIZE; yy++)
-                            for (let xx = 0; xx < SIZE; xx++)
-                                if (board[yy][xx] === -1) revealed[yy][xx] = true;
+                        revealed[y][x] = true; over = true;
+                        for (let yy = 0; yy < SIZE; yy++) for (let xx = 0; xx < SIZE; xx++) if (board[yy][xx] === -1) revealed[yy][xx] = true;
                     } else {
-                        // Flood fill reveal
-                        const queue = [[x, y]];
-                        while (queue.length) {
-                            const [cx, cy] = queue.shift();
+                        const q = [[x, y]];
+                        while (q.length) {
+                            const [cx, cy] = q.shift();
                             if (revealed[cy][cx] || flagged[cy][cx]) continue;
                             revealed[cy][cx] = true;
                             if (board[cy][cx] === 0) {
-                                for (let dy = -1; dy <= 1; dy++)
-                                    for (let dx = -1; dx <= 1; dx++) {
-                                        if (!dy && !dx) continue;
-                                        const nx = cx + dx, ny = cy + dy;
-                                        if (nx >= 0 && nx < SIZE && ny >= 0 && ny < SIZE && !revealed[ny][nx]) queue.push([nx, ny]);
-                                    }
+                                for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+                                    if (!dy && !dx) continue;
+                                    const nx = cx + dx, ny = cy + dy;
+                                    if (nx >= 0 && nx < SIZE && ny >= 0 && ny < SIZE && !revealed[ny][nx]) q.push([nx, ny]);
+                                }
                             }
                         }
-
-                        // Check win
-                        let unrevealed = 0;
-                        for (let yy = 0; yy < SIZE; yy++)
-                            for (let xx = 0; xx < SIZE; xx++)
-                                if (!revealed[yy][xx] && board[yy][xx] !== -1) unrevealed++;
-                        if (unrevealed === 0) { over = true; won = true; }
+                        let u = 0;
+                        for (let yy = 0; yy < SIZE; yy++) for (let xx = 0; xx < SIZE; xx++) if (!revealed[yy][xx] && board[yy][xx] !== -1) u++;
+                        if (u === 0) { over = true; won = true; }
                     }
                     render();
                 };
-
                 cell.oncontextmenu = (e) => {
                     e.preventDefault();
                     if (over || revealed[y][x]) return;
@@ -1758,78 +1854,11 @@
                 };
             });
         };
-
         init();
         render();
     };
 
-    // ==================== PAINT (simplified) ====================
-    Apps.paint = function(win, container) {
-        const colors = ['#000', '#fff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffb000'];
-        let curColor = '#ffb000', tool = 'pencil', sz = 3;
-
-        container.innerHTML = `
-            <div style="display:flex;flex-direction:column;height:100%;background:#1a1a3e">
-                <div style="background:#2a2a5e;padding:5px;display:flex;gap:3px;border-bottom:2px solid var(--phosphor)">
-                    <button class="settings-btn pt" data-t="pencil">✏️</button>
-                    <button class="settings-btn pt" data-t="brush">🖌️</button>
-                    <button class="settings-btn pt" data-t="eraser">🧽</button>
-                    <button class="settings-btn pt" data-t="fill">🪣</button>
-                    <span style="flex:1"></span>
-                    <button class="settings-btn" id="paint-clear">🗑️</button>
-                </div>
-                <div style="padding:5px;display:flex;gap:3px;border-bottom:2px solid var(--phosphor);background:#000">
-                    ${colors.map(c => `<div class="pc" data-c="${c}" style="width:24px;height:24px;background:${c};border:2px solid ${c === curColor ? '#fff' : '#333'};cursor:pointer"></div>`).join('')}
-                </div>
-                <div style="flex:1;background:#000;display:flex;align-items:center;justify-content:center">
-                    <canvas id="paint-c" width="640" height="400" style="background:#fff;cursor:crosshair;border:2px solid var(--phosphor)"></canvas>
-                </div>
-            </div>`;
-
-        const canvas = container.querySelector('#paint-c');
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        let drawing = false, lx, ly;
-        const draw = (x1, y1, x2, y2) => {
-            ctx.strokeStyle = tool === 'eraser' ? '#fff' : curColor;
-            ctx.lineWidth = tool === 'brush' ? sz * 2 : sz;
-            ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-        };
-
-        container.querySelectorAll('.pc').forEach(c => c.onclick = () => {
-            curColor = c.dataset.c;
-            container.querySelectorAll('.pc').forEach(x => x.style.border = '2px solid #333');
-            c.style.border = '2px solid #fff';
-        });
-
-        container.querySelectorAll('.pt').forEach(t => t.onclick = () => { tool = t.dataset.t; });
-
-        container.querySelector('#paint-clear').onclick = () => { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); };
-
-        canvas.onmousedown = e => {
-            drawing = true;
-            const r = canvas.getBoundingClientRect();
-            lx = (e.clientX - r.left) * (canvas.width / r.width);
-            ly = (e.clientY - r.top) * (canvas.height / r.height);
-            draw(lx, ly, lx, ly);
-        };
-
-        canvas.onmousemove = e => {
-            if (!drawing) return;
-            const r = canvas.getBoundingClientRect();
-            const x = (e.clientX - r.left) * (canvas.width / r.width);
-            const y = (e.clientY - r.top) * (canvas.height / r.height);
-            draw(lx, ly, x, y);
-            lx = x; ly = y;
-        };
-
-        canvas.onmouseup = () => drawing = false;
-    };
-
-    // ==================== PIXEL ART (simplified) ====================
+    // ----- Pixel Art -----
     Apps.pixelart = function(win, container) {
         const GRID = 32, TILE = 12;
         const colors = ['#000', '#fff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffb000', '#8338ec', '#06ffa5', '#ff006e'];
@@ -1910,7 +1939,7 @@
         });
     };
 
-    // ==================== SNAKE (simplified) ====================
+    // ----- Snake -----
     Apps.snake = function(win, container) {
         container.innerHTML = '<canvas id="sn-c" width="400" height="400" style="display:block;margin:auto;background:#000;border:2px solid var(--phosphor);image-rendering:pixelated"></canvas>';
         const canvas = container.querySelector('#sn-c');
@@ -1941,8 +1970,7 @@
             }
             snake.unshift(head);
             if (head.x === food.x && head.y === food.y) {
-                score++;
-                food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) };
+                score++; food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) };
             } else snake.pop();
             draw();
         };
@@ -1953,18 +1981,15 @@
             else if (e.key === 'ArrowLeft' && dir.x !== 1) dir = { x: -1, y: 0 };
             else if (e.key === 'ArrowRight' && dir.x !== -1) dir = { x: 1, y: 0 };
         });
-
         draw();
         win._cleanup = setInterval(step, 150);
     };
 
-    // ==================== SPACE SHOOTER (simplified) ====================
+    // ----- Space Shooter -----
     Apps.spaceshooter = function(win, container) {
         container.innerHTML = `
             <div style="display:flex;flex-direction:column;height:100%;background:#000;color:var(--phosphor);font-family:'VT323',monospace">
-                <div style="display:flex;justify-content:space-between;padding:6px 12px;background:#1a1a3e;border-bottom:1px solid var(--phosphor)">
-                    <div>🚀 <span id="ss-score">0</span> | ❤️ <span id="ss-hp">3</span> | Wave <span id="ss-wave">1</span> | 🔫 <span id="ss-wpn">NORMAL</span></div>
-                </div>
+                <div style="display:flex;justify-content:space-between;padding:6px 12px;background:#1a1a3e;border-bottom:1px solid var(--phosphor)"><div>🚀 <span id="ss-score">0</span> | ❤️ <span id="ss-hp">3</span> | Wave <span id="ss-wave">1</span> | 🔫 <span id="ss-wpn">NORMAL</span></div></div>
                 <div style="flex:1;position:relative;background:radial-gradient(ellipse at center,#1a0a3e 0%,#000 100%)">
                     <canvas id="ss-c" width="640" height="500" style="width:100%;height:100%;display:block;image-rendering:pixelated"></canvas>
                     <div id="ss-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,.7);text-shadow:0 0 20px var(--phosphor-glow)">
@@ -1973,11 +1998,9 @@
                     </div>
                 </div>
             </div>`;
-
         const cvs = container.querySelector('#ss-c');
         const ctx = cvs.getContext('2d');
         cvs.width = 640; cvs.height = 500;
-
         const keys = {};
         let running = false, score = 0, hp = 3, wave = 1, weapon = 'NORMAL', specials = 0;
         let player, bullets, enemies, ebullets, powerups, stars, spawnT, animId;
@@ -2003,9 +2026,7 @@
             player.x = Math.max(0, Math.min(608, player.x));
             if (player.cd > 0) player.cd--;
             if (keys[' '] || keys.Space) shoot();
-
             bullets = bullets.filter(b => (b.y += b.dy) > -20 && b.y < 520);
-
             spawnT++;
             if (spawnT > 50 - wave * 7) {
                 spawnT = 0;
@@ -2014,28 +2035,20 @@
                 const t = { grunt: { w: 28, h: 28, hp: 1, sp: 1.5, sc: 30, c: '#ff4444' }, zigzag: { w: 24, h: 24, hp: 1, sp: 1.8, sc: 50, c: '#ff00ff', pat: 'zig' }, shooter: { w: 32, h: 32, hp: 2, sp: 1, sc: 80, c: '#ff8500', shoots: true }, tank: { w: 40, h: 40, hp: 5, sp: 0.6, sc: 150, c: '#8338ec' } }[types[Math.floor(Math.random() * types.length)]];
                 enemies.push({ x: Math.random() * (640 - t.w), y: -t.h, w: t.w, h: t.h, hp: t.hp, sp: t.sp, sc: t.sc, c: t.c, time: 0, pat: t.pat || 'straight', shoots: t.shoots || false });
             }
-
             enemies = enemies.filter(e => {
                 e.time++; e.y += e.sp;
                 if (e.pat === 'zigzag') e.x += Math.sin(e.time * 0.1) * 3;
                 if (e.shoots && e.time % 80 === 0) ebullets.push({ x: e.x + e.w / 2, y: e.y + e.h, dy: 3 });
-
                 for (let i = bullets.length - 1; i >= 0; i--) {
                     const b = bullets[i];
                     if (b.x < e.x + e.w && b.x + b.w > e.x && b.y < e.y + e.h && b.y + b.h > e.y) {
-                        e.hp -= b.dmg;
-                        bullets.splice(i, 1);
+                        e.hp -= b.dmg; bullets.splice(i, 1);
                         if (e.hp <= 0) { score += e.sc; return false; }
                     }
                 }
-
-                if (player.x < e.x + e.w && player.x + 32 > e.x && player.y < e.y + e.h && player.y + 32 > e.y) {
-                    hp--;
-                    return false;
-                }
+                if (player.x < e.x + e.w && player.x + 32 > e.x && player.y < e.y + e.h && player.y + 32 > e.y) { hp--; return false; }
                 return e.y < 520;
             });
-
             powerups = powerups.filter(p => {
                 p.y += 1.5;
                 if (player.x < p.x + 16 && player.x + 32 > p.x && player.y < p.y + 16 && player.y + 32 > p.y) {
@@ -2046,67 +2059,500 @@
                 }
                 return p.y < 520;
             });
-
-            ebullets = ebullets.filter(b => {
-                b.y += b.dy;
-                if (player.x < b.x + 8 && player.x + 32 > b.x && player.y < b.y + 8 && player.y + 32 > b.y) { hp--; return false; }
-                return b.y < 520;
-            });
-
+            ebullets = ebullets.filter(b => { b.y += b.dy; if (player.x < b.x + 8 && player.x + 32 > b.x && player.y < b.y + 8 && player.y + 32 > b.y) { hp--; return false; } return b.y < 520; });
             if (enemies.length === 0) { wave++; if (wave > 5) wave = 5; }
-
             container.querySelector('#ss-score').textContent = score;
             container.querySelector('#ss-hp').textContent = hp;
             container.querySelector('#ss-wave').textContent = wave;
             container.querySelector('#ss-wpn').textContent = weapon;
-
             if (hp <= 0) { running = false; if (animId) cancelAnimationFrame(animId); }
         };
 
         const render = () => {
             ctx.fillStyle = '#000'; ctx.fillRect(0, 0, 640, 500);
             stars.forEach(s => { ctx.fillStyle = '#ffb000'; ctx.fillRect(s.x, s.y, s.s, s.s); });
-
             if (hp > 0) {
                 ctx.fillStyle = '#00ffff'; ctx.shadowColor = '#00ffff'; ctx.shadowBlur = 15;
-                ctx.beginPath();
-                ctx.moveTo(player.x + 16, player.y);
-                ctx.lineTo(player.x, player.y + 32);
-                ctx.lineTo(player.x + 10, player.y + 22);
-                ctx.lineTo(player.x + 16, player.y + 28);
-                ctx.lineTo(player.x + 22, player.y + 22);
-                ctx.lineTo(player.x + 32, player.y + 32);
-                ctx.closePath(); ctx.fill();
-                ctx.shadowBlur = 0;
+                ctx.beginPath(); ctx.moveTo(player.x + 16, player.y); ctx.lineTo(player.x, player.y + 32);
+                ctx.lineTo(player.x + 10, player.y + 22); ctx.lineTo(player.x + 16, player.y + 28);
+                ctx.lineTo(player.x + 22, player.y + 22); ctx.lineTo(player.x + 32, player.y + 32);
+                ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
             }
-
             bullets.forEach(b => { ctx.fillStyle = '#ffb000'; ctx.fillRect(b.x, b.y, b.w, b.h); });
             ebullets.forEach(b => { ctx.fillStyle = '#ff4444'; ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI * 2); ctx.fill(); });
             enemies.forEach(e => { ctx.fillStyle = e.c; ctx.fillRect(e.x, e.y, e.w, e.h); });
         };
 
         const loop = () => { if (!running) return; update(); render(); animId = requestAnimationFrame(loop); };
-
         init();
-        container.querySelector('#ss-start').onclick = () => {
-            document.getElementById('ss-overlay').style.display = 'none';
-            running = true;
-            loop();
-        };
-
+        container.querySelector('#ss-start').onclick = () => { document.getElementById('ss-overlay').style.display = 'none'; running = true; loop(); };
         document.addEventListener('keydown', e => keys[e.key] = true);
         document.addEventListener('keyup', e => keys[e.key] = false);
-
         render();
+        win._cleanup = () => { running = false; if (animId) cancelAnimationFrame(animId); };
+    };
+
+    // ----- Paint -----
+    Apps.paint = function(win, container) {
+        const colors = ['#000', '#fff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffb000'];
+        let curColor = '#ffb000', tool = 'pencil', sz = 3;
+        container.innerHTML = `
+            <div style="display:flex;flex-direction:column;height:100%;background:#1a1a3e">
+                <div style="background:#2a2a5e;padding:5px;display:flex;gap:3px;border-bottom:2px solid var(--phosphor)">
+                    <button class="settings-btn pt" data-t="pencil">✏️</button>
+                    <button class="settings-btn pt" data-t="brush">🖌️</button>
+                    <button class="settings-btn pt" data-t="eraser">🧽</button>
+                    <button class="settings-btn pt" data-t="fill">🪣</button>
+                    <span style="flex:1"></span>
+                    <button class="settings-btn" id="paint-clear">🗑️</button>
+                </div>
+                <div style="padding:5px;display:flex;gap:3px;border-bottom:2px solid var(--phosphor);background:#000">
+                    ${colors.map(c => `<div class="pc" data-c="${c}" style="width:24px;height:24px;background:${c};border:2px solid ${c === curColor ? '#fff' : '#333'};cursor:pointer"></div>`).join('')}
+                </div>
+                <div style="flex:1;background:#000;display:flex;align-items:center;justify-content:center">
+                    <canvas id="paint-c" width="640" height="400" style="background:#fff;cursor:crosshair;border:2px solid var(--phosphor)"></canvas>
+                </div>
+            </div>`;
+        const canvas = container.querySelector('#paint-c');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        let drawing = false, lx, ly;
+        const draw = (x1, y1, x2, y2) => {
+            ctx.strokeStyle = tool === 'eraser' ? '#fff' : curColor;
+            ctx.lineWidth = tool === 'brush' ? sz * 2 : sz;
+            ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        };
+        container.querySelectorAll('.pc').forEach(c => c.onclick = () => {
+            curColor = c.dataset.c;
+            container.querySelectorAll('.pc').forEach(x => x.style.border = '2px solid #333');
+            c.style.border = '2px solid #fff';
+        });
+        container.querySelectorAll('.pt').forEach(t => t.onclick = () => { tool = t.dataset.t; });
+        container.querySelector('#paint-clear').onclick = () => { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height); };
+        canvas.onmousedown = e => { drawing = true; const r = canvas.getBoundingClientRect(); lx = (e.clientX - r.left) * (canvas.width / r.width); ly = (e.clientY - r.top) * (canvas.height / r.height); draw(lx, ly, lx, ly); };
+        canvas.onmousemove = e => {
+            if (!drawing) return;
+            const r = canvas.getBoundingClientRect();
+            const x = (e.clientX - r.left) * (canvas.width / r.width), y = (e.clientY - r.top) * (canvas.height / r.height);
+            draw(lx, ly, x, y); lx = x; ly = y;
+        };
+        canvas.onmouseup = () => drawing = false;
+    };
+
+    // ===================================================================
+    // MODULE 9: DOOM-LIKE FPS - Raycaster Game
+    // ===================================================================
+    Apps.doom = function(win, container) {
+        const SCREEN_W = 640, SCREEN_H = 400;
+        const MAP_W = 16, MAP_H = 16;
+        const FOV = Math.PI / 3;
+        const MAX_DEPTH = 16;
+
+        container.innerHTML = `
+            <div style="display:flex;flex-direction:column;height:100%;background:#000;color:#0f0;font-family:'VT323',monospace;overflow:hidden">
+                <div style="display:flex;justify-content:space-between;padding:4px 12px;background:#1a1a3e;border-bottom:1px solid var(--phosphor);font-size:16px">
+                    <div>👹 DOOM-LIKE | ❤️ <span id="doom-hp">100</span> | 🔫 <span id="doom-ammo">30</span> | 🎯 <span id="doom-kills">0</span></div>
+                    <div>WASD:Move | Click:Shoot | 1-3:Weapons | ESC:Quit</div>
+                </div>
+                <div style="flex:1;display:flex;position:relative;background:#000">
+                    <canvas id="doom-canvas" width="${SCREEN_W}" height="${SCREEN_H}" style="display:block;width:100%;height:100%;image-rendering:pixelated;cursor:crosshair"></canvas>
+                    <canvas id="doom-minimap" width="120" height="120" style="position:absolute;bottom:8px;left:8px;border:2px solid var(--phosphor);background:rgba(0,0,0,.7)"></canvas>
+                    <div id="doom-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,.85);text-shadow:0 0 15px #ff0000">
+                        <h1 style="font-family:'Press Start 2P',monospace;font-size:36px;color:#ff4444;margin-bottom:20px">👹 DOOM-LIKE</h1>
+                        <p style="font-size:20px;color:#0f0;margin-bottom:25px">Mars base assault - Episode 1</p>
+                        <button id="doom-start" class="settings-btn primary" style="padding:14px 35px;font-size:18px;margin-bottom:15px">▶ START MISSION</button>
+                        <div style="color:var(--phosphor);font-size:15px;text-align:center;line-height:1.7">WASD / Arrow keys: Move + Strafe<br>Mouse Click: Shoot<br>1-2-3: Switch Weapons<br>ESC: Pause / Quit</div>
+                    </div>
+                    <div id="doom-hud-dmg" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle, transparent 50%, rgba(255,0,0,0) 50%);transition:background .1s"></div>
+                </div>
+            </div>`;
+
+        const canvas = container.querySelector('#doom-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = SCREEN_W; canvas.height = SCREEN_H;
+        const miniCanvas = container.querySelector('#doom-minimap');
+        const miniCtx = miniCanvas.getContext('2d');
+        const overlay = container.querySelector('#doom-overlay');
+        const dmgOverlay = container.querySelector('#doom-hud-dmg');
+
+        const snd = {
+            shoot: () => Audio.beep(180, 80, 'sawtooth', 0.08),
+            shoot2: () => Audio.beep(120, 150, 'square', 0.1),
+            hit: () => Audio.beep(400, 50, 'square', 0.06),
+            pain: () => Audio.beep(200, 200, 'sawtooth', 0.08),
+            pickup: () => Audio.beep(880, 100, 'sine', 0.06)
+        };
+
+        const ENEMY_TYPES = {
+            imp:     { w: 16, h: 32, hp: 20, spd: 0.025, color: '#ff6644', score: 100, dmg: 8,  sight: 6 },
+            demon:   { w: 32, h: 48, hp: 60, spd: 0.04,  color: '#cc3322', score: 200, dmg: 12, sight: 7 },
+            soldier: { w: 16, h: 40, hp: 30, spd: 0.035, color: '#888888', score: 150, dmg: 10, sight: 8 },
+            caco:    { w: 28, h: 28, hp: 80, spd: 0.02,  color: '#cc44aa', score: 300, dmg: 15, sight: 10 },
+            boss:    { w: 48, h: 64, hp: 200,spd: 0.03, color: '#ff2222', score: 1000, dmg: 25, sight: 12 }
+        };
+
+        let state = 'menu', level = 0, totalKills = 0;
+        let map = [];
+        let player = { x: 1.5, y: 1.5, angle: 0, hp: 100, ammo: 30, kills: 0, weapon: 0 };
+        let enemies = [], bullets = [], particles = [];
+        let weaponAnim = 0, animId = null;
+
+        const WEAPONS = [
+            { name: 'PISTOL', ammoUse: 1, damage: 25, color: '#ffaa00', spread: 0.02 },
+            { name: 'SHOTGUN', ammoUse: 2, damage: 15, color: '#ff6600', spread: 0.15, pellets: 5 },
+            { name: 'PLASMA', ammoUse: 3, damage: 40, color: '#00ffff', spread: 0.01 }
+        ];
+
+        const isWall = (x, y) => {
+            const ix = Math.floor(x), iy = Math.floor(y);
+            if (ix < 0 || iy < 0 || ix >= MAP_W || iy >= MAP_H) return true;
+            return map[iy][ix] === 1;
+        };
+
+        const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+        function generateMap(lvl) {
+            const m = [];
+            for (let y = 0; y < MAP_H; y++) {
+                const row = [];
+                for (let x = 0; x < MAP_W; x++) {
+                    if (x === 0 || y === 0 || x === MAP_W - 1 || y === MAP_H - 1) row.push(1);
+                    else row.push(0);
+                }
+                m.push(row);
+            }
+            if (lvl === 0) {
+                m[3][3] = m[3][4] = m[3][5] = 1;
+                m[8][8] = m[8][9] = m[8][10] = 1;
+                m[5][7] = m[6][7] = m[7][7] = m[5][10] = m[6][10] = m[7][10] = 1;
+                m[5][5] = 3; m[10][10] = 4; m[7][3] = 3;
+            } else if (lvl === 1) {
+                for (let y = 3; y < 13; y++) for (let x = 5; x < 11; x++) if ((x + y) % 3 === 0) m[y][x] = 1;
+                m[4][4] = 3; m[11][11] = 4;
+            } else {
+                for (let i = 0; i < 30; i++) {
+                    const cx = 2 + Math.floor(Math.random() * 12), cy = 2 + Math.floor(Math.random() * 12);
+                    for (let dy = 0; dy < 3; dy++) for (let dx = 0; dx < 3; dx++)
+                        if (cy + dy < MAP_H - 1 && cx + dx < MAP_W - 1) m[cy + dy][cx + dx] = 1;
+                }
+                let pickups = 0;
+                while (pickups < 3) {
+                    const px = 2 + Math.floor(Math.random() * 12), py = 2 + Math.floor(Math.random() * 12);
+                    if (m[py][px] === 0) { m[py][px] = Math.random() < 0.5 ? 3 : 4; pickups++; }
+                }
+            }
+            return m;
+        }
+
+        function loadLevel(idx) {
+            level = idx;
+            map = generateMap(idx);
+            player.x = 1.5; player.y = 1.5; player.angle = 0;
+            player.hp = 100; player.ammo = 30 + idx * 10; player.kills = 0;
+            enemies = []; bullets = []; particles = []; weaponAnim = 0;
+            const enemyTypes = ['imp', 'imp', 'soldier', 'demon'];
+            if (idx >= 1) enemyTypes.push('caco');
+            if (idx >= 2) enemyTypes.push('demon');
+            if (idx >= 4) enemyTypes.push('boss');
+            const numEnemies = 4 + idx * 2;
+            for (let i = 0; i < numEnemies; i++) {
+                let attempts = 0;
+                while (attempts++ < 50) {
+                    const ex = 1.5 + Math.random() * (MAP_W - 3), ey = 1.5 + Math.random() * (MAP_H - 3);
+                    if (!isWall(ex, ey) && dist({ x: ex, y: ey }, player) > 4) {
+                        const type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+                        enemies.push({ ...ENEMY_TYPES[type], type, x: ex, y: ey, hp: ENEMY_TYPES[type].hp, state: 'idle', lastShot: 0, angle: 0 });
+                        break;
+                    }
+                }
+            }
+        }
+
+        const keys = {};
+        canvas.addEventListener('click', () => { if (state === 'playing') shoot(); });
+
+        const onKD = (e) => {
+            Audio.init();
+            if (e.key === 'Escape' && state === 'playing') { state = 'paused'; showPause(); }
+            else if (e.key === 'Escape' && state === 'paused') { state = 'playing'; hidePause(); }
+            else if (state === 'playing') {
+                keys[e.key.toLowerCase()] = true;
+                if (e.key === '1') player.weapon = 0;
+                if (e.key === '2') player.weapon = Math.min(1, player.weapon + 1);
+                if (e.key === '3') player.weapon = Math.min(2, player.weapon + 1);
+            }
+        };
+        const onKU = (e) => { keys[e.key.toLowerCase()] = false; };
+        document.addEventListener('keydown', onKD);
+        document.addEventListener('keyup', onKU);
+
+        function showPause() {
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `<h1 style="font-family:'Press Start 2P',monospace;font-size:32px;color:var(--phosphor);margin-bottom:15px">⏸ PAUSED</h1>
+                <p style="font-size:18px;color:#0f0;margin-bottom:20px">Press ESC to resume</p>
+                <button id="doom-quit" class="settings-btn" style="padding:10px 25px">✕ QUIT MISSION</button>`;
+            document.getElementById('doom-quit').onclick = () => OS.closeWindow(win.id);
+        }
+        function hidePause() {
+            overlay.style.display = 'none';
+            overlay.innerHTML = '';
+        }
+
+        function shoot() {
+            if (player.ammo < WEAPONS[player.weapon].ammoUse) return;
+            player.ammo -= WEAPONS[player.weapon].ammoUse;
+            weaponAnim = 8;
+            const w = WEAPONS[player.weapon];
+            if (w.pellets) {
+                snd.shoot2();
+                for (let i = 0; i < w.pellets; i++) {
+                    const spread = (Math.random() - 0.5) * w.spread;
+                    bullets.push({ x: player.x, y: player.y, angle: player.angle + spread, damage: w.damage, color: w.color, owner: 'player' });
+                }
+            } else {
+                snd.shoot();
+                const spread = (Math.random() - 0.5) * w.spread;
+                bullets.push({ x: player.x, y: player.y, angle: player.angle + spread, damage: w.damage, color: w.color, owner: 'player' });
+            }
+        }
+
+        function update() {
+            if (state !== 'playing') return;
+            const speed = 0.05, rotSpeed = 0.03;
+            let dx = 0, dy = 0;
+            if (keys['w'] || keys['arrowup']) { dx += Math.cos(player.angle) * speed; dy += Math.sin(player.angle) * speed; }
+            if (keys['s'] || keys['arrowdown']) { dx -= Math.cos(player.angle) * speed; dy -= Math.sin(player.angle) * speed; }
+            if (keys['a']) { dx += Math.cos(player.angle - Math.PI / 2) * speed; dy += Math.sin(player.angle - Math.PI / 2) * speed; }
+            if (keys['d']) { dx += Math.cos(player.angle + Math.PI / 2) * speed; dy += Math.sin(player.angle + Math.PI / 2) * speed; }
+            if (keys['arrowleft']) player.angle -= rotSpeed;
+            if (keys['arrowright']) player.angle += rotSpeed;
+            if (!isWall(player.x + dx, player.y)) player.x += dx;
+            else if (!isWall(player.x, player.y + dy)) player.y += dy;
+
+            const pxi = Math.floor(player.x), pyi = Math.floor(player.y);
+            if (map[pyi] && map[pyi][pxi] === 3) { player.hp = Math.min(100, player.hp + 25); map[pyi][pxi] = 0; snd.pickup(); }
+            if (map[pyi] && map[pyi][pxi] === 4) { player.ammo += 10; map[pyi][pxi] = 0; snd.pickup(); }
+
+            enemies.forEach(e => {
+                const d = dist(e, player);
+                if (d < e.sight) {
+                    e.state = 'chase';
+                    e.angle = Math.atan2(player.y - e.y, player.x - e.x);
+                    if (d > 1.5) {
+                        const moveX = Math.cos(e.angle) * e.spd, moveY = Math.sin(e.angle) * e.spd;
+                        if (!isWall(e.x + moveX, e.y)) e.x += moveX;
+                        else if (!isWall(e.x, e.y + moveY)) e.y += moveY;
+                    }
+                    const now = Date.now();
+                    if (now - e.lastShot > 1500 && d < 5) {
+                        e.lastShot = now;
+                        bullets.push({ x: e.x, y: e.y, angle: e.angle + (Math.random() - 0.5) * 0.2, damage: e.dmg / 2, color: '#ff4444', owner: 'enemy' });
+                    }
+                } else {
+                    e.state = 'idle';
+                    if (Math.random() < 0.02) e.angle += (Math.random() - 0.5) * 1;
+                    const moveX = Math.cos(e.angle) * e.spd * 0.5, moveY = Math.sin(e.angle) * e.spd * 0.5;
+                    if (!isWall(e.x + moveX, e.y)) e.x += moveX;
+                    if (!isWall(e.x, e.y + moveY)) e.y += moveY;
+                }
+            });
+
+            bullets = bullets.filter(b => {
+                b.x += Math.cos(b.angle) * 0.15;
+                b.y += Math.sin(b.angle) * 0.15;
+                if (isWall(b.x, b.y)) { spawnParticles(b.x, b.y, '#ffaa00', 3); return false; }
+                if (b.owner === 'player') {
+                    for (let i = 0; i < enemies.length; i++) {
+                        const e = enemies[i];
+                        if (Math.abs(b.x - e.x) < e.w / 16 && Math.abs(b.y - e.y) < e.h / 16) {
+                            e.hp -= b.damage;
+                            snd.hit();
+                            spawnParticles(b.x, b.y, e.color, 6);
+                            if (e.hp <= 0) { player.kills++; totalKills++; enemies.splice(i, 1); }
+                            return false;
+                        }
+                    }
+                } else if (b.owner === 'enemy') {
+                    if (Math.abs(b.x - player.x) < 0.3 && Math.abs(b.y - player.y) < 0.3) {
+                        player.hp -= b.damage;
+                        snd.pain();
+                        return false;
+                    }
+                }
+                return b.x > 0 && b.y > 0 && b.x < MAP_W && b.y < MAP_H;
+            });
+
+            particles = particles.filter(p => { p.x += p.dx; p.y += p.dy; p.dx *= 0.92; p.dy *= 0.92; p.life--; return p.life > 0; });
+
+            if (damageFlash > 0) damageFlash -= 0.05;
+            dmgOverlay.style.background = `radial-gradient(circle, transparent 50%, rgba(255,0,0,${damageFlash}) 100%)`;
+            if (player.hp <= 0) gameOver();
+            if (enemies.length === 0 && level < 5) setTimeout(() => { loadLevel(level + 1); }, 1500);
+            if (enemies.length === 0 && level >= 5) gameWin();
+        }
+
+        function spawnParticles(x, y, color, count) {
+            for (let i = 0; i < count; i++) {
+                particles.push({ x, y, dx: (Math.random() - 0.5) * 0.1, dy: (Math.random() - 0.5) * 0.1, life: 10, color, size: Math.random() * 2 + 1 });
+            }
+        }
+
+        function render() {
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, SCREEN_H / 2);
+            skyGrad.addColorStop(0, '#1a0a2e'); skyGrad.addColorStop(1, '#3a1a4e');
+            ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, SCREEN_W, SCREEN_H / 2);
+            const floorGrad = ctx.createLinearGradient(0, SCREEN_H / 2, 0, SCREEN_H);
+            floorGrad.addColorStop(0, '#2a2a2a'); floorGrad.addColorStop(1, '#1a1a1a');
+            ctx.fillStyle = floorGrad; ctx.fillRect(0, SCREEN_H / 2, SCREEN_W, SCREEN_H / 2);
+
+            const stripWidth = Math.ceil(SCREEN_W / 160);
+            for (let i = 0; i < 160; i++) {
+                const rayAngle = player.angle - FOV / 2 + (i / 160) * FOV;
+                let dist = 0, hitX, hitY, hitType = 0;
+                while (dist < MAX_DEPTH) {
+                    dist += 0.05;
+                    hitX = player.x + Math.cos(rayAngle) * dist;
+                    hitY = player.y + Math.sin(rayAngle) * dist;
+                    if (isWall(hitX, hitY)) { hitType = 1; break; }
+                }
+                if (hitType === 1) {
+                    const correctedDist = dist * Math.cos(rayAngle - player.angle);
+                    const wallHeight = Math.min(SCREEN_H, (SCREEN_H / correctedDist) * 1.2);
+                    const wallTop = (SCREEN_H - wallHeight) / 2;
+                    const tileX = Math.floor(hitX), tileY = Math.floor(hitY);
+                    const dx = hitX - tileX, dy = hitY - tileY;
+                    const side = dx < 0.02 || dx > 0.98 || dy < 0.02 || dy > 0.98 ? 1 : 0;
+                    const shade = Math.max(0.25, 1 - correctedDist / 8) * (side ? 0.7 : 1);
+                    const wallHue = (tileX * 13 + tileY * 7) % 360;
+                    const r = Math.floor((100 + Math.sin(wallHue * 0.01) * 50) * shade);
+                    const g = Math.floor((80 + Math.cos(wallHue * 0.01) * 40) * shade);
+                    const b = Math.floor((120 + Math.sin(wallHue * 0.013) * 60) * shade);
+                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                    const screenX = (i / 160) * SCREEN_W;
+                    ctx.fillRect(screenX, wallTop, stripWidth + 1, wallHeight);
+                }
+            }
+
+            const entities = [];
+            enemies.forEach(e => entities.push({ type: 'enemy', data: e, dist: Math.hypot(e.x - player.x, e.y - player.y) }));
+            particles.forEach(p => entities.push({ type: 'particle', data: p, dist: Math.hypot(p.x - player.x, p.y - player.y) }));
+            entities.sort((a, b) => b.dist - a.dist);
+
+            entities.forEach(ent => {
+                if (ent.type === 'enemy') {
+                    const e = ent.data;
+                    const angle = Math.atan2(e.y - player.y, e.x - player.x) - player.angle;
+                    if (Math.abs(angle) < FOV / 2 + 0.3) {
+                        const screenX = (0.5 + angle / FOV) * SCREEN_W;
+                        const height = Math.min(SCREEN_H, (SCREEN_H / ent.dist) * 1.5);
+                        const width = (e.w / ent.dist) * (SCREEN_W / 2) * 0.6;
+                        const top = (SCREEN_H - height) / 2 + height * 0.15;
+                        const shade = Math.max(0.3, 1 - ent.dist / 8);
+                        const enemyHue = { imp: '#ff6644', demon: '#cc3322', soldier: '#888888', caco: '#cc44aa', boss: '#ff2222' }[e.type];
+                        ctx.fillStyle = enemyHue; ctx.globalAlpha = shade;
+                        ctx.fillRect(screenX - width / 2, top, width, height);
+                        if (e.type !== 'caco') {
+                            ctx.fillStyle = '#ffff00';
+                            ctx.fillRect(screenX - width * 0.15, top + height * 0.2, width * 0.1, height * 0.1);
+                            ctx.fillRect(screenX + width * 0.05, top + height * 0.2, width * 0.1, height * 0.1);
+                        }
+                        ctx.globalAlpha = 1;
+                    }
+                }
+            });
+
+            ctx.fillStyle = WEAPONS[player.weapon].color;
+            const wepShake = weaponAnim > 0 ? -weaponAnim * 2 : 0;
+            const wepW = player.weapon === 1 ? 30 : 20, wepH = player.weapon === 2 ? 50 : 30;
+            ctx.fillRect(SCREEN_W / 2 - wepW / 2, SCREEN_H - wepH + wepShake, wepW, wepH);
+            if (weaponAnim > 4) {
+                ctx.fillStyle = '#ffff00';
+                ctx.beginPath(); ctx.arc(SCREEN_W / 2, SCREEN_H - wepH + wepShake, 15, 0, Math.PI * 2); ctx.fill();
+            }
+            if (weaponAnim > 0) weaponAnim--;
+
+            miniCtx.fillStyle = 'rgba(0,0,0,0.8)'; miniCtx.fillRect(0, 0, 120, 120);
+            const cellSize = 7;
+            for (let y = 0; y < MAP_H; y++) for (let x = 0; x < MAP_W; x++) {
+                if (map[y][x] === 1) miniCtx.fillStyle = '#444';
+                else if (map[y][x] === 3) miniCtx.fillStyle = '#33ff66';
+                else if (map[y][x] === 4) miniCtx.fillStyle = '#ffaa00';
+                else miniCtx.fillStyle = '#0a0a1a';
+                miniCtx.fillRect(x * cellSize, y * cellSize, cellSize - 1, cellSize - 1);
+            }
+            enemies.forEach(e => {
+                miniCtx.fillStyle = e.type === 'boss' ? '#ff0000' : '#ff4444';
+                miniCtx.fillRect(e.x * cellSize - 2, e.y * cellSize - 2, 5, 5);
+            });
+            miniCtx.fillStyle = '#00ffff';
+            miniCtx.fillRect(player.x * cellSize - 2, player.y * cellSize - 2, 5, 5);
+
+            container.querySelector('#doom-hp').textContent = Math.max(0, Math.floor(player.hp));
+            container.querySelector('#doom-ammo').textContent = player.ammo;
+            container.querySelector('#doom-kills').textContent = player.kills;
+        }
+
+        function gameOver() {
+            state = 'dead';
+            const hs = JSON.parse(localStorage.getItem('doom_hiscores') || '[]');
+            hs.push({ score: totalKills * 100 + (5 - level) * 500, level: level, date: Date.now() });
+            hs.sort((a, b) => b.score - a.score);
+            localStorage.setItem('doom_hiscores', JSON.stringify(hs.slice(0, 10)));
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `
+                <h1 style="font-family:'Press Start 2P',monospace;font-size:42px;color:#ff4444;margin-bottom:18px">☠ YOU DIED</h1>
+                <p style="font-size:18px;color:#0f0;margin-bottom:8px">Final Score: ${totalKills * 100}</p>
+                <p style="font-size:15px;color:var(--phosphor);margin-bottom:25px">Reached Level E1M${level + 1}</p>
+                <p style="font-size:13px;color:var(--phosphor-dim);margin-bottom:25px">Highscore: ${hs[0].score}</p>
+                <button id="doom-retry" class="settings-btn primary" style="padding:14px 30px;font-size:18px">↻ TRY AGAIN</button>`;
+            document.getElementById('doom-retry').onclick = () => {
+                totalKills = 0; player.hp = 100; player.ammo = 30;
+                loadLevel(0); state = 'playing';
+                overlay.style.display = 'none';
+            };
+        }
+
+        function gameWin() {
+            state = 'win';
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `
+                <h1 style="font-family:'Press Start 2P',monospace;font-size:32px;color:#ffaa00;margin-bottom:18px">🏆 MARS SECURED</h1>
+                <p style="font-size:20px;color:#0f0;margin-bottom:8px">All demons destroyed!</p>
+                <p style="font-size:24px;color:var(--phosphor);margin-bottom:18px;text-shadow:0 0 10px var(--phosphor)">Score: ${totalKills * 100 + 5000}</p>
+                <p style="font-size:14px;color:var(--phosphor-dim);margin-bottom:25px">You saved humanity!</p>
+                <button id="doom-restart" class="settings-btn primary" style="padding:14px 30px;font-size:18px">↻ PLAY AGAIN</button>`;
+            document.getElementById('doom-restart').onclick = () => {
+                totalKills = 0; player.hp = 100; player.ammo = 30;
+                loadLevel(0); state = 'playing';
+                overlay.style.display = 'none';
+            };
+        }
+
+        const loop = () => {
+            update();
+            if (state === 'playing' || state === 'paused') render();
+            if (animId !== -1) animId = requestAnimationFrame(loop);
+        };
+
+        container.querySelector('#doom-start').onclick = () => {
+            totalKills = 0; player.hp = 100; player.ammo = 30;
+            loadLevel(0); state = 'playing';
+            overlay.style.display = 'none';
+            animId = requestAnimationFrame(loop);
+        };
+
+        let damageFlash = 0;
         win._cleanup = () => {
-            running = false;
-            if (animId) cancelAnimationFrame(animId);
+            animId = -1;
+            document.removeEventListener('keydown', onKD);
+            document.removeEventListener('keyup', onKU);
         };
     };
 
-    /* ============================================================
-        9. PERSISTENCE
-       ============================================================ */
+    // ===================================================================
+    // MODULE 10: PERSISTENCE & BOOT
+    // ===================================================================
     function saveState() {
         State.persist = {
             settings: State.settings,
@@ -2116,9 +2562,6 @@
         Storage.save(State.persist);
     }
 
-    /* ============================================================
-        10. BOOT INITIALIZATION
-       ============================================================ */
     window.addEventListener('load', () => OS.boot());
     setInterval(saveState, 30000);
     window.addEventListener('beforeunload', saveState);
