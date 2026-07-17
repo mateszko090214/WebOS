@@ -1,0 +1,777 @@
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Users/tothm/Desktop/webos/RetroWebOS[39m
+
+ [33m❯[39m tests/unit/Metrics.test.js [2m ([22m[2m42 tests[22m [2m|[22m [31m10 failed[39m[2m)[22m[90m 32[2mms[22m[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould initialize observers[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect memory metrics[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect DOM node count[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect navigation timing[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect paint timings[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect LCP[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect FID[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect CLS[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect long tasks summary[39m
+[31m     → PerformanceCollector is not defined[39m
+[31m     → Cannot read properties of undefined (reading 'observer')[39m
+[31m   [33m❯[31m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mMemoryProfiler[2m > [22mshould compare snapshots[39m
+[31m     → protractor is not defined[39m
+[90mstdout[2m | ConsoleTransport.write (C:\Users\tothm\Desktop\webos\RetroWebOS\src\core\Logger.js:171:15)[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.131Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.136Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.136Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.137Z] INFO  Policy updated: plugin:sandbox {}
+
+[90mstdout[2m | tests/unit/PluginManager.test.js[2m > [22m[2mPluginManager[2m > [22m[2mManifestValidator[2m > [22m[2mshould validate valid manifest v3[22m[39m
+DEBUG: errors after validation []
+
+[90mstdout[2m | tests/unit/PluginManager.test.js[2m > [22m[2mPluginManager[2m > [22m[2mManifestValidator[2m > [22m[2mshould reject invalid manifest version[22m[39m
+DEBUG: manifest_version check [33m2[39m [33mfalse[39m [33mtrue[39m
+DEBUG: errors after validation [ [32m'Only manifest version 3 is supported'[39m ]
+
+[90mstdout[2m | tests/unit/PluginManager.test.js[2m > [22m[2mPluginManager[2m > [22m[2mManifestValidator[2m > [22m[2mshould reject missing name[22m[39m
+DEBUG: errors after validation [ [32m'Manifest missing required field: name'[39m ]
+
+[90mstdout[2m | tests/unit/PluginManager.test.js[2m > [22m[2mPluginManager[2m > [22m[2mManifestValidator[2m > [22m[2mshould reject missing version[22m[39m
+DEBUG: errors after validation [ [32m'Manifest missing required field: version'[39m ]
+
+[90mstdout[2m | tests/unit/PluginManager.test.js[2m > [22m[2mPluginManager[2m > [22m[2mManifestValidator[2m > [22m[2mshould validate permissions[22m[39m
+DEBUG: errors after validation [ [32m'Invalid permission: invalid:permission'[39m ]
+
+[90mstdout[2m | tests/unit/PluginManager.test.js[2m > [22m[2mPluginManager[2m > [22m[2mManifestValidator[2m > [22m[2mshould validate optional permissions[22m[39m
+DEBUG: errors after validation []
+
+[90mstdout[2m | tests/unit/PluginManager.test.js[2m > [22m[2mPluginManager[2m > [22m[2mManifestValidator[2m > [22m[2mshould validate host permissions[22m[39m
+DEBUG: errors after validation []
+
+ [33m❯[39m tests/unit/PluginManager.test.js [2m ([22m[2m44 tests[22m [2m|[22m [31m26 failed[39m[2m)[22m[90m 18[2mms[22m[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mManifestValidator[2m > [22mshould reject invalid manifest version[39m
+[31m     → expected false to be true // Object.is equality[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mManifestValidator[2m > [22mshould sanitize manifest[39m
+[31m     → expected [ 'file:read', 'invalid:perm' ] to not include 'invalid:perm'[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould create iframe sandbox[39m
+[31m     → sandbox.createIframeSandbox is not a function[39m
+[31m     → sandbox.destroy is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould create worker sandbox[39m
+[31m     → sandbox.createWorkerSandbox is not a function[39m
+[31m     → sandbox.destroy is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould evaluate script in sandbox[39m
+[31m     → sandbox.evaluateInSandbox is not a function[39m
+[31m     → sandbox.destroy is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould inject API into sandbox[39m
+[31m     → sandbox.injectAPI is not a function[39m
+[31m     → sandbox.destroy is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould handle postMessage communication[39m
+[31m     → sandbox.onMessage is not a function[39m
+[31m     → sandbox.destroy is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould enforce permissions[39m
+[31m     → sandbox.setPermissions is not a function[39m
+[31m     → sandbox.destroy is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould isolate storage[39m
+[31m     → sandbox.setStorage is not a function[39m
+[31m     → sandbox.destroy is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould search plugins[39m
+[31m     → expected false to be true // Object.is equality[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould get plugin details[39m
+[31m     → expected undefined to be 'test-plugin' // Object.is equality[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould get popular plugins[39m
+[31m     → marketplace.getPopular is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould get categories[39m
+[31m     → marketplace.getCategories is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould install plugin[39m
+[31m     → marketplace.install is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould update plugin[39m
+[31m     → marketplace.update is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould uninstall plugin[39m
+[31m     → marketplace.uninstall is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould check for updates[39m
+[31m     → marketplace.checkUpdates is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould initialize[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould install plugin from manifest[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould reject invalid manifest[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould enable/disable plugin[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould uninstall plugin[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould get installed plugins[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould check for updates[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould enable hot reload[39m
+[31m     → manager.initialize is not a function[39m
+[31m   [33m❯[31m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould call plugin lifecycle hooks[39m
+[31m     → manager.initialize is not a function[39m
+[90mstdout[2m | ConsoleTransport.write (C:\Users\tothm\Desktop\webos\RetroWebOS\src\core\Logger.js:171:15)[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.216Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.216Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.216Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.217Z] INFO  Policy updated: plugin:sandbox {}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mPermissionManager[2m > [22m[2mshould evaluate policy with valid token[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.222Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.222Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.222Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.222Z] INFO  Policy updated: plugin:sandbox {}
+[32m[INFO][0m [2026-07-16T09:19:15.222Z] INFO  Policy updated: test {}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mPermissionManager[2m > [22m[2mshould reject policy with missing permission[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.223Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.223Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.223Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.223Z] INFO  Policy updated: plugin:sandbox {}
+[32m[INFO][0m [2026-07-16T09:19:15.223Z] INFO  Policy updated: test {}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mPermissionManager[2m > [22m[2mshould evaluate path conditions[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.223Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: plugin:sandbox {}
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: test {}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mPermissionManager[2m > [22m[2mshould reject blocked paths[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.224Z] INFO  Policy updated: plugin:sandbox {}
+[32m[INFO][0m [2026-07-16T09:19:15.225Z] INFO  Policy updated: test {}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mPermissionManager[2m > [22m[2mshould evaluate domain conditions[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.225Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.225Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.225Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.225Z] INFO  Policy updated: plugin:sandbox {}
+[32m[INFO][0m [2026-07-16T09:19:15.226Z] INFO  Policy updated: test {}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mPermissionManager[2m > [22m[2mshould issue and revoke tokens[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.227Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.227Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.227Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.227Z] INFO  Policy updated: plugin:sandbox {}
+[32m[INFO][0m [2026-07-16T09:19:15.228Z] INFO  Capability token issued {"tokenId":"d4b5f573-0ff3-4cdf-a754-03c65d438433","subject":"test"}
+[32m[INFO][0m [2026-07-16T09:19:15.228Z] INFO  Capability token revoked {"tokenId":"d4b5f573-0ff3-4cdf-a754-03c65d438433"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mPermissionManager[2m > [22m[2mshould clean up expired tokens[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.228Z] INFO  Policy updated: core:fs {}
+[32m[INFO][0m [2026-07-16T09:19:15.228Z] INFO  Policy updated: core:network {}
+[32m[INFO][0m [2026-07-16T09:19:15.229Z] INFO  Policy updated: core:system {}
+[32m[INFO][0m [2026-07-16T09:19:15.229Z] INFO  Policy updated: plugin:sandbox {}
+[32m[INFO][0m [2026-07-16T09:19:15.229Z] INFO  Capability token issued {"tokenId":"cd91c713-92a9-482c-bd99-1e4906f58b50","subject":"anonymous"}
+[32m[INFO][0m [2026-07-16T09:19:15.229Z] INFO  Cleaned up expired tokens {"count":1}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mAuditLogger[2m > [22m[2mshould log audit events[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.245Z] INFO  AUDIT: auth.login {"id":"40b11cc0-0ecd-4920-99b2-ed1eaa496090","timestamp":1784193555245,"type":"auth","action":"login","subject":"user1","resource":"session","outcome":"success","details":{},"ip":"local","userAgent":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mAuditLogger[2m > [22m[2mshould query events[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.245Z] INFO  AUDIT: auth.login {"id":"662e4402-04e0-4d66-9d42-ea55916316a0","timestamp":1784193555245,"type":"auth","action":"login","subject":"user1","outcome":"success","details":{},"ip":"local","userAgent":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"}
+[32m[INFO][0m [2026-07-16T09:19:15.246Z] INFO  AUDIT: auth.logout {"id":"3507dc30-c35f-42e2-aefb-3d4570d509cf","timestamp":1784193555246,"type":"auth","action":"logout","subject":"user1","outcome":"success","details":{},"ip":"local","userAgent":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"}
+[32m[INFO][0m [2026-07-16T09:19:15.246Z] INFO  AUDIT: file.read {"id":"d99c4829-dbb6-439d-bf7e-55c574a6c6b1","timestamp":1784193555246,"type":"file","action":"read","subject":"user2","outcome":"success","details":{},"ip":"local","userAgent":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mAuditLogger[2m > [22m[2mshould export as JSON[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.246Z] INFO  AUDIT: test.action {"id":"0acd0048-59c5-43e5-91cb-5a12e67bfa87","timestamp":1784193555246,"type":"test","action":"action","subject":"unknown","outcome":"success","details":{},"ip":"local","userAgent":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mAuditLogger[2m > [22m[2mshould export as CSV[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.247Z] INFO  AUDIT: test.action {"id":"f3f7f00b-4495-4213-8ae0-242c49bb2f5e","timestamp":1784193555247,"type":"test","action":"action","subject":"user","resource":"res","outcome":"success","details":{},"ip":"local","userAgent":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mSessionManager[2m > [22m[2mshould create session[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.248Z] INFO  Session created {"sessionId":"0cfd2939-613e-4631-b10e-03399545a829","userId":"user1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mSessionManager[2m > [22m[2mshould get session[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.248Z] INFO  Session created {"sessionId":"3427df71-5804-4731-b23b-5d1f19c1cef9","userId":"user1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mSessionManager[2m > [22m[2mshould update activity[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.249Z] INFO  Session created {"sessionId":"3a753fef-5d53-4800-8fd0-1d3e457fc155","userId":"user1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mSessionManager[2m > [22m[2mshould rotate tokens[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.250Z] INFO  Session created {"sessionId":"4afcb754-6fd7-4133-b9e1-bd5ca7f26961","userId":"user1"}
+[32m[INFO][0m [2026-07-16T09:19:15.251Z] INFO  Session tokens rotated {"sessionId":"4afcb754-6fd7-4133-b9e1-bd5ca7f26961"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mSessionManager[2m > [22m[2mshould validate CSRF token[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.251Z] INFO  Session created {"sessionId":"914787e4-0beb-482c-ac8c-9dccef1e8925","userId":"user1"}
+
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mSessionManager[2m > [22m[2mshould destroy session[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.252Z] INFO  Session created {"sessionId":"7df73e26-b12c-4fc4-8f68-d7ba839e1b4e","userId":"user1"}
+[32m[INFO][0m [2026-07-16T09:19:15.252Z] INFO  Session destroyed {"sessionId":"7df73e26-b12c-4fc4-8f68-d7ba839e1b4e"}
+
+ [33m❯[39m tests/unit/Security.test.js [2m ([22m[2m44 tests[22m [2m|[22m [31m7 failed[39m[2m)[22m[90m 36[2mms[22m[39m
+[31m   [33m❯[31m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mPermission[2m > [22mshould have all required permissions defined[39m
+[31m     → expected undefined not to be undefined[39m
+[31m   [33m❯[31m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mPermissionManager[2m > [22mshould reject blocked paths[39m
+[31m     → expected true to be false // Object.is equality[39m
+[31m   [33m❯[31m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mInputSanitizer[2m > [22mshould sanitize HTML[39m
+[31m     → Cannot read properties of null (reading 'innerHTML')[39m
+[31m   [33m❯[31m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mInputSanitizer[2m > [22mshould allow safe tags[39m
+[31m     → Cannot read properties of null (reading 'innerHTML')[39m
+[31m   [33m❯[31m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mInputSanitizer[2m > [22mshould escape HTML[39m
+[31m     → expected '&lt;script&gt;alert(1)&lt;/script&gt;' to be '<script>alert(1)</script>' // Object.is equality[39m
+[31m   [33m❯[31m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mAuditLogger[2m > [22mshould export as JSON[39m
+[31m     → expected '[\n  {\n    "id": "0acd0048-59c5-43e5…' to contain '"type":"test"'[39m
+[31m   [33m❯[31m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mSecurity convenience methods[2m > [22mshould sanitize HTML via convenience method[39m
+[31m     → this._sanitizeNode is not a function[39m
+[90mstdout[2m | tests/unit/Security.test.js[2m > [22m[2mSecurity[2m > [22m[2mSecurity convenience methods[2m > [22m[2mshould audit events[22m[39m
+[32m[INFO][0m [2026-07-16T09:19:15.254Z] INFO  AUDIT: test.action {"id":"fc73c6ff-acc0-4113-9796-7c93d7be595e","timestamp":1784193555254,"type":"test","action":"action","subject":"user","outcome":"success","details":{},"ip":"local","userAgent":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"}
+
+ [33m❯[39m tests/unit/Logger.test.js [2m ([22m[2m17 tests[22m [2m|[22m [31m3 failed[39m[2m)[22m[90m 8[2mms[22m[39m
+[31m   [33m❯[31m tests/unit/Logger.test.js[2m > [22mLogger[2m > [22mLogEntry[2m > [22mshould create entry with all fields[39m
+[31m     → expected { key: '[REDACTED]' } to deeply equal { key: 'value' }[39m
+[31m   [33m❯[31m tests/unit/Logger.test.js[2m > [22mLogger[2m > [22mLogger[2m > [22mshould log at appropriate level[39m
+[31m     → expected "debug" to be called with arguments: [ 'test', undefined, undefined ][90m
+
+Received: 
+
+[1m  1st debug call:
+
+[22m[2m  Array [[22m
+[2m    "test",[22m
+[32m-   undefined,[90m
+[32m-   undefined,[90m
+[2m  ][22m
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+[31m   [33m❯[31m tests/unit/Logger.test.js[2m > [22mLogger[2m > [22mLogger[2m > [22mshould respect log level[39m
+[31m     → expected "debug" to not be called at all, but actually been called 1 times[90m
+
+Received: 
+
+[1m  1st debug call:
+
+[22m    Array [
+      "should not log",
+    ]
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 46 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Logger.test.js[2m > [22mLogger[2m > [22mLogEntry[2m > [22mshould create entry with all fields
+[31m[1mAssertionError[22m: expected { key: '[REDACTED]' } to deeply equal { key: 'value' }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  Object {[22m
+[32m-   "key": "value",[39m
+[31m+   "key": "[REDACTED]",[39m
+[2m  }[22m
+
+[36m [2m❯[22m tests/unit/Logger.test.js:[2m42:29[22m[39m
+    [90m 40| [39m      [34mexpect[39m(entry[33m.[39mlevelName)[33m.[39m[34mtoBe[39m([32m'INFO'[39m)[33m;[39m
+    [90m 41| [39m      [34mexpect[39m(entry[33m.[39mmessage)[33m.[39m[34mtoBe[39m([32m'test message'[39m)[33m;[39m
+    [90m 42| [39m      [34mexpect[39m(entry[33m.[39mcontext)[33m.[39m[34mtoEqual[39m({ key[33m:[39m [32m'value'[39m })[33m;[39m
+    [90m   | [39m                            [31m^[39m
+    [90m 43| [39m      [34mexpect[39m(entry[33m.[39mcorrelationId)[33m.[39m[34mtoBe[39m([32m'test-123'[39m)[33m;[39m
+    [90m 44| [39m      [34mexpect[39m(entry[33m.[39msessionId)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Logger.test.js[2m > [22mLogger[2m > [22mLogger[2m > [22mshould log at appropriate level
+[31m[1mAssertionError[22m: expected "debug" to be called with arguments: [ 'test', undefined, undefined ][90m
+
+Received: 
+
+[1m  1st debug call:
+
+[22m[2m  Array [[22m
+[2m    "test",[22m
+[32m-   undefined,[90m
+[32m-   undefined,[90m
+[2m  ][22m
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+[36m [2m❯[22m tests/unit/Logger.test.js:[2m78:24[22m[39m
+    [90m 76| [39m      [35mconst[39m debugSpy [33m=[39m vi[33m.[39m[34mspyOn[39m(logger[33m,[39m [32m'debug'[39m)[33m;[39m
+    [90m 77| [39m      logger[33m.[39m[34mdebug[39m([32m'test'[39m)[33m;[39m
+    [90m 78| [39m      [34mexpect[39m(debugSpy)[33m.[39m[34mtoHaveBeenCalledWith[39m([32m'test'[39m[33m,[39m undefined[33m,[39m undefin…
+    [90m   | [39m                       [31m^[39m
+    [90m 79| [39m    })[33m;[39m
+    [90m 80| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Logger.test.js[2m > [22mLogger[2m > [22mLogger[2m > [22mshould respect log level
+[31m[1mAssertionError[22m: expected "debug" to not be called at all, but actually been called 1 times[90m
+
+Received: 
+
+[1m  1st debug call:
+
+[22m    Array [
+      "should not log",
+    ]
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+[36m [2m❯[22m tests/unit/Logger.test.js:[2m85:28[22m[39m
+    [90m 83| [39m      [35mconst[39m debugSpy [33m=[39m vi[33m.[39m[34mspyOn[39m(logger[33m,[39m [32m'debug'[39m)[33m;[39m
+    [90m 84| [39m      logger[33m.[39m[34mdebug[39m([32m'should not log'[39m)[33m;[39m
+    [90m 85| [39m      [34mexpect[39m(debugSpy)[33m.[39mnot[33m.[39m[34mtoHaveBeenCalled[39m()[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m 86| [39m    })[33m;[39m
+    [90m 87| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould initialize observers
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect memory metrics
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect DOM node count
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect navigation timing
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect paint timings
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect LCP
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect FID
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect CLS
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect long tasks summary
+[31m[1mReferenceError[22m: PerformanceCollector is not defined[39m
+[36m [2m❯[22m tests/unit/Metrics.test.js:[2m120:7[22m[39m
+    [90m118| [39m
+    [90m119| [39m    [34mbeforeEach[39m(() [33m=>[39m {
+    [90m120| [39m      collector [33m=[39m [35mnew[39m [33mPerformanceCollector[39m()[33m;[39m
+    [90m   | [39m      [31m^[39m
+    [90m121| [39m    })[33m;[39m
+    [90m122| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould initialize observers
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect memory metrics
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect DOM node count
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect navigation timing
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect paint timings
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect LCP
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect FID
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect CLS
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mPerformanceCollector[2m > [22mshould collect long tasks summary
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'observer')[39m
+[36m [2m❯[22m tests/unit/Metrics.test.js:[2m124:17[22m[39m
+    [90m122| [39m
+    [90m123| [39m    [34mafterEach[39m(() [33m=>[39m {
+    [90m124| [39m      collector[33m.[39mobserver[33m?.[39m[34mdisconnect[39m[33m?.[39m()[33m;[39m
+    [90m   | [39m                [31m^[39m
+    [90m125| [39m    })[33m;[39m
+    [90m126| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Metrics.test.js[2m > [22mMetrics[2m > [22mMemoryProfiler[2m > [22mshould compare snapshots
+[31m[1mReferenceError[22m: protractor is not defined[39m
+[36m [2m❯[22m tests/unit/Metrics.test.js:[2m349:22[22m[39m
+    [90m347| [39m
+    [90m348| [39m        [90m// Compare the snapshots by their indices[39m
+    [90m349| [39m        [35mconst[39m diff [33m=[39m protractor[33m.[39m[34mcompareSnapshots[39m([34m0[39m[33m,[39m [34m1[39m)[33m;[39m
+    [90m   | [39m                     [31m^[39m
+    [90m350| [39m        [34mexpect[39m(diff[33m.[39mheapDelta)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+    [90m351| [39m        [34mexpect[39m(diff[33m.[39mtimeDelta)[33m.[39m[34mtoBeGreaterThan[39m([34m0[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mManifestValidator[2m > [22mshould reject invalid manifest version
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m37:71[22m[39m
+    [90m 35| [39m      [35mconst[39m result [33m=[39m validator[33m.[39m[34mvalidate[39m(manifest)[33m;[39m
+    [90m 36| [39m      [34mexpect[39m(result[33m.[39mvalid)[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m 37| [39m      [34mexpect[39m(result[33m.[39merrors[33m.[39m[34msome[39m(e [33m=>[39m e[33m.[39m[34mincludes[39m([32m'manifest_version'[39m)))[33m.[39m…
+    [90m   | [39m                                                                      [31m^[39m
+    [90m 38| [39m    })[33m;[39m
+    [90m 39| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mManifestValidator[2m > [22mshould sanitize manifest
+[31m[1mAssertionError[22m: expected [ 'file:read', 'invalid:perm' ] to not include 'invalid:perm'[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m106:41[22m[39m
+    [90m104| [39m      [34mexpect[39m(sanitized[33m.[39mname)[33m.[39m[34mtoBe[39m([32m'Test'[39m)[33m;[39m
+    [90m105| [39m      [34mexpect[39m(sanitized[33m.[39mpermissions)[33m.[39m[34mtoContain[39m([32m'file:read'[39m)[33m;[39m
+    [90m106| [39m      [34mexpect[39m(sanitized[33m.[39mpermissions)[33m.[39mnot[33m.[39m[34mtoContain[39m([32m'invalid:perm'[39m)[33m;[39m
+    [90m   | [39m                                        [31m^[39m
+    [90m107| [39m      [34mexpect[39m(sanitized[33m.[39mextra_field)[33m.[39m[34mtoBeUndefined[39m()[33m;[39m
+    [90m108| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould create iframe sandbox
+[31m[1mTypeError[22m: sandbox.createIframeSandbox is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m194:30[22m[39m
+    [90m192| [39m
+    [90m193| [39m    [34mit[39m([32m'should create iframe sandbox'[39m[33m,[39m () [33m=>[39m {
+    [90m194| [39m      [35mconst[39m iframe [33m=[39m sandbox[33m.[39m[34mcreateIframeSandbox[39m([32m'test-plugin'[39m[33m,[39m { allo…
+    [90m   | [39m                             [31m^[39m
+    [90m195| [39m      [34mexpect[39m(iframe)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m196| [39m      [34mexpect[39m(iframe[33m.[39mtagName)[33m.[39m[34mtoBe[39m([32m'IFRAME'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould create iframe sandbox
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould create worker sandbox
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould evaluate script in sandbox
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould inject API into sandbox
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould handle postMessage communication
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould enforce permissions
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould isolate storage
+[31m[1mTypeError[22m: sandbox.destroy is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m190:15[22m[39m
+    [90m188| [39m
+    [90m189| [39m    [34mafterEach[39m(() [33m=>[39m {
+    [90m190| [39m      sandbox[33m.[39m[34mdestroy[39m()[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m191| [39m    })[33m;[39m
+    [90m192| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould create worker sandbox
+[31m[1mTypeError[22m: sandbox.createWorkerSandbox is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m201:36[22m[39m
+    [90m199| [39m
+    [90m200| [39m    [34mit[39m([32m'should create worker sandbox'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m201| [39m      [35mconst[39m worker [33m=[39m [35mawait[39m sandbox[33m.[39m[34mcreateWorkerSandbox[39m([32m'test-plugin'[39m[33m,[39m …
+    [90m   | [39m                                   [31m^[39m
+    [90m202| [39m      [34mexpect[39m(worker)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m203| [39m      [34mexpect[39m([35mtypeof[39m worker[33m.[39mpostMessage)[33m.[39m[34mtoBe[39m([32m'function'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould evaluate script in sandbox
+[31m[1mTypeError[22m: sandbox.evaluateInSandbox is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m208:36[22m[39m
+    [90m206| [39m
+    [90m207| [39m    [34mit[39m([32m'should evaluate script in sandbox'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m208| [39m      [35mconst[39m result [33m=[39m [35mawait[39m sandbox[33m.[39m[34mevaluateInSandbox[39m([32m'test-plugin'[39m[33m,[39m [32m'1[39m…
+    [90m   | [39m                                   [31m^[39m
+    [90m209| [39m      [34mexpect[39m(result)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m210| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould inject API into sandbox
+[31m[1mTypeError[22m: sandbox.injectAPI is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m216:15[22m[39m
+    [90m214| [39m        testApi[33m:[39m { hello[33m:[39m () [33m=>[39m [32m'world'[39m }
+    [90m215| [39m      }[33m;[39m
+    [90m216| [39m      sandbox[33m.[39m[34minjectAPI[39m([32m'test-plugin'[39m[33m,[39m api)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m217| [39m      [90m// Test via evaluate[39m
+    [90m218| [39m      [35mconst[39m result [33m=[39m [35mawait[39m sandbox[33m.[39m[34mevaluateInSandbox[39m([32m'test-plugin'[39m[33m,[39m [32m't[39m…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould handle postMessage communication
+[31m[1mTypeError[22m: sandbox.onMessage is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m224:15[22m[39m
+    [90m222| [39m    [34mit[39m([32m'should handle postMessage communication'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m223| [39m      [35mconst[39m messages [33m=[39m [][33m;[39m
+    [90m224| [39m      sandbox[33m.[39m[34monMessage[39m([32m'test-plugin'[39m[33m,[39m (msg) [33m=>[39m messages[33m.[39m[34mpush[39m(msg))[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m225| [39m      sandbox[33m.[39m[34mpostMessage[39m([32m'test-plugin'[39m[33m,[39m { type[33m:[39m [32m'test'[39m[33m,[39m data[33m:[39m [32m'hello'[39m…
+    [90m226| [39m      [90m// Allow message queue to process[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould enforce permissions
+[31m[1mTypeError[22m: sandbox.setPermissions is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m233:15[22m[39m
+    [90m231| [39m    [34mit[39m([32m'should enforce permissions'[39m[33m,[39m () [33m=>[39m {
+    [90m232| [39m      [35mconst[39m permissions [33m=[39m [[32m'file:read'[39m[33m,[39m [32m'network:fetch'[39m][33m;[39m
+    [90m233| [39m      sandbox[33m.[39m[34msetPermissions[39m([32m'test-plugin'[39m[33m,[39m permissions)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m234| [39m      [34mexpect[39m(sandbox[33m.[39m[34mhasPermission[39m([32m'test-plugin'[39m[33m,[39m [32m'file:read'[39m))[33m.[39m[34mtoBe[39m([35mt[39m…
+    [90m235| [39m      [34mexpect[39m(sandbox[33m.[39m[34mhasPermission[39m([32m'test-plugin'[39m[33m,[39m [32m'file:write'[39m))[33m.[39m[34mtoBe[39m(…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginSandbox[2m > [22mshould isolate storage
+[31m[1mTypeError[22m: sandbox.setStorage is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m239:15[22m[39m
+    [90m237| [39m
+    [90m238| [39m    [34mit[39m([32m'should isolate storage'[39m[33m,[39m () [33m=>[39m {
+    [90m239| [39m      sandbox[33m.[39m[34msetStorage[39m([32m'plugin-a'[39m[33m,[39m [32m'key1'[39m[33m,[39m [32m'value1'[39m)[33m;[39m
+    [90m   | [39m              [31m^[39m
+    [90m240| [39m      sandbox[33m.[39m[34msetStorage[39m([32m'plugin-b'[39m[33m,[39m [32m'key1'[39m[33m,[39m [32m'value2'[39m)[33m;[39m
+    [90m241| [39m      [34mexpect[39m(sandbox[33m.[39m[34mgetStorage[39m([32m'plugin-a'[39m[33m,[39m [32m'key1'[39m))[33m.[39m[34mtoBe[39m([32m'value1'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould search plugins
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m255:38[22m[39m
+    [90m253| [39m    [34mit[39m([32m'should search plugins'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m254| [39m      [35mconst[39m results [33m=[39m [35mawait[39m marketplace[33m.[39m[34msearch[39m({ query[33m:[39m [32m'editor'[39m })[33m;[39m
+    [90m255| [39m      [34mexpect[39m([33mArray[39m[33m.[39m[34misArray[39m(results))[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                                     [31m^[39m
+    [90m256| [39m    })[33m;[39m
+    [90m257| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould get plugin details
+[31m[1mAssertionError[22m: expected undefined to be 'test-plugin' // Object.is equality[39m
+
+[32m- Expected:[39m 
+"test-plugin"
+
+[31m+ Received:[39m 
+undefined
+
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m261:25[22m[39m
+    [90m259| [39m      [35mconst[39m plugin [33m=[39m [35mawait[39m marketplace[33m.[39m[34mgetPlugin[39m([32m'test-plugin'[39m)[33m;[39m
+    [90m260| [39m      [34mexpect[39m(plugin)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m261| [39m      [34mexpect[39m(plugin[33m.[39mid)[33m.[39m[34mtoBe[39m([32m'test-plugin'[39m)[33m;[39m
+    [90m   | [39m                        [31m^[39m
+    [90m262| [39m    })[33m;[39m
+    [90m263| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould get popular plugins
+[31m[1mTypeError[22m: marketplace.getPopular is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m265:41[22m[39m
+    [90m263| [39m
+    [90m264| [39m    [34mit[39m([32m'should get popular plugins'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m265| [39m      [35mconst[39m popular [33m=[39m [35mawait[39m marketplace[33m.[39m[34mgetPopular[39m([34m5[39m)[33m;[39m
+    [90m   | [39m                                        [31m^[39m
+    [90m266| [39m      [34mexpect[39m([33mArray[39m[33m.[39m[34misArray[39m(popular))[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m267| [39m      [34mexpect[39m(popular[33m.[39mlength)[33m.[39m[34mtoBeLessThanOrEqual[39m([34m5[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould get categories
+[31m[1mTypeError[22m: marketplace.getCategories is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m271:44[22m[39m
+    [90m269| [39m
+    [90m270| [39m    [34mit[39m([32m'should get categories'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m271| [39m      [35mconst[39m categories [33m=[39m [35mawait[39m marketplace[33m.[39m[34mgetCategories[39m()[33m;[39m
+    [90m   | [39m                                           [31m^[39m
+    [90m272| [39m      [34mexpect[39m([33mArray[39m[33m.[39m[34misArray[39m(categories))[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m273| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould install plugin
+[31m[1mTypeError[22m: marketplace.install is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m276:40[22m[39m
+    [90m274| [39m
+    [90m275| [39m    [34mit[39m([32m'should install plugin'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m276| [39m      [35mconst[39m result [33m=[39m [35mawait[39m marketplace[33m.[39m[34minstall[39m([32m'test-plugin'[39m[33m,[39m [32m'1.0.0'[39m)[33m;[39m
+    [90m   | [39m                                       [31m^[39m
+    [90m277| [39m      [34mexpect[39m(result[33m.[39msuccess)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m278| [39m      [34mexpect[39m(result[33m.[39mpluginId)[33m.[39m[34mtoBe[39m([32m'test-plugin'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould update plugin
+[31m[1mTypeError[22m: marketplace.update is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m282:40[22m[39m
+    [90m280| [39m
+    [90m281| [39m    [34mit[39m([32m'should update plugin'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m282| [39m      [35mconst[39m result [33m=[39m [35mawait[39m marketplace[33m.[39m[34mupdate[39m([32m'test-plugin'[39m[33m,[39m [32m'2.0.0'[39m)[33m;[39m
+    [90m   | [39m                                       [31m^[39m
+    [90m283| [39m      [34mexpect[39m(result[33m.[39msuccess)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m284| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould uninstall plugin
+[31m[1mTypeError[22m: marketplace.uninstall is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m287:40[22m[39m
+    [90m285| [39m
+    [90m286| [39m    [34mit[39m([32m'should uninstall plugin'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m287| [39m      [35mconst[39m result [33m=[39m [35mawait[39m marketplace[33m.[39m[34muninstall[39m([32m'test-plugin'[39m)[33m;[39m
+    [90m   | [39m                                       [31m^[39m
+    [90m288| [39m      [34mexpect[39m(result[33m.[39msuccess)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m289| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginMarketplace[2m > [22mshould check for updates
+[31m[1mTypeError[22m: marketplace.checkUpdates is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m292:41[22m[39m
+    [90m290| [39m
+    [90m291| [39m    [34mit[39m([32m'should check for updates'[39m[33m,[39m [35masync[39m () [33m=>[39m {
+    [90m292| [39m      [35mconst[39m updates [33m=[39m [35mawait[39m marketplace[33m.[39m[34mcheckUpdates[39m([[32m'plugin-a@1.0.0'[39m…
+    [90m   | [39m                                        [31m^[39m
+    [90m293| [39m      [34mexpect[39m([33mArray[39m[33m.[39m[34misArray[39m(updates))[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m294| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould initialize
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould install plugin from manifest
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould reject invalid manifest
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould enable/disable plugin
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould uninstall plugin
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould get installed plugins
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould check for updates
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould enable hot reload
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/PluginManager.test.js[2m > [22mPluginManager[2m > [22mPluginManager[2m > [22mshould call plugin lifecycle hooks
+[31m[1mTypeError[22m: manager.initialize is not a function[39m
+[36m [2m❯[22m tests/unit/PluginManager.test.js:[2m340:21[22m[39m
+    [90m338| [39m    [34mbeforeEach[39m([35masync[39m () [33m=>[39m {
+    [90m339| [39m      manager [33m=[39m [35mnew[39m [33mPluginManager[39m()[33m;[39m
+    [90m340| [39m      [35mawait[39m manager[33m.[39m[34minitialize[39m()[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m341| [39m    })[33m;[39m
+    [90m342| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mPermission[2m > [22mshould have all required permissions defined
+[31m[1mAssertionError[22m: expected undefined not to be undefined[39m
+[36m [2m❯[22m tests/unit/Security.test.js:[2m11:32[22m[39m
+    [90m  9| [39m      [34mexpect[39m([33mPermission[39m[33m.[39m[33mNETWORK_FETCH[39m)[33m.[39m[34mtoBe[39m([32m'network:fetch'[39m)[33m;[39m
+    [90m 10| [39m      [34mexpect[39m([33mPermission[39m[33m.[39m[33mSETTINGS_READ[39m)[33m.[39m[34mtoBe[39m([32m'settings:read'[39m)[33m;[39m
+    [90m 11| [39m      [34mexpect[39m([33mPermission[39m[33m.[39m[33mADMIN[39m)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m   | [39m                               [31m^[39m
+    [90m 12| [39m    })[33m;[39m
+    [90m 13| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mPermissionManager[2m > [22mshould reject blocked paths
+[31m[1mAssertionError[22m: expected true to be false // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+[36m [2m❯[22m tests/unit/Security.test.js:[2m127:30[22m[39m
+    [90m125| [39m
+    [90m126| [39m      [35mconst[39m result [33m=[39m manager[33m.[39m[34mevaluatePolicy[39m(token[33m,[39m [32m'test'[39m[33m,[39m { path[33m:[39m [32m'/s[39m…
+    [90m127| [39m      [34mexpect[39m(result[33m.[39mallowed)[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m   | [39m                             [31m^[39m
+    [90m128| [39m    })[33m;[39m
+    [90m129| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mInputSanitizer[2m > [22mshould sanitize HTML
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'innerHTML')[39m
+[36m [2m❯[22m InputSanitizer.sanitizeHtml src/core/Security.js:[2m614:21[22m[39m
+    [90m612| [39m    [35mconst[39m doc [33m=[39m [35mnew[39m [33mDOMParser[39m()[33m.[39m[34mparseFromString[39m(html[33m,[39m [32m'text/html'[39m)[33m;[39m
+    [90m613| [39m    [35mthis[39m[33m.[39m[34m_sanitizeNode[39m(doc[33m.[39mbody[33m,[39m allowedTags[33m,[39m allowedAttrs)[33m;[39m
+    [90m614| [39m    [35mreturn[39m doc[33m.[39mbody[33m.[39minnerHTML[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m615| [39m  }
+    [90m616| [39m
+[90m [2m❯[22m tests/unit/Security.test.js:[2m198:36[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mInputSanitizer[2m > [22mshould allow safe tags
+[31m[1mTypeError[22m: Cannot read properties of null (reading 'innerHTML')[39m
+[36m [2m❯[22m InputSanitizer.sanitizeHtml src/core/Security.js:[2m614:21[22m[39m
+    [90m612| [39m    [35mconst[39m doc [33m=[39m [35mnew[39m [33mDOMParser[39m()[33m.[39m[34mparseFromString[39m(html[33m,[39m [32m'text/html'[39m)[33m;[39m
+    [90m613| [39m    [35mthis[39m[33m.[39m[34m_sanitizeNode[39m(doc[33m.[39mbody[33m,[39m allowedTags[33m,[39m allowedAttrs)[33m;[39m
+    [90m614| [39m    [35mreturn[39m doc[33m.[39mbody[33m.[39minnerHTML[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m615| [39m  }
+    [90m616| [39m
+[90m [2m❯[22m tests/unit/Security.test.js:[2m205:36[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mInputSanitizer[2m > [22mshould escape HTML
+[31m[1mAssertionError[22m: expected '&lt;script&gt;alert(1)&lt;/script&gt;' to be '<script>alert(1)</script>' // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- <script>alert(1)</script>[39m
+[31m+ &lt;script&gt;alert(1)&lt;/script&gt;[39m
+
+[36m [2m❯[22m tests/unit/Security.test.js:[2m234:23[22m[39m
+    [90m232| [39m      [35mconst[39m text [33m=[39m [32m'<script>alert(1)</script>'[39m[33m;[39m
+    [90m233| [39m      [35mconst[39m escaped [33m=[39m [33mInputSanitizer[39m[33m.[39m[34mescapeHtml[39m(text)[33m;[39m
+    [90m234| [39m      [34mexpect[39m(escaped)[33m.[39m[34mtoBe[39m([32m'<script>alert(1)</script>'[39m)[33m;[39m
+    [90m   | [39m                      [31m^[39m
+    [90m235| [39m    })[33m;[39m
+    [90m236| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mAuditLogger[2m > [22mshould export as JSON
+[31m[1mAssertionError[22m: expected '[\n  {\n    "id": "0acd0048-59c5-43e5…' to contain '"type":"test"'[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- "type":"test"[39m
+[31m+ [[39m
+[31m+   {[39m
+[31m+     "id": "0acd0048-59c5-43e5-91cb-5a12e67bfa87",[39m
+[31m+     "timestamp": 1784193555246,[39m
+[31m+     "type": "test",[39m
+[31m+     "action": "action",[39m
+[31m+     "subject": "unknown",[39m
+[31m+     "outcome": "success",[39m
+[31m+     "details": {},[39m
+[31m+     "ip": "local",[39m
+[31m+     "userAgent": "Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/29.1.1"[39m
+[31m+   }[39m
+[31m+ ][39m
+
+[36m [2m❯[22m tests/unit/Security.test.js:[2m277:20[22m[39m
+    [90m275| [39m      audit[33m.[39m[34mlog[39m({ type[33m:[39m [32m'test'[39m[33m,[39m action[33m:[39m [32m'action'[39m })[33m;[39m
+    [90m276| [39m      [35mconst[39m json [33m=[39m audit[33m.[39m[35mexport[39m([32m'json'[39m)[33m;[39m
+    [90m277| [39m      [34mexpect[39m(json)[33m.[39m[34mtoContain[39m([32m'"type":"test"'[39m)[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m278| [39m    })[33m;[39m
+    [90m279| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/62]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m tests/unit/Security.test.js[2m > [22mSecurity[2m > [22mSecurity convenience methods[2m > [22mshould sanitize HTML via convenience method
+[31m[1mTypeError[22m: this._sanitizeNode is not a function[39m
+[36m [2m❯[22m Object.sanitizeHtml src/core/Security.js:[2m613:10[22m[39m
+    [90m611| [39m
+    [90m612| [39m    [35mconst[39m doc [33m=[39m [35mnew[39m [33mDOMParser[39m()[33m.[39m[34mparseFromString[39m(html[33m,[39m [32m'text/html'[39m)[33m;[39m
+    [90m613| [39m    [35mthis[39m[33m.[39m[34m_sanitizeNode[39m(doc[33m.[39mbody[33m,[39m allowedTags[33m,[39m allowedAttrs)[33m;[39m
+    [90m   | [39m         [31m^[39m
+    [90m614| [39m    [35mreturn[39m doc[33m.[39mbody[33m.[39minnerHTML[33m;[39m
+    [90m615| [39m  }
+[90m [2m❯[22m tests/unit/Security.test.js:[2m348:31[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/62]⎯[22m[39m
+
+[2m Test Files [22m [1m[31m4 failed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[31m46 failed[39m[22m[2m | [22m[1m[32m101 passed[39m[22m[90m (147)[39m
+[2m   Start at [22m 11:19:13
+[2m   Duration [22m 1.90s[2m (transform 154ms, setup 38ms, collect 242ms, tests 94ms, environment 1.17s, prepare 146ms)[22m
+
