@@ -157,3 +157,5 @@ Inspired by retro computing enthusiasts and the demoscene community.
 MIT License - see [LICENSE](LICENSE) file for details.
 
 Copyright (c) 2026 mateszko090214
+
+*Last updated: August 2, 2026*
