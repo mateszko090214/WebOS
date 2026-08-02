@@ -6,6 +6,19 @@ This is the new retro web OS, **"the void retro"**, a side project of the Retro 
 
 VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro themes, and classic PC aesthetics entirely using HTML/CSS/JavaScript. It brings the authentic feel of vintage computing to your modern browser with painstaking attention to detail.
 
+| Claude Code Command | Description | Example Usage |
+|---------------------|-------------|---------------|
+| `Read` | Read file contents | `Read({file_path:"README.md"})` |
+| `Write` | Create or overwrite a file | `Write({file_path:"NEW.md",content:"# Title"})` |
+| `Edit` | Replace specific text in a file | `Edit({file_path:"README.md",old_string:"old",new_string:"new"})` |
+| `Bash` | Execute shell/command line commands | `Bash({command:"git status",description:"Check repo"})` |
+| `AskUserQuestion` | Prompt user for input with choices | `AskUserQuestion({questions:[{...}]})` |
+| `Workflow` | Run multi‑step automation with agents | `Workflow({script:"export const meta = {name:'demo'}; …"})` |
+| `TaskCreate` | Create a trackable task | `TaskCreate({subject:"Add feature",description:"…"})` |
+| `TaskUpdate` | Update task status | `TaskUpdate({taskId:"123",status:"completed"})` |
+| `SendMessage` | Send message to another agent | `SendMessage({to:"researcher",message:"…",summary:"…"})` |
+| `Skill` | Invoke a predefined skill (e.g., update‑config) | `Skill({skill:"update-config",args:"set DEBUG=true"})` |
+
 ## Key Features
 
 ### Display & Visual Effects
