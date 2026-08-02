@@ -1,10 +1,6 @@
 # VoidOS Retro - Changelog
 
-## [v0.91] - Retro Polish (Planned)
-### Added
-- "TV mode" with overscan, color bleed, and RF noise
-
-## [v0.90] - Major Retro-Theming Update
+## [v0.92] - Major Retro-Theming Update
 ### Added
 - Authentic CRT curvature simulation (using CSS transforms + filters, not canvas)
 - Scanline intensity that dynamically responds to brightness (like real phosphor decay)
