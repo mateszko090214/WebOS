@@ -37,7 +37,10 @@ body[data-theme="purple"]{ --accent:#a259ff; --accent2:#d3b3ff; --glow:rgba(162,
 body[data-theme="white"]{ --accent:#f2f6ff; --accent2:#ffffff; --glow:rgba(230,238,255,0.45); --line:rgba(230,238,255,0.25); --panel-solid:#101216; }
 *{box-sizing:border-box;}
 html,body{height:100%;margin:0;}
-body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow:hidden; user-select:none; font-size:15px; transition:background .4s;}
+body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow:hidden; user-select:none; font-size:15px; transition:background .4s;
+  cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path d="M11 1 V8 M11 14 V21 M1 11 H8 M14 11 H21" stroke="%23ffb000" stroke-width="1.6"/><circle cx="11" cy="11" r="2.4" fill="none" stroke="%23ffb000" stroke-width="1.6"/></svg>') 11 11, crosshair;
+}
+#desktop{ border-radius:14px; box-shadow:0 0 0 3px #000, 0 0 0 5px #1a1a1a, inset 0 0 90px rgba(0,0,0,0.65), inset 0 0 220px rgba(0,0,0,0.4); }
 #desktop{
   position:fixed; inset:0;
   background:
@@ -47,13 +50,14 @@ body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow
     linear-gradient(160deg,#0a0806 0%, #060504 60%, #020202 100%);
   transition:background 0.6s ease;
 }
+#bgAnimCanvas{position:absolute; inset:0; z-index:1; width:100%; height:100%; display:block; opacity:.55;}
 #grid-overlay{position:absolute; inset:0; pointer-events:none; opacity:.5;
   background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
   background-size: 42px 42px; mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 75%);}
 
 /* ---------- BOOT ---------- */
 #boot{position:fixed; inset:0; background:#020202; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; font-family:var(--mono); color:var(--accent); transition:opacity .5s ease;}
-#boot pre{font-family:var(--pixel); font-size:11px; line-height:1.7; color:var(--accent); text-shadow:0 0 14px var(--glow); margin:0 0 22px;}
+#boot pre{font-family:var(--mono); font-size:20px; line-height:1.15; color:var(--accent); text-shadow:0 0 14px var(--glow); margin:0 0 22px;}
 #boot .bootline{font-size:18px; color:var(--accent2); min-height:22px; letter-spacing:.5px; text-shadow:0 0 6px var(--glow);}
 #boot .barwrap{width:320px; height:4px; background:rgba(255,255,255,0.08); margin-top:22px; border-radius:0; overflow:hidden; border:1px solid var(--line);}
 #boot .bar{height:100%; width:0%; background:var(--accent); box-shadow:0 0 10px var(--glow); transition:width .25s ease;}
@@ -111,13 +115,21 @@ body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow
 .win{position:absolute; min-width:300px; min-height:200px; background:var(--panel-solid); border:2px solid var(--line); border-radius:var(--radius-md);
   box-shadow:0 22px 60px rgba(0,0,0,0.6); display:flex; flex-direction:column; overflow:hidden;}
 .win.focused{border-color:var(--accent); box-shadow:0 24px 70px rgba(0,0,0,0.65), 0 0 24px var(--glow);}
-.titlebar{height:38px; flex:none; display:flex; align-items:center; gap:8px; padding:0 10px; background:linear-gradient(180deg, rgba(255,255,255,0.05), transparent); border-bottom:2px solid var(--line); cursor:grab;}
+.titlebar{height:38px; flex:none; display:flex; align-items:center; gap:8px; padding:0 10px; background:linear-gradient(180deg, rgba(255,255,255,0.05), transparent); border-bottom:2px solid var(--line); cursor:grab; position:relative;}
+.titlebar::after{content:""; position:absolute; right:10px; top:50%; transform:translateY(-50%); width:6px; height:6px; border-radius:50%; background:var(--term-green); box-shadow:0 0 6px var(--term-green); animation:pulse 2.4s infinite;}
 .titlebar .dot{width:12px; height:12px; border-radius:50%; cursor:pointer; border:none;}
 .dot.close{background:#ff5f57; box-shadow:0 0 6px rgba(255,95,87,.7);} .dot.min{background:#febc2e; box-shadow:0 0 6px rgba(254,188,46,.7);} .dot.max{background:#28c840; box-shadow:0 0 6px rgba(40,200,64,.7);}
-.titlebar .ttitle{flex:1; text-align:center; font-size:15px; color:var(--muted); font-family:var(--mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.titlebar .ttitle{flex:1; text-align:center; font-size:14px; color:var(--muted); font-family:var(--mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-transform:uppercase; letter-spacing:1px;}
+.titlebar .ttitle::before{content:"[ ";} .titlebar .ttitle::after{content:" ]";}
 .wbody{flex:1; overflow:auto; position:relative;}
 .resize-handle{position:absolute; right:0; bottom:0; width:18px; height:18px; cursor:nwse-resize; z-index:2;}
-.wbody::-webkit-scrollbar{width:9px;} .wbody::-webkit-scrollbar-thumb{background:var(--line); border-radius:2px;} .wbody::-webkit-scrollbar-track{background:transparent;}
+.wbody::-webkit-scrollbar{width:14px;} .wbody::-webkit-scrollbar-thumb{background:var(--panel-solid); border:2px solid var(--line); box-shadow:inset 0 0 0 2px rgba(255,255,255,0.05);} .wbody::-webkit-scrollbar-track{background:rgba(255,255,255,0.03);} .wbody::-webkit-scrollbar-thumb:hover{border-color:var(--accent);}
+.wbody{scrollbar-width:thin; scrollbar-color:var(--line) transparent;}
+/* Retro beveled buttons everywhere inside a window or menu, unless the button opts out */
+.win button, #ctxmenu, .toast{ }
+.win button{ box-shadow:2px 2px 0 rgba(0,0,0,0.5), inset 1px 1px 0 rgba(255,255,255,0.12); transition:transform .05s, box-shadow .05s; }
+.win button:active{ transform:translate(1px,1px); box-shadow:1px 1px 0 rgba(0,0,0,0.5), inset 1px 1px 0 rgba(0,0,0,0.2); }
+.win button:focus-visible{ outline:1px dashed var(--accent); outline-offset:2px; }
 
 /* ---------- DOCK ---------- */
 #dock{position:fixed; bottom:10px; left:50%; transform:translateX(-50%); z-index:500; display:flex; align-items:flex-end; gap:8px; padding:8px 12px; border-radius:var(--radius-md);
@@ -133,7 +145,7 @@ body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow
 .app-terminal .line{white-space:pre-wrap; word-break:break-word; margin:0 0 2px;}
 .app-terminal .prompt{color:var(--accent2); text-shadow:0 0 4px var(--glow);}
 .term-input-row{display:flex; gap:6px;}
-.term-input-row input{flex:1; background:transparent; border:none; outline:none; color:var(--term-green); font-family:var(--mono); font-size:18px; text-shadow:0 0 4px rgba(51,255,102,0.5);}
+.term-input-row input{flex:1; background:transparent; border:none; outline:none; color:var(--term-green); font-family:var(--mono); font-size:18px; text-shadow:0 0 4px rgba(51,255,102,0.5); caret-color:var(--term-green);}
 
 /* Files app */
 .fm-shell{display:flex; height:100%;}
@@ -198,50 +210,50 @@ textarea.editor{width:100%; height:100%; background:#07080a; color:#d7ffe0; bord
 .mp-art{flex:1; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;}
 .mp-art canvas{width:100%; height:100%;}
 .mp-meta{padding:14px 18px 4px;}
-.mp-meta .t{font-weight:700; font-size:15px;} .mp-meta .a{color:var(--muted); font-size:12px; margin-top:2px;}
+.mp-meta .t{font-weight:700; font-size:16px; font-family:var(--mono);} .mp-meta .a{color:var(--muted); font-size:14px; margin-top:2px; font-family:var(--mono);}
 .mp-bar{padding:6px 18px;}
-.mp-progress{height:4px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; cursor:pointer;}
-.mp-progress .fill{height:100%; background:var(--accent); width:0%;}
+.mp-progress{height:4px; background:rgba(255,255,255,0.1); border-radius:0; overflow:hidden; cursor:pointer;}
+.mp-progress .fill{height:100%; background:var(--accent); box-shadow:0 0 6px var(--glow); width:0%;}
 .mp-controls{display:flex; align-items:center; justify-content:center; gap:18px; padding:12px; font-size:20px;}
 .mp-controls button{background:none; border:none; color:var(--text); cursor:pointer; font-size:20px;}
-.mp-controls button.play{width:46px; height:46px; border-radius:50%; background:var(--accent); color:#04231d; font-size:18px;}
-.mp-list{border-top:1px solid var(--line); overflow:auto; max-height:120px;}
-.mp-list .track{display:flex; justify-content:space-between; padding:7px 16px; font-size:12px; cursor:pointer; color:var(--muted);}
+.mp-controls button.play{width:46px; height:46px; border-radius:50%; background:var(--accent); color:#04231d; font-size:18px; box-shadow:0 0 12px var(--glow);}
+.mp-list{border-top:2px solid var(--line); overflow:auto; max-height:120px;}
+.mp-list .track{display:flex; justify-content:space-between; padding:7px 16px; font-size:14px; font-family:var(--mono); cursor:pointer; color:var(--muted);}
 .mp-list .track:hover{background:rgba(255,255,255,0.05);}
-.mp-list .track.active{color:var(--accent);}
+.mp-list .track.active{color:var(--accent); text-shadow:0 0 4px var(--glow);}
 
 /* Notes */
 .notes-shell{display:flex; height:100%;}
-.notes-list{width:170px; border-right:1px solid var(--line); overflow:auto; flex:none;}
-.notes-list .nitem{padding:10px 12px; border-bottom:1px solid var(--line); cursor:pointer; font-size:12px;}
+.notes-list{width:170px; border-right:2px solid var(--line); overflow:auto; flex:none;}
+.notes-list .nitem{padding:10px 12px; border-bottom:1px solid var(--line); cursor:pointer; font-size:14px;}
 .notes-list .nitem:hover, .notes-list .nitem.active{background:rgba(255,255,255,0.06);}
-.notes-list .nitem .nt{font-weight:700; font-size:12.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.notes-list .nitem .np{color:var(--muted); font-size:11px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.notes-new{padding:8px; border-bottom:1px solid var(--line);}
-.notes-new button{width:100%; background:var(--accent); color:#04231d; border:none; border-radius:7px; padding:7px; font-weight:700; font-size:12px; cursor:pointer;}
+.notes-list .nitem .nt{font-weight:700; font-size:14.5px; font-family:var(--mono); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.notes-list .nitem .np{color:var(--muted); font-size:13px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.notes-new{padding:8px; border-bottom:2px solid var(--line);}
+.notes-new button{width:100%; background:var(--accent); color:#04231d; border:none; border-radius:var(--radius-sm); padding:7px; font-weight:700; font-family:var(--pixel); font-size:11px; cursor:pointer;}
 .notes-edit{flex:1; display:flex; flex-direction:column;}
-.notes-edit textarea{flex:1; border:none; background:transparent; color:var(--text); outline:none; resize:none; font-family:var(--sans); font-size:13.5px; padding:16px; line-height:1.6;}
+.notes-edit textarea{flex:1; border:none; background:transparent; color:var(--text); outline:none; resize:none; font-family:var(--mono); font-size:17px; padding:16px; line-height:1.5;}
 
 /* Gallery */
 .gal-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; padding:14px;}
-.gal-tile{aspect-ratio:1; border-radius:10px; overflow:hidden; cursor:pointer; position:relative; border:1px solid var(--line);}
+.gal-tile{aspect-ratio:1; border-radius:var(--radius-sm); overflow:hidden; cursor:pointer; position:relative; border:2px solid var(--line);}
 .gal-tile canvas{width:100%; height:100%; display:block;}
-.gal-tile .cap{position:absolute; bottom:0; left:0; right:0; padding:5px 7px; font-size:10px; background:linear-gradient(0deg,rgba(0,0,0,.7),transparent); color:#fff;}
-.gal-light{position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:50; display:flex; align-items:center; justify-content:center; flex-direction:column;}
-.gal-light canvas{max-width:80%; max-height:70%; border-radius:12px;}
-.gal-light button{margin-top:16px; background:rgba(255,255,255,0.1); border:1px solid var(--line); color:#fff; padding:6px 16px; border-radius:8px; cursor:pointer;}
+.gal-tile .cap{position:absolute; bottom:0; left:0; right:0; padding:5px 7px; font-size:11px; font-family:var(--mono); background:linear-gradient(0deg,rgba(0,0,0,.7),transparent); color:#fff;}
+.gal-light{position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:50; display:flex; align-items:center; justify-content:center; flex-direction:column;}
+.gal-light canvas{max-width:80%; max-height:70%; border-radius:var(--radius-sm); box-shadow:0 0 30px var(--glow);}
+.gal-light button{margin-top:16px; background:rgba(255,255,255,0.1); border:2px solid var(--line); color:#fff; padding:6px 16px; border-radius:var(--radius-sm); font-family:var(--mono); cursor:pointer;}
 
 /* Store */
-.store-cats{display:flex; gap:6px; padding:10px; border-bottom:1px solid var(--line); flex-wrap:wrap;}
-.store-cats button{background:rgba(255,255,255,0.05); border:1px solid var(--line); color:var(--muted); border-radius:16px; padding:5px 12px; font-size:11.5px; cursor:pointer;}
+.store-cats{display:flex; gap:6px; padding:10px; border-bottom:2px solid var(--line); flex-wrap:wrap;}
+.store-cats button{background:rgba(255,255,255,0.05); border:1px solid var(--line); color:var(--muted); border-radius:var(--radius-sm); padding:5px 12px; font-size:13px; font-family:var(--mono); cursor:pointer;}
 .store-cats button.active{background:var(--accent); color:#04231d; border-color:var(--accent); font-weight:700;}
 .store-list{padding:10px; overflow:auto; height:calc(100% - 48px);}
-.store-card{display:flex; gap:12px; padding:10px; border-radius:10px; margin-bottom:8px; background:rgba(255,255,255,0.03); border:1px solid var(--line); align-items:center;}
-.store-card .icon{width:44px; height:44px; border-radius:11px; flex:none;}
+.store-card{display:flex; gap:12px; padding:10px; border-radius:var(--radius-md); margin-bottom:8px; background:rgba(255,255,255,0.03); border:2px solid var(--line); align-items:center;}
+.store-card .icon{width:44px; height:44px; border-radius:var(--radius-sm); flex:none;}
 .store-card .info{flex:1; min-width:0;}
-.store-card .info .n{font-weight:700; font-size:13px;} .store-card .info .d{font-size:11px; color:var(--muted); margin-top:2px;}
-.store-card .meta{font-size:10px; color:var(--muted); margin-top:3px; font-family:var(--mono);}
-.store-card button{flex:none; background:var(--accent); color:#04231d; border:none; border-radius:8px; padding:6px 12px; font-size:11.5px; font-weight:700; cursor:pointer;}
+.store-card .info .n{font-weight:700; font-size:15px; font-family:var(--mono);} .store-card .info .d{font-size:13px; color:var(--muted); margin-top:2px;}
+.store-card .meta{font-size:12px; color:var(--muted); margin-top:3px; font-family:var(--mono);}
+.store-card button{flex:none; background:var(--accent); color:#04231d; border:none; border-radius:var(--radius-sm); padding:6px 12px; font-size:12px; font-family:var(--pixel); font-weight:700; cursor:pointer;}
 .store-card button.installed{background:rgba(255,255,255,0.08); color:var(--muted);}
 .store-card button.soon{background:rgba(255,255,255,0.05); color:var(--muted); cursor:not-allowed;}
 
@@ -253,9 +265,9 @@ textarea.editor{width:100%; height:100%; background:#07080a; color:#d7ffe0; bord
 .ds-card .src{margin-top:14px; font-size:11px; color:var(--muted); font-family:var(--mono);}
 
 /* Guide */
-.guide h3{color:var(--accent); font-size:13px; margin:18px 0 8px; font-family:var(--mono);}
-.guide .kb{background:rgba(255,255,255,0.08); border:1px solid var(--line); border-radius:5px; padding:1px 7px; font-family:var(--mono); font-size:11.5px;}
-.guide li{margin-bottom:6px; font-size:12.5px; line-height:1.5;}
+.guide h3{color:var(--accent); font-size:15px; margin:18px 0 8px; font-family:var(--pixel); text-shadow:0 0 6px var(--glow);}
+.guide .kb{background:rgba(255,255,255,0.08); border:1px solid var(--line); border-radius:var(--radius-sm); padding:1px 7px; font-family:var(--mono); font-size:13.5px;}
+.guide li{margin-bottom:6px; font-size:14.5px; line-height:1.5; font-family:var(--mono);}
 
 /* Snake */
 .snake-wrap{display:flex; flex-direction:column; align-items:center; height:100%; justify-content:center; gap:10px; background:#05070b;}
@@ -273,17 +285,17 @@ textarea.editor{width:100%; height:100%; background:#07080a; color:#d7ffe0; bord
 .timer-shell{height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;}
 .timer-ring{position:relative; width:180px; height:180px;}
 .timer-ring canvas{position:absolute; inset:0;}
-.timer-ring .tt{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:30px; font-weight:700;}
+.timer-ring .tt{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:"Orbitron",var(--mono); font-size:30px; font-weight:700; color:var(--accent); text-shadow:0 0 10px var(--glow);}
 .timer-controls{display:flex; gap:10px;}
-.timer-controls button{background:rgba(255,255,255,0.08); border:1px solid var(--line); color:var(--text); border-radius:8px; padding:8px 16px; cursor:pointer; font-size:12.5px;}
+.timer-controls button{background:rgba(255,255,255,0.08); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:8px 16px; cursor:pointer; font-size:13px; font-family:var(--mono);}
 .timer-controls button.primary{background:var(--accent); color:#04231d; font-weight:700;}
 
 /* Kanban */
 .kanban{display:flex; gap:10px; padding:12px; height:100%; overflow:auto;}
-.kcol{flex:1; min-width:180px; background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px; padding:8px; display:flex; flex-direction:column;}
-.kcol h5{margin:0 0 8px; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--muted);}
-.kcard{background:rgba(255,255,255,0.06); border:1px solid var(--line); border-radius:8px; padding:8px; margin-bottom:6px; font-size:12px; cursor:grab;}
-.kcol .kadd{background:none; border:1px dashed var(--line); color:var(--muted); border-radius:8px; padding:6px; font-size:11px; cursor:pointer; margin-top:auto;}
+.kcol{flex:1; min-width:180px; background:rgba(255,255,255,0.03); border:2px solid var(--line); border-radius:var(--radius-md); padding:8px; display:flex; flex-direction:column;}
+.kcol h5{margin:0 0 8px; font-size:11px; font-family:var(--pixel); text-transform:uppercase; letter-spacing:1px; color:var(--accent);}
+.kcard{background:rgba(255,255,255,0.06); border:1px solid var(--line); border-radius:var(--radius-sm); padding:8px; margin-bottom:6px; font-size:14px; font-family:var(--mono); cursor:grab;}
+.kcol .kadd{background:none; border:1px dashed var(--line); color:var(--muted); border-radius:var(--radius-sm); padding:6px; font-size:13px; font-family:var(--mono); cursor:pointer; margin-top:auto;}
 
 /* Spotlight */
 #spotlight{position:fixed; inset:0; z-index:4000; display:none; align-items:flex-start; justify-content:center; padding-top:14vh; background:rgba(0,0,0,0.5);}
@@ -356,8 +368,9 @@ body.rainbow-mode #topbar{animation:rainbowHue 3.5s linear infinite;}
 #shutdownScreen .msg{font-family:var(--pixel); font-size:16px; text-shadow:0 0 12px var(--term-green); letter-spacing:1px;}
 #shutdownScreen .tip{margin-top:16px; color:#2a6b3d; font-size:16px;}
 #shutdownScreen .hint2{margin-top:60px; color:#1c4a2a; font-size:13px; animation:pulse 2s infinite;}
-body.powering-off #desktop, body.powering-off #topbar, body.powering-off #dock, body.powering-off #icons, body.powering-off #widgetCol, body.powering-off #pet{
+body.powering-off #desktop{
   animation:crtPowerOff .5s ease-in forwards;
+  transform-origin:center center;
 }
 @keyframes crtPowerOff{
   0%{transform:scale(1); opacity:1; filter:brightness(1);}
@@ -438,6 +451,7 @@ body.powering-off #desktop, body.powering-off #topbar, body.powering-off #dock, 
 </div>
 
 <div id="desktop">
+  <canvas id="bgAnimCanvas"></canvas>
   <div id="grid-overlay"></div>
 
   <div id="topbar">
@@ -449,6 +463,7 @@ body.powering-off #desktop, body.powering-off #topbar, body.powering-off #dock, 
       <span class="hot" id="btnSearch" title="Search (Ctrl+K)">⌕</span>
       <span class="hot" id="btnLock" title="Lock screen">⏻</span>
       <span class="hot" id="btnAbout" title="About VoidOS">◇</span>
+      <span class="hot" id="btnPower" title="Shut down">⏼</span>
       <span id="clock">00:00</span>
     </div>
   </div>
@@ -456,7 +471,7 @@ body.powering-off #desktop, body.powering-off #topbar, body.powering-off #dock, 
   <div id="icons"></div>
   <div id="widgetCol"></div>
   <div id="pet">🐈‍⬛</div>
-dont 
+
   <div id="windows"></div>
   <div id="dock"></div>
 </div>
@@ -473,10 +488,18 @@ dont
 <div id="ctxmenu"></div>
 <div class="toast" id="toast"></div>
 <div id="crtLayer"></div>
+<div id="crtChroma"></div>
+<div id="crtNoise"></div>
+<div id="powerLed"></div>
 <div id="snapGhost"></div>
 <canvas id="trailCanvas"></canvas>
 <canvas id="confettiCanvas"></canvas>
 <div id="matrixOverlay"><canvas id="matrixCanvas"></canvas><div class="mx-hint">click or press Esc to wake up</div></div>
+<div id="shutdownScreen">
+  <div class="msg">SYSTEM HALTED</div>
+  <div class="tip">It is now safe to power off.</div>
+  <div class="hint2">click anywhere to power back on</div>
+</div>
 
 <script>
 (function(){
@@ -516,12 +539,24 @@ lockEl.addEventListener('click', ()=>{
   setTimeout(()=>lockEl.style.display='none', 400);
 });
 
+/* ============ POWER / SHUTDOWN ============ */
+const shutdownEl = document.getElementById('shutdownScreen');
+document.getElementById('btnPower').addEventListener('click', ()=>{
+  if(!confirm('Shut down VoidOS?\n\nAnything saved to browser storage will still be there next boot.')) return;
+  document.body.classList.add('powering-off');
+  setTimeout(()=>{
+    shutdownEl.style.display='flex';
+  }, 480);
+});
+shutdownEl.addEventListener('click', ()=>{ location.reload(); });
+
 /* ============ TOAST ============ */
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
   clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'), 1800);
 }
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#ffb000'; }
 
 /* ============ PERSISTENCE ============
    Uses window.storage (available when VoidOS runs inside a Claude.ai artifact)
@@ -559,11 +594,19 @@ tickClock(); setInterval(tickClock,1000*15);
 
 /* ============ DESKTOP PET ============
    Reacts to the simulated CPU load in the System widget: past ~78% it gets
-   the zoomies (faster, more frequent hops); otherwise it occasionally naps. */
+   the zoomies (faster, more frequent hops); otherwise it occasionally naps.
+   Type (cat/dog/rabbit) is switchable live from Settings. */
 let latestCpu = 30;
+const petEmojis = { cat: '🐈\u200d⬛', dog: '🐕', rabbit: '🐰' };
+let petType = 'cat';
+function applyPetType(type){
+  if(!petEmojis[type]) return;
+  petType = type; voidSettings.petType = type;
+  const pet = document.getElementById('pet');
+  if(pet) pet.textContent = petEmojis[type];
+}
 (function(){
   const pet=document.getElementById('pet');
-  const BASE = '🐈\u200d⬛';
   let napping = false;
   function petBubble(msg){
     const b=document.createElement('div'); b.className='pet-bubble'; b.textContent=msg;
@@ -578,7 +621,7 @@ let latestCpu = 30;
     pet.classList.toggle('zoomies', fast);
     if(!fast && !napping && Math.random() < 0.16){
       napping = true; pet.textContent='😴'; pet.classList.add('sleeping');
-      setTimeout(()=>{ napping=false; pet.textContent=BASE; pet.classList.remove('sleeping'); wander(); }, 4200+Math.random()*3200);
+      setTimeout(()=>{ napping=false; pet.textContent=petEmojis[petType]; pet.classList.remove('sleeping'); wander(); }, 4200+Math.random()*3200);
       return;
     }
     const margin = fast?60:100;
@@ -587,10 +630,10 @@ let latestCpu = 30;
     pet.style.left=x+'px'; pet.style.top=y+'px';
     setTimeout(wander, fast ? (380+Math.random()*380) : (3000+Math.random()*3000));
   }
-  pet.style.top='300px'; pet.style.left='400px'; pet.textContent=BASE;
+  pet.style.top='300px'; pet.style.left='400px'; pet.textContent=petEmojis[petType];
   setTimeout(wander, 2000);
   pet.addEventListener('click', ()=>{
-    if(napping){ napping=false; pet.textContent=BASE; pet.classList.remove('sleeping'); }
+    if(napping){ napping=false; pet.textContent=petEmojis[petType]; pet.classList.remove('sleeping'); }
     pet.style.transform='scale(1.3) rotate(-8deg)';
     setTimeout(()=>pet.style.transform='', 200);
     petBubble(latestCpu>78 ? '💨' : '💕');
@@ -648,13 +691,82 @@ function sysTick(){
   memHist.push(mem); if(memHist.length>40) memHist.shift();
   document.getElementById('cpuVal').textContent = cpu.toFixed(0)+'%';
   document.getElementById('memVal').textContent = mem.toFixed(0)+'%';
-  drawGraph(document.getElementById('cpuGraph'), cpuHist, '#5eead4');
-  drawGraph(document.getElementById('memGraph'), memHist, '#f472b6');
+  drawGraph(document.getElementById('cpuGraph'), cpuHist, cssVar('--accent'));
+  drawGraph(document.getElementById('memGraph'), memHist, cssVar('--term-green'));
   const up = Math.floor((Date.now()-bootTime)/1000);
   const m=Math.floor(up/60), s=up%60;
   document.getElementById('uptimeVal').textContent = (m?m+'m ':'')+s+'s';
 }
 sysTick(); setInterval(sysTick, 1400);
+
+/* ============ LIVE WALLPAPER (procedural, generated in-browser — Settings > Live wallpaper) ============
+   No video/image files are downloaded; these are classic demoscene-style
+   effects (starfield / matrix rain / plasma) rendered live on canvas. */
+(function(){
+  const canvas = document.getElementById('bgAnimCanvas');
+  const ctx = canvas.getContext('2d');
+  let mode = 'off', raf = null, stars = [], mcols = [], t = 0;
+  function size(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', size); size();
+
+  function initStars(){ stars = Array.from({length:180}, () => ({ x:(Math.random()-0.5)*canvas.width, y:(Math.random()-0.5)*canvas.height, z:Math.random()*canvas.width })); }
+  function drawStars(){
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    const cx=canvas.width/2, cy=canvas.height/2;
+    ctx.fillStyle=cssVar('--accent');
+    stars.forEach(s=>{
+      s.z -= 4;
+      if(s.z<=0){ s.x=(Math.random()-0.5)*canvas.width; s.y=(Math.random()-0.5)*canvas.height; s.z=canvas.width; }
+      const k = 128/s.z;
+      const px = s.x*k+cx, py = s.y*k+cy;
+      if(px<0||px>canvas.width||py<0||py>canvas.height) return;
+      const r = (1-s.z/canvas.width)*2.4;
+      ctx.globalAlpha = 1-s.z/canvas.width;
+      ctx.beginPath(); ctx.arc(px,py,Math.max(0.5,r),0,Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha=1;
+  }
+  function initMatrix(){ mcols = new Array(Math.floor(canvas.width/16)).fill(0); }
+  function drawMatrix(){
+    ctx.fillStyle='rgba(0,0,0,0.10)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#1f7a3d'; ctx.font='14px monospace';
+    mcols.forEach((y,i)=>{
+      const ch = String.fromCharCode(0x30A0+Math.random()*96);
+      ctx.fillText(ch, i*16, y);
+      mcols[i] = (y>canvas.height && Math.random()>0.975) ? 0 : y+16;
+    });
+  }
+  function drawPlasma(){
+    t += 0.018;
+    const w=canvas.width, h=canvas.height, step=10;
+    for(let y=0;y<h;y+=step){
+      for(let x=0;x<w;x+=step){
+        const v = Math.sin(x*0.012+t) + Math.sin(y*0.014+t*1.3) + Math.sin((x+y)*0.009+t*0.8) + Math.sin(Math.sqrt(x*x+y*y)*0.012+t);
+        const hue = ((v+4)/8*360 + t*20) % 360;
+        ctx.fillStyle = `hsl(${hue},70%,${8+((v+4)/8)*10}%)`;
+        ctx.fillRect(x,y,step,step);
+      }
+    }
+  }
+  function frame(){
+    if(mode==='starfield') drawStars();
+    else if(mode==='matrix') drawMatrix();
+    else if(mode==='plasma') drawPlasma();
+    raf = requestAnimationFrame(frame);
+  }
+  window.setLiveWallpaper = function(newMode){
+    mode = newMode || 'off';
+    cancelAnimationFrame(raf);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    canvas.style.display = mode==='off' ? 'none' : 'block';
+    if(mode==='off') return;
+    size();
+    if(mode==='starfield') initStars();
+    if(mode==='matrix') initMatrix();
+    raf = requestAnimationFrame(frame);
+  };
+  canvas.style.display='none';
+})();
 
 /* ============ EASTER EGGS & AMBIENT EFFECTS ============ */
 
@@ -667,7 +779,7 @@ sysTick(); setInterval(sysTick, 1400);
   function size(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; cols = new Array(Math.floor(canvas.width/16)).fill(0); }
   function frame(){
     ctx.fillStyle='rgba(0,0,0,0.08)'; ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle='#5eead4'; ctx.font='14px monospace';
+    ctx.fillStyle='#33ff66'; ctx.font='14px monospace';
     cols.forEach((y,i)=>{
       const ch = String.fromCharCode(0x30A0+Math.random()*96);
       ctx.fillText(ch, i*16, y);
@@ -689,7 +801,7 @@ sysTick(); setInterval(sysTick, 1400);
 (function(){
   const canvas = document.getElementById('confettiCanvas');
   const ctx = canvas.getContext('2d');
-  const colors = ['#5eead4','#f472b6','#fbbf24','#60a5fa','#a78bfa','#4ade80'];
+  const colors = ['#ffb000','#33ff66','#33ccff','#ff2e88','#a259ff','#ffe066'];
   let parts=[], raf=null;
   function size(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
   window.addEventListener('resize', size); size();
@@ -809,7 +921,7 @@ addNode('kernel.log','file',SYSLOG,{content:"[boot] void-kernel 2.0 online\n[ok]
 const SYSETC = addNode('etc','folder',SYS,{id:'sysetc'});
 addNode('hosts','file',SYSETC,{content:"127.0.0.1   localhost\n::1         localhost\n"});
 addNode('motd','file',SYSETC,{content:"Message of the day: ctrl+k opens spotlight search from anywhere. Drag a window to a screen edge to snap it.\n"});
-addNode('version','file',SYS,{content:"VoidOS 2.0 \"Eclipse\"\nKernel: void-kernel 2.0\nWM: floating, compositing, edge-snap\nPersistence: browser storage (falls back to session-only)\n"});
+addNode('version','file',SYS,{content:"VoidOS 2.5 \"Phosphor\"\nKernel: void-kernel 2.0\nWM: floating, compositing, edge-snap\nPersistence: browser storage (falls back to session-only)\n"});
 const TRASH = addNode('Trash','folder',HOME,{id:'trash'});
 
 function fsPath(id){
@@ -1044,7 +1156,7 @@ registerApp('terminal', {title:'Terminal', glyph:'▣', color:'linear-gradient(1
   function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function printLine(html){ const d=document.createElement('div'); d.className='line'; d.innerHTML=html; out.appendChild(d); out.scrollTop=out.scrollHeight; }
   function shortPath(){ const p=fsPath(cwd); return p.replace(/^\/Home/,'~'); }
-  function prompt(){ return `<span class="prompt">guest@voidos</span>:<span style="color:#5eead4">${shortPath()}</span>$ `; }
+  function prompt(){ return `<span class="prompt">guest@voidos</span>:<span style="color:#33ff66">${shortPath()}</span>$ `; }
   function newInputLine(){
     const row=document.createElement('div'); row.className='line term-input-row';
     row.innerHTML = `<span>${prompt()}</span>`;
@@ -1086,9 +1198,9 @@ registerApp('terminal', {title:'Terminal', glyph:'▣', color:'linear-gradient(1
       case 'fortune': printLine(esc(fortunes[Math.floor(Math.random()*fortunes.length)])); break;
       case 'cowsay': printLine(cowsay(arg)); break;
       case 'theme': {
-        const idx = accents.indexOf(voidSettings.accent);
-        const next = accents[(idx+1+accents.length)%accents.length];
-        applyAccent(next); persistSettings(); printLine('accent set to '+next);
+        const idx = themePresets.findIndex(t=>t.id===voidSettings.theme);
+        const next = themePresets[(idx+1+themePresets.length)%themePresets.length];
+        applyTheme(next.id); persistSettings(); printLine('theme set to '+next.label.toLowerCase());
         break;
       }
       case 'crt': {
@@ -1145,10 +1257,10 @@ registerApp('terminal', {title:'Terminal', glyph:'▣', color:'linear-gradient(1
         break;
       }
       case 'neofetch':
-        printLine(`<pre style="margin:0;color:#5eead4">
+        printLine(`<pre style="margin:0;color:#33ff66">
   ▣▣▣▣▣    guest@voidos
   ▣   ▣    ────────────
-  ▣▣▣▣▣    OS: VoidOS 2.0 "Eclipse"
+  ▣▣▣▣▣    OS: VoidOS 2.5 "Phosphor"
   ▣   ▣    Shell: voidsh
   ▣▣▣▣▣    Uptime: ${document.getElementById('uptimeVal').textContent}
            WM: floating, compositing, edge-snap
@@ -1157,7 +1269,7 @@ registerApp('terminal', {title:'Terminal', glyph:'▣', color:'linear-gradient(1
 </pre>`);
         break;
       case 'sudo': printLine("guest is not in the sudoers file. This incident will not be reported (probably)."); break;
-      case 'matrix': printLine('<span style="color:#5eead4">wake up…</span>'); startMatrixRain(); break;
+      case 'matrix': printLine('<span style="color:#33ff66">wake up…</span>'); startMatrixRain(); break;
       case 'exit': printLine('(cannot exit — this terminal is load-bearing)'); break;
       default: printLine(esc(c)+': command not found — try "help"');
     }
@@ -1338,7 +1450,7 @@ registerApp('browser', {title:'Browser', glyph:'◎', color:'var(--blue)', w:720
 registerApp('paint', {title:'Paint', glyph:'✦', color:'var(--green)', w:560, h:440, build(body){
   body.innerHTML = `
     <div style="display:flex; gap:8px; padding:8px; border-bottom:1px solid var(--line); align-items:center;">
-      <input type="color" id="pColor" value="#5eead4" style="width:34px;height:28px;border:none;background:none;">
+      <input type="color" id="pColor" value="#ffb000" style="width:34px;height:28px;border:none;background:none;">
       <input type="range" id="pSize" min="1" max="40" value="6">
       <button id="pClear" style="background:rgba(255,255,255,0.08);border:1px solid var(--line);color:#dbe4ee;border-radius:6px;padding:4px 10px;cursor:pointer;">Clear</button>
     </div>
@@ -1379,13 +1491,17 @@ registerApp('synth', {title:'Synth Pads', glyph:'♪', color:'var(--accent2)', w
 
 /* ---- Music Player ---- */
 const playlist = [
-  {title:'Onyx Skyline', artist:'null/void', hue:190, notes:[261.6,329.6,392.0,523.3]},
-  {title:'Neon Alley Drift', artist:'kaimu', hue:280, notes:[293.7,349.2,440.0,587.3]},
-  {title:'Static Bloom', artist:'8-bit chorus', hue:20, notes:[220.0,277.2,329.6,440.0]},
-  {title:'Late Compile', artist:'ctrl+z', hue:150, notes:[196.0,246.9,293.7,392.0]},
-  {title:'Ember Loop', artist:'null/void', hue:340, notes:[233.1,293.7,349.2,466.2]},
+  {title:'Onyx Skyline', artist:'null/void', hue:190, wave:'triangle', tempo:700, notes:[261.6,329.6,392.0,523.3]},
+  {title:'Neon Alley Drift', artist:'kaimu', hue:280, wave:'square', tempo:620, notes:[293.7,349.2,440.0,587.3]},
+  {title:'Static Bloom', artist:'8-bit chorus', hue:20, wave:'sawtooth', tempo:540, notes:[220.0,277.2,329.6,440.0]},
+  {title:'Late Compile', artist:'ctrl+z', hue:150, wave:'triangle', tempo:760, notes:[196.0,246.9,293.7,392.0]},
+  {title:'Ember Loop', artist:'null/void', hue:340, wave:'square', tempo:660, notes:[233.1,293.7,349.2,466.2]},
+  {title:'Phosphor Dawn', artist:'kaimu', hue:45, wave:'triangle', tempo:580, notes:[349.2,415.3,466.2,523.3,392.0]},
+  {title:'Boot Sector Blues', artist:'ctrl+z', hue:210, wave:'sawtooth', tempo:820, notes:[164.8,196.0,220.0,246.9]},
+  {title:'Backrooms Arcade', artist:'8-bit chorus', hue:120, wave:'square', tempo:480, notes:[261.6,293.7,349.2,392.0,440.0,392.0]},
+  {title:'Dial-Up Reverie', artist:'null/void', hue:300, wave:'triangle', tempo:900, notes:[207.7,277.2,311.1,415.3]},
 ];
-registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)', w:400, h:560, build(body){
+registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)', w:400, h:600, build(body){
   let idx=0, playing=false, progress=0, timer=null, audioCtx=null, oscTimeouts=[];
   body.innerHTML = `
     <div class="mp">
@@ -1438,11 +1554,12 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
       if(!playing) return;
       const freq = t.notes[step % t.notes.length];
       const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
-      osc.type='triangle'; osc.frequency.value=freq; gain.gain.value=0.06;
+      osc.type=t.wave||'triangle'; osc.frequency.value=freq; gain.gain.value=0.06;
       osc.connect(gain); gain.connect(audioCtx.destination); osc.start();
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.9); osc.stop(audioCtx.currentTime+0.9);
+      const dur = (t.tempo||700)/1000*0.9;
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+dur); osc.stop(audioCtx.currentTime+dur);
       step++;
-      oscTimeouts.push(setTimeout(loopNote, 700));
+      oscTimeouts.push(setTimeout(loopNote, t.tempo||700));
     }
     loopNote();
   }
@@ -1572,7 +1689,7 @@ registerApp('doomscroll', {title:'Doomscroll', glyph:'▥', color:'var(--danger)
 }});
 
 /* ---- Guide ---- */
-registerApp('guide', {title:'Guide', glyph:'？', color:'var(--green)', w:480, h:560, desktopIcon:false, build(body){
+registerApp('guide', {title:'Guide', glyph:'？', color:'var(--green)', w:480, h:600, desktopIcon:false, build(body){
   body.innerHTML = `<div class="pad guide">
     <h3>Window management</h3>
     <ul>
@@ -1592,7 +1709,14 @@ registerApp('guide', {title:'Guide', glyph:'？', color:'var(--green)', w:480, h
       <li>Files app has a real nested tree: Home/Documents/Projects, Pictures, Music, Downloads, System, Trash</li>
       <li>Drag files onto folders (or the sidebar) to move them; right-click for Rename / Move to Trash</li>
       <li>Trash items can be Restored back to where they came from</li>
-      <li>Terminal shares the same filesystem — try <span class="kb">ls</span>, <span class="kb">cd</span>, <span class="kb">tree</span>, <span class="kb">cat</span>, <span class="kb">mkdir</span>, <span class="kb">history</span></li>
+      <li>Terminal shares the same filesystem — try <span class="kb">ls</span>, <span class="kb">cd</span>, <span class="kb">tree</span>, <span class="kb">cat</span>, <span class="kb">mkdir</span>, <span class="kb">history</span>, <span class="kb">theme</span>, <span class="kb">crt on|off</span></li>
+    </ul>
+    <h3>Retro shell</h3>
+    <ul>
+      <li>Settings → Phosphor theme switches the whole UI between Amber / Green / Blue / Pink / Purple / Mono</li>
+      <li>CRT scanlines are on by default — toggle them off in Settings if they're too much</li>
+      <li>Settings → Pet type swaps the desktop companion between cat / dog / rabbit, live</li>
+      <li>The power button in the top bar shuts the machine down properly — click the black screen to boot back up</li>
     </ul>
     <h3>Persistence</h3>
     <ul>
@@ -1612,16 +1736,24 @@ registerApp('guide', {title:'Guide', glyph:'？', color:'var(--green)', w:480, h
 
 /* ---- Settings ---- */
 const wallpapers = [
-  {id:'default', css:"radial-gradient(1200px 800px at 15% 8%, rgba(94,234,212,0.10), transparent 60%), radial-gradient(1000px 700px at 85% 90%, rgba(244,114,182,0.09), transparent 60%), linear-gradient(160deg,#0a0e16 0%, #060810 60%, #050608 100%)"},
-  {id:'violet', css:"radial-gradient(1100px 700px at 20% 10%, rgba(167,139,250,0.16), transparent 60%), radial-gradient(900px 700px at 80% 90%, rgba(94,234,212,0.10), transparent 60%), linear-gradient(160deg,#100a18 0%, #08050e 70%)"},
-  {id:'ember', css:"radial-gradient(1100px 700px at 80% 10%, rgba(251,146,60,0.16), transparent 60%), radial-gradient(900px 700px at 10% 90%, rgba(244,63,94,0.12), transparent 60%), linear-gradient(160deg,#150a08 0%, #0a0504 70%)"},
-  {id:'mint', css:"radial-gradient(1100px 750px at 30% 90%, rgba(74,222,128,0.14), transparent 60%), radial-gradient(900px 700px at 80% 10%, rgba(94,234,212,0.12), transparent 60%), linear-gradient(160deg,#061510 0%, #030a08 70%)"},
+  {id:'default', label:'Amber Glow', css:"repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 3px), radial-gradient(1300px 900px at 50% 0%, rgba(255,176,0,0.09), transparent 65%), linear-gradient(160deg,#0a0806 0%, #060504 60%, #020202 100%)"},
+  {id:'terminal', label:'Green Terminal', css:"repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 3px), radial-gradient(1200px 800px at 20% 10%, rgba(51,255,102,0.10), transparent 60%), linear-gradient(160deg,#04120a 0%, #020a06 70%, #010301 100%)"},
+  {id:'deepspace', label:'Deep Space', css:"radial-gradient(2px 2px at 20% 30%, #fff, transparent), radial-gradient(2px 2px at 70% 60%, #fff, transparent), radial-gradient(1px 1px at 40% 80%, #fff, transparent), radial-gradient(1100px 700px at 80% 10%, rgba(162,89,255,0.14), transparent 60%), linear-gradient(160deg,#0a071a 0%, #050310 70%, #020104 100%)"},
+  {id:'sunset', label:'Sunset CRT', css:"repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 3px), radial-gradient(1100px 700px at 80% 90%, rgba(255,46,136,0.14), transparent 60%), radial-gradient(900px 700px at 10% 10%, rgba(255,176,0,0.10), transparent 60%), linear-gradient(160deg,#180a10 0%, #0a0508 70%)"},
 ];
-const accents = ['#5eead4','#f472b6','#a78bfa','#fbbf24','#60a5fa','#4ade80'];
+const themePresets = [
+  {id:'default', label:'AMBER'}, {id:'green', label:'GREEN'}, {id:'blue', label:'BLUE'},
+  {id:'pink', label:'PINK'}, {id:'purple', label:'PURPLE'}, {id:'white', label:'MONO'},
+];
+const petTypeOptions = [ {id:'cat', label:'Cat', emoji:petEmojis.cat}, {id:'dog', label:'Dog', emoji:petEmojis.dog}, {id:'rabbit', label:'Rabbit', emoji:petEmojis.rabbit} ];
 
 /* Central settings object — hydrated from storage in hydrateAll(), applied immediately, persisted on every change. */
-let voidSettings = { accent: accents[0], wallpaper: 'default', pet: true, crt: false, trail: false, autoLock: false };
-function applyAccent(c){ document.documentElement.style.setProperty('--accent', c); voidSettings.accent=c; }
+let voidSettings = { theme:'default', wallpaper: 'default', pet: true, petType:'cat', crt: true, trail: false, autoLock: false, liveWallpaper: 'off' };
+function applyTheme(id){
+  const t = themePresets.find(x=>x.id===id) || themePresets[0];
+  if(t.id==='default') delete document.body.dataset.theme; else document.body.dataset.theme = t.id;
+  voidSettings.theme = t.id;
+}
 function applyWallpaper(id){
   const wp = wallpapers.find(w=>w.id===id) || wallpapers[0];
   document.getElementById('desktop').style.background = wp.css;
@@ -1631,7 +1763,14 @@ function applyPetVisible(on){ voidSettings.pet = on; document.getElementById('pe
 function applyCRT(on){ voidSettings.crt = on; document.body.classList.toggle('crt-on', on); }
 function applyTrail(on){ voidSettings.trail = on; document.body.classList.toggle('trail-on', on); }
 function applyAutoLock(on){ voidSettings.autoLock = on; armIdleLock(); }
+function applyLiveWallpaper(mode){ voidSettings.liveWallpaper = mode; if(window.setLiveWallpaper) setLiveWallpaper(mode); }
 function persistSettings(){ vSave('voidos:settings', voidSettings); }
+// Sync the visible DOM with the in-code defaults immediately (hydrateAll() will
+// re-apply these later if a saved session is found, but the CRT overlay etc.
+// should already be correct before that async load even starts).
+applyCRT(voidSettings.crt);
+applyTheme(voidSettings.theme);
+applyWallpaper(voidSettings.wallpaper);
 
 let idleTimer=null;
 function armIdleLock(){
@@ -1643,32 +1782,49 @@ function armIdleLock(){
 }
 ['mousemove','keydown','mousedown','touchstart','wheel'].forEach(evt=>window.addEventListener(evt, armIdleLock, {passive:true}));
 
-registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:460, h:600, desktopIcon:true, build(body){
+registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:460, h:660, desktopIcon:true, build(body){
   body.innerHTML = `<div class="pad">
-    <div class="settings-row"><div><div class="lbl">Accent color</div><div class="desc">Affects highlights across the OS</div></div><div style="display:flex; gap:8px;" id="accentRow"></div></div>
+    <div class="settings-row"><div><div class="lbl">Phosphor theme</div><div class="desc">Recolors the whole CRT interface</div></div><div style="display:flex; gap:6px; flex-wrap:wrap;" id="themeRow"></div></div>
     <div class="settings-row"><div><div class="lbl">Wallpaper</div><div class="desc">Desktop background</div></div><div style="display:flex; gap:8px;" id="wallRow"></div></div>
-    <div class="settings-row"><div><div class="lbl">Desktop pet</div><div class="desc">Show the wandering cat</div></div><div class="toggle" id="petToggle"><div class="knob"></div></div></div>
-    <div class="settings-row"><div><div class="lbl">CRT scanlines</div><div class="desc">Retro phosphor-glass overlay, void-todo item #3</div></div><div class="toggle" id="crtToggle"><div class="knob"></div></div></div>
-    <div class="settings-row"><div><div class="lbl">Cursor trail</div><div class="desc">A faint comet trail follows your pointer</div></div><div class="toggle" id="trailToggle"><div class="knob"></div></div></div>
+    <div class="settings-row"><div><div class="lbl">Desktop pet</div><div class="desc">Show the wandering companion</div></div><div class="toggle" id="petToggle"><div class="knob"></div></div></div>
+    <div class="settings-row"><div><div class="lbl">Pet type</div><div class="desc">What the desktop pet looks like</div></div>
+      <select id="petTypeSelect" style="background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:6px 10px; font-family:var(--mono); font-size:14px;">
+        ${petTypeOptions.map(p=>`<option value="${p.id}">${p.emoji} ${p.label}</option>`).join('')}
+      </select></div>
+    <div class="settings-row"><div><div class="lbl">CRT scanlines</div><div class="desc">Scanlines, vignette, flicker &amp; noise overlay</div></div><div class="toggle" id="crtToggle"><div class="knob"></div></div></div>
+    <div class="settings-row"><div><div class="lbl">Cursor trail</div><div class="desc">A faint phosphor trail follows your pointer</div></div><div class="toggle" id="trailToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Auto-lock</div><div class="desc">Lock the screen after 5 minutes idle</div></div><div class="toggle" id="lockToggle"><div class="knob"></div></div></div>
+    <div class="settings-row"><div><div class="lbl">Live wallpaper</div><div class="desc">Generated in-browser — no files downloaded</div></div>
+      <select id="liveWpSelect" style="background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:6px 10px; font-family:var(--mono); font-size:14px;">
+        <option value="off">Off</option>
+        <option value="starfield">Starfield</option>
+        <option value="matrix">Matrix rain</option>
+        <option value="plasma">Plasma waves</option>
+      </select></div>
     <div class="settings-row"><div><div class="lbl">Reset session</div><div class="desc">Close all windows and empty Trash</div></div>
-      <button id="resetBtn" style="background:var(--danger); border:none; color:#2a0a0a; border-radius:6px; padding:6px 12px; cursor:pointer; font-weight:700;">Reset</button></div>
+      <button id="resetBtn" style="background:var(--danger); border:none; color:#2a0a0a; border-radius:var(--radius-sm); padding:6px 12px; cursor:pointer; font-weight:700; font-family:var(--pixel); font-size:10px;">Reset</button></div>
     <div class="settings-row"><div><div class="lbl">Forget saved data</div><div class="desc">${hasVStore() ? 'Wipes everything VoidOS remembered on this device' : 'Persistence is off this session — nothing saved yet'}</div></div>
-      <button id="forgetBtn" ${hasVStore()?'':'disabled'} style="background:rgba(255,255,255,0.08); border:1px solid var(--line); color:var(--text); border-radius:6px; padding:6px 12px; cursor:pointer; font-weight:700;">Forget</button></div>
+      <button id="forgetBtn" ${hasVStore()?'':'disabled'} style="background:rgba(255,255,255,0.08); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:6px 12px; cursor:pointer; font-weight:700; font-family:var(--pixel); font-size:10px;">Forget</button></div>
   </div>`;
-  const accentRow = body.querySelector('#accentRow');
-  accents.forEach(c=>{
-    const s=document.createElement('div'); s.className='swatch'+(voidSettings.accent===c?' active':'');
-    s.style.background=c;
-    s.addEventListener('click', ()=>{ applyAccent(c); persistSettings(); accentRow.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active')); s.classList.add('active'); });
-    accentRow.appendChild(s);
+  const themeRow = body.querySelector('#themeRow');
+  const themeColors = {default:'#ffb000', green:'#33ff66', blue:'#33ccff', pink:'#ff2e88', purple:'#a259ff', white:'#f2f6ff'};
+  themePresets.forEach(t=>{
+    const s=document.createElement('div'); s.className='theme-swatch'+(voidSettings.theme===t.id?' active':'');
+    s.style.color = themeColors[t.id]; s.style.background='rgba(255,255,255,0.04)'; s.title=t.label;
+    s.textContent = t.label[0];
+    s.addEventListener('click', ()=>{ applyTheme(t.id); persistSettings(); themeRow.querySelectorAll('.theme-swatch').forEach(x=>x.classList.remove('active')); s.classList.add('active'); });
+    themeRow.appendChild(s);
   });
   const wallRow = body.querySelector('#wallRow');
   wallpapers.forEach(wp=>{
-    const t=document.createElement('div'); t.className='wallthumb'+(voidSettings.wallpaper===wp.id?' active':''); t.style.background=wp.css;
+    const t=document.createElement('div'); t.className='wallthumb'+(voidSettings.wallpaper===wp.id?' active':''); t.style.background=wp.css; t.title=wp.label;
     t.addEventListener('click', ()=>{ applyWallpaper(wp.id); persistSettings(); wallRow.querySelectorAll('.wallthumb').forEach(x=>x.classList.remove('active')); t.classList.add('active'); });
     wallRow.appendChild(t);
   });
+  body.querySelector('#petTypeSelect').value = petType;
+  body.querySelector('#petTypeSelect').addEventListener('change', (e)=>{ applyPetType(e.target.value); persistSettings(); });
+  body.querySelector('#liveWpSelect').value = voidSettings.liveWallpaper;
+  body.querySelector('#liveWpSelect').addEventListener('change', (e)=>{ applyLiveWallpaper(e.target.value); persistSettings(); });
   function wireToggle(sel, get, set){
     const el = body.querySelector(sel);
     el.classList.toggle('on', get());
@@ -1694,17 +1850,18 @@ registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:
 }});
 
 /* ---- About ---- */
-registerApp('about', {title:'About VoidOS', glyph:'◈', color:'var(--accent)', w:400, h:520, desktopIcon:false, dock:false, build(body){
-  body.innerHTML = `<div class="about-hero"><div class="glyph">◈</div><h2>VOIDOS</h2>
-    <p>A window manager with edge-snapping, a nested virtual filesystem with drag-and-drop, a terminal, an app store, ${Object.keys(APPS).length}+ apps, and a persistence layer — all running client-side in this browser tab. No server, no accounts.</p></div>
-    <div class="kv"><span>Version</span><span>2.0 "Eclipse"</span></div>
+registerApp('about', {title:'About VoidOS', glyph:'◈', color:'var(--accent)', w:400, h:560, desktopIcon:false, dock:false, build(body){
+  body.innerHTML = `<div class="about-hero"><div class="glyph">◈</div><h2>VOIDOS RETRO</h2>
+    <p>A window manager with edge-snapping, a nested virtual filesystem with drag-and-drop, a terminal, an app store, ${Object.keys(APPS).length}+ apps, a CRT phosphor shell, and a persistence layer — all running client-side in this browser tab. No server, no accounts.</p></div>
+    <div class="kv"><span>Version</span><span>2.5 "Phosphor"</span></div>
     <div class="kv"><span>Engine</span><span>vanilla JS, no framework</span></div>
+    <div class="kv"><span>Theme</span><span>${(themePresets.find(t=>t.id===voidSettings.theme)||themePresets[0]).label} phosphor${voidSettings.crt?' + CRT':''}</span></div>
     <div class="kv"><span>Filesystem</span><span>node-based, nested, drag-and-drop</span></div>
     <div class="kv"><span>Window manager</span><span>floating, edge-snap (drag to a screen edge)</span></div>
     <div class="kv"><span>Storage</span><span>${hasVStore()?'persistent (browser storage detected)':'session-only (no storage backend this session)'}</span></div>
     <div class="kv"><span>Apps installed</span><span>${installed.size} / ${storeCatalog.length} from the Store</span></div>
     <div class="kv"><span>Achievements</span><span>${unlockedAchievements.size} / ${achievementDefs.length} found</span></div>
-    <div style="padding:10px 18px 16px; font-size:11px; color:var(--muted); line-height:1.5;">Try: Ctrl+K to search, Alt+Tab to switch windows, dragging a window to a screen edge, and the Konami code.</div>`;
+    <div style="padding:10px 18px 16px; font-size:13px; color:var(--muted); line-height:1.6; font-family:var(--mono);">Try: Ctrl+K to search, Alt+Tab to switch windows, dragging a window to a screen edge, the power button up top, and the Konami code. Retro shell inspired by mateszko090214/WebOS.</div>`;
 }});
 
 /* ---- Snake (installable) ---- */
@@ -1714,9 +1871,9 @@ registerApp('snake', {title:'Snake', glyph:'▓', color:'var(--green)', w:380, h
   const size=15, cells=20; let snake=[{x:10,y:10}], dir={x:1,y:0}, nextDir=dir, food={x:5,y:5}, score=0, alive=true, tick=null;
   function placeFood(){ food={x:Math.floor(Math.random()*cells), y:Math.floor(Math.random()*cells)}; }
   function draw(){
-    ctx.fillStyle='#05070b'; ctx.fillRect(0,0,300,300);
-    ctx.fillStyle='#f472b6'; ctx.fillRect(food.x*size, food.y*size, size-1, size-1);
-    ctx.fillStyle='#5eead4';
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,300,300);
+    ctx.fillStyle=cssVar('--accent'); ctx.fillRect(food.x*size, food.y*size, size-1, size-1);
+    ctx.fillStyle='#33ff66';
     snake.forEach((s,i)=>{ ctx.globalAlpha = i===0?1:0.7; ctx.fillRect(s.x*size, s.y*size, size-1, size-1); });
     ctx.globalAlpha=1;
     if(!alive){ ctx.fillStyle='rgba(0,0,0,0.6)'; ctx.fillRect(0,0,300,300); ctx.fillStyle='#fff'; ctx.font='16px monospace'; ctx.textAlign='center'; ctx.fillText('Game over — press R', 150, 150); }
@@ -1771,7 +1928,7 @@ registerApp('timer', {title:'Focus Timer', glyph:'◷', color:'var(--amber)', w:
     ctx.clearRect(0,0,180,180);
     ctx.beginPath(); ctx.arc(90,90,78,0,Math.PI*2); ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=10; ctx.stroke();
     const frac = remaining/total;
-    ctx.beginPath(); ctx.arc(90,90,78,-Math.PI/2, -Math.PI/2 + frac*Math.PI*2); ctx.strokeStyle='#5eead4'; ctx.lineWidth=10; ctx.lineCap='round'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(90,90,78,-Math.PI/2, -Math.PI/2 + frac*Math.PI*2); ctx.strokeStyle=cssVar('--accent'); ctx.lineWidth=10; ctx.lineCap='round'; ctx.stroke();
     const m=Math.floor(remaining/60), s=remaining%60;
     body.querySelector('#tText').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
@@ -1821,7 +1978,7 @@ registerApp('kanban', {title:'Kanban Board', glyph:'▦', color:'var(--violet)',
 registerApp('colorlab', {title:'Color Lab', glyph:'◐', color:'linear-gradient(135deg,#5eead4,#0d9488)', w:460, h:380, installedShortcut:true, hiddenUntilInstalled:true, build(body){
   body.innerHTML = `<div class="cl-shell">
     <div class="cl-top">
-      <input type="color" id="clBase" value="#5eead4"/>
+      <input type="color" id="clBase" value="#ffb000"/>
       <select id="clMode">
         <option value="analogous">Analogous</option>
         <option value="complementary">Complementary</option>
@@ -2028,7 +2185,7 @@ registerApp('dotfiles', {title:'Dotfiles Sync', glyph:'⌗', color:'linear-gradi
 /* ---- Mail (installable) — fictional inbox, reuses the Files-app shell classes ---- */
 let mailData = {
   inbox: [
-    {id:1, from:'sysadmin@void.os', subj:'Welcome to VoidOS 2.0 "Eclipse"', body:"Thanks for updating. Check Settings for CRT scanlines, cursor trail and auto-lock — and drag a window to a screen edge to snap it.", read:false},
+    {id:1, from:'sysadmin@void.os', subj:'Welcome to VoidOS 2.5 "Phosphor"', body:"Thanks for updating. Check Settings for CRT scanlines, cursor trail and auto-lock — and drag a window to a screen edge to snap it.", read:false},
     {id:2, from:'noreply@voidstore.os', subj:'New in the Store', body:'Color Lab, Sudoku, Distro Tracker, Dotfiles Sync, Task Manager, Calendar and Achievements are all live now. Nothing left in "coming soon."', read:false},
     {id:3, from:'kernel@void.os', subj:'Persistence layer status', body:hasVStore() ? 'Browser storage detected — your files, notes, and settings will survive a reload.' : 'No storage backend detected this session — everything will reset on reload, same as v1.', read:false},
   ],
@@ -2159,7 +2316,7 @@ registerApp('calendar', {title:'Calendar', glyph:'▦', color:'linear-gradient(1
       const hasEvents = calendarEvents[k] && calendarEvents[k].length;
       cell.textContent=d;
       cell.style.cssText = `text-align:center;padding:6px 0;border-radius:6px;cursor:pointer;font-size:12px;
-        background:${k===selDate?'rgba(94,234,212,0.18)':'transparent'};
+        background:${k===selDate?cssVar('--glow'):'transparent'};
         border:1px solid ${isToday?'var(--accent)':'transparent'};
         color:${hasEvents?'var(--accent)':'var(--text)'};`;
       cell.addEventListener('click', ()=>{ selDate=k; render(); renderEvents(); });
@@ -2411,8 +2568,9 @@ async function hydrateAll(){
     const savedSettings = await vLoad('voidos:settings', null);
     if(savedSettings){
       Object.assign(voidSettings, savedSettings);
-      applyAccent(voidSettings.accent); applyWallpaper(voidSettings.wallpaper);
-      applyPetVisible(voidSettings.pet); applyCRT(voidSettings.crt);
+      applyTheme(voidSettings.theme); applyWallpaper(voidSettings.wallpaper);
+      applyPetVisible(voidSettings.pet); applyPetType(voidSettings.petType||'cat'); applyCRT(voidSettings.crt);
+      applyLiveWallpaper(voidSettings.liveWallpaper||'off');
       applyTrail(voidSettings.trail); applyAutoLock(voidSettings.autoLock);
     }
     const savedFS = await vLoad('voidos:fs', null);
