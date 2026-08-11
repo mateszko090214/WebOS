@@ -19,6 +19,8 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Matrix rain** effect (terminal easter egg)
 - **Confetti burst** (Konami code easter egg)
 - **Cursor trail** effect (configurable in settings)
+- **Custom hand-drawn cursor** sprite for authentic retro feel
+- **Procedural live wallpapers** (starfield, matrix rain, plasma waves) - generated in-browser
 
 ### Retro Themes & Wallpapers
 - **6 built-in phosphor themes**: Green (classic terminal), Blue, Pink, Purple, White, and custom colors
@@ -29,6 +31,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
   - RGB composite artifact
 - **ThemeEngine** that accepts spectral power distributions for accurate phosphor emulation
 - **Dynamic theme switching** with persistence via IndexedDB
+- **Live wallpaper system** with procedural generation (starfield/matrix rain/plasma)
 
 ### Authentic Terminal Experience
 - **True CGA/EGA/VGA color palettes** with customizable intensity
@@ -38,6 +41,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **"Degauss" command** that temporarily warps display (with recovery)
 - **Cursor blink rate** that respects system accessibility settings
 - **Terminal bell** filtered through CRT speaker simulation
+- **Enhanced command history** and additional utilities
 
 ### Retro Inspector DevTool
 - Real-time toggling of individual CRT effects (scanlines, curvature, bloom, phosphor bloom, chromatic shift)
@@ -50,9 +54,11 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Snap-to-edges** functionality (drag window to screen edge to maximize/split)
 - **Window minimization/maximization** with animations
 - **Resize handles** on windows
-- **Desktop pet** (cat) that reacts to system CPU load
+- **Desktop pet** (cat/dog/rabbit) that reacts to system CPU load
 - **Desktop icons** for apps and files
 - **Taskbar/dock** with running indicators
+- **Enhanced titlebar styling** with pulsing indicators
+- **Retro beveled button styling** throughout windows and menus
 
 ### Filesystem & Apps
 - **Virtual FileSystem** with persistence via browser storage (falls back to session-only)
@@ -61,6 +67,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Drag and drop** file management
 - **Trash can** with restore/permanent delete
 - **IndexedDB-backed preferences** per user
+- **Enhanced drag-and-drop** between folders in Files app
 
 ### System Utilities
 - **System monitor** widget showing CPU, memory, and uptime
@@ -73,6 +80,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Guides/tutorials** system
 - **Classic games**: Snake, Sudoku, Calculator
 - **Terminal utilities**: ls, cd, cat, echo, whoami, date, neofetch, fortune, cowsay, theme, crt, matrix, sudo, help, history, clear, open, apps, mkdir, touch, rm, tree, pwd, echo, etc.
+- **Achievements system** to track unlocked easter eggs and challenges
 
 ### Entertainment & Productivity
 - **Music player** with visualization and playlists
@@ -88,11 +96,12 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Distro tracker** for logging OS trials
 
 ### Easter Eggs & Secrets
-- **Konami code** (↑↑↓↓←→←→BA) for confetti burst
+- **Konami code** (  ↑  ↑  ↓  ↓←→←→BA) for confetti burst
 - **Matrix rain** (type "matrix" in terminal)
 - **Rainbow mode** (click VoidOS brand 10x in top bar)
 - **Secret commands** in terminal
 - **Hidden features** throughout the OS
+- **Achievement tracking** for discovering secrets
 
 ## Technical Implementation
 
@@ -105,6 +114,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Modular JavaScript** architecture with app registration system
 - **Virtual DOM-like** filesystem implementation
 - **Event-driven** window management system
+- **Procedural generation** for live wallpapers (no external assets)
 
 ## Getting Started
 
@@ -112,6 +122,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 2. **Open**: Open `retrovoid.html` in any modern browser
 3. **Explore**: Click around, try the terminal, open apps, customize settings
 4. **Easter eggs**: Try the Konami code, type "matrix" in terminal, or click the brand logo 10x
+5. **Live wallpaper**: Go to Settings > Display > Live wallpaper to try starfield, matrix rain, or plasma effects
 
 ## Try it Live
 
@@ -135,6 +146,7 @@ https://github.com/mateszko090214/WebOS.git
 - Modify JavaScript to add new apps or features
 - Add wallpapers to the Pictures folder in the virtual filesystem
 - Extend the ThemeEngine with new phosphor profiles
+- Create custom live wallpaper modes using the procedural generation system
 
 ## Browser Support
 
@@ -144,7 +156,7 @@ Works in all modern browsers:
 - Safari
 - Edge
 
-Note: Some advanced CSS filters may have varying performance across browsers.
+Note: Some advanced CSS filters and procedural animations may have varying performance across browsers.
 
 ## Credits
 
@@ -158,4 +170,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 Copyright (c) 2026 mateszko090214
 
-*Last updated: August 2, 2026*
+*Last updated: August 11, 2026*
