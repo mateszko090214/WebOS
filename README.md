@@ -21,6 +21,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Cursor trail** effect (configurable in settings)
 - **Custom hand-drawn cursor** sprite for authentic retro feel
 - **Procedural live wallpapers** (starfield, matrix rain, plasma waves) - generated in-browser
+- **Video background live wallpapers** (YouTube embeds) with automatic fallback to procedural effects
 
 ### Retro Themes & Wallpapers
 - **6 built-in phosphor themes**: Green (classic terminal), Blue, Pink, Purple, White, and custom colors
@@ -31,11 +32,12 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
   - RGB composite artifact
 - **ThemeEngine** that accepts spectral power distributions for accurate phosphor emulation
 - **Dynamic theme switching** with persistence via IndexedDB
-- **Live wallpaper system** with procedural generation (starfield/matrix rain/plasma)
+- **Live wallpaper system** with procedural generation (starfield/matrix rain/plasma) and video backgrounds
 
 ### Authentic Terminal Experience
 - **True CGA/EGA/VGA color palettes** with customizable intensity
-- **Boot sequence** mimicking POST beeps, memory count, and BIOS splash screen
+- **Enhanced boot sequence** with detailed systemd-like boot logs showing service initialization
+- **Persistence layer status** displayed during boot (browser storage vs session-only)
 - **System sounds** regenerated using Web Audio API to emulate SN76489 and AY-3-8910 chips
 - **Power-down surge** shutdown animation with fading glow
 - **"Degauss" command** that temporarily warps display (with recovery)
@@ -96,7 +98,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Distro tracker** for logging OS trials
 
 ### Easter Eggs & Secrets
-- **Konami code** (  ↑  ↑  ↓  ↓←→←→BA) for confetti burst
+- **Konami code** ( ↑ ↑   ↓   ↓←→←→BA) for confetti burst
 - **Matrix rain** (type "matrix" in terminal)
 - **Rainbow mode** (click VoidOS brand 10x in top bar)
 - **Secret commands** in terminal
@@ -115,6 +117,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 - **Virtual DOM-like** filesystem implementation
 - **Event-driven** window management system
 - **Procedural generation** for live wallpapers (no external assets)
+- **YouTube embed integration** for video backgrounds with intelligent fallback
 
 ## Getting Started
 
@@ -122,16 +125,12 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 2. **Open**: Open `retrovoid.html` in any modern browser
 3. **Explore**: Click around, try the terminal, open apps, customize settings
 4. **Easter eggs**: Try the Konami code, type "matrix" in terminal, or click the brand logo 10x
-5. **Live wallpaper**: Go to Settings > Display > Live wallpaper to try starfield, matrix rain, or plasma effects
+5. **Live wallpaper**: Go to Settings > Display > Live wallpaper to try starfield, matrix rain, plasma, or video effects
 
 ## Try it Live
 
 Experience VoidOS Retro instantly: [https://web-void-os.netlify.app](https://web-void-os.netlify.app)
 
-## Download the Retro OS (Main Project)
-
-This is a side project of the Retro OS. Get the main project here:
-https://github.com/mateszko090214/WebOS.git
 
 ## Development
 
@@ -147,8 +146,9 @@ https://github.com/mateszko090214/WebOS.git
 - Add wallpapers to the Pictures folder in the virtual filesystem
 - Extend the ThemeEngine with new phosphor profiles
 - Create custom live wallpaper modes using the procedural generation system
+- Add YouTube video IDs to `bgVideoIds` for additional video backgrounds
 
-## Browser Support
+### Browser Support
 
 Works in all modern browsers:
 - Chrome/Chromium (recommended)
@@ -156,7 +156,7 @@ Works in all modern browsers:
 - Safari
 - Edge
 
-Note: Some advanced CSS filters and procedural animations may have varying performance across browsers.
+Note: Some advanced CSS filters, procedural animations, and YouTube embeds may have varying performance across browsers. Video backgrounds include automatic fallback to procedural effects if embeds fail to load.
 
 ## Credits
 
@@ -170,4 +170,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 Copyright (c) 2026 mateszko090214
 
-*Last updated: August 11, 2026*
+*Last updated: August 14, 2026*
