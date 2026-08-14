@@ -1,4 +1,13 @@
 VoidOS Retro - Changelog
+[v0.94] - Video Backgrounds & Boot Enhancements
+Added
+Video background live wallpaper options (YouTube embeds) with fallback to procedural starfield
+Enhanced boot sequence with detailed systemd-like boot logs (Journal Service, udev, etc.)
+Persistence layer status detection shown in boot logs
+Enhanced
+Live wallpaper system to support video modes alongside procedural ones
+Boot process realism with simulated system initialization
+Background video fallback to starfield if embed fails to load
 [v0.93] - Live Wallpaper & Polish Update
 Added
 Custom hand-drawn cursor sprite for authentic retro feel
