@@ -40,9 +40,9 @@ html,body{height:100%;margin:0;}
 body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow:hidden; user-select:none; font-size:15px; transition:background .4s;
   cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path d="M11 1 V8 M11 14 V21 M1 11 H8 M14 11 H21" stroke="%23ffb000" stroke-width="1.6"/><circle cx="11" cy="11" r="2.4" fill="none" stroke="%23ffb000" stroke-width="1.6"/></svg>') 11 11, crosshair;
 }
-#desktop{ border-radius:14px; box-shadow:0 0 0 3px #000, 0 0 0 5px #1a1a1a, inset 0 0 90px rgba(0,0,0,0.65), inset 0 0 220px rgba(0,0,0,0.4); }
 #desktop{
   position:fixed; inset:0;
+  border-radius:14px; box-shadow:0 0 0 3px #000, 0 0 0 5px #1a1a1a, inset 0 0 90px rgba(0,0,0,0.65), inset 0 0 220px rgba(0,0,0,0.4);
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 3px),
     radial-gradient(1300px 900px at 50% 0%, rgba(255,176,0,0.07), transparent 65%),
@@ -51,16 +51,22 @@ body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow
   transition:background 0.6s ease;
 }
 #bgAnimCanvas{position:absolute; inset:0; z-index:1; width:100%; height:100%; display:block; opacity:.55;}
+#bgVideoWrap{position:absolute; inset:0; z-index:1; overflow:hidden; display:none; pointer-events:none;}
+#bgVideoWrap.on{display:block;}
+#bgVideoFrame{position:absolute; top:50%; left:50%; width:100vw; height:56.25vw; min-width:177.78vh; min-height:100vh; transform:translate(-50%,-50%); opacity:.6;}
 #grid-overlay{position:absolute; inset:0; pointer-events:none; opacity:.5;
   background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
   background-size: 42px 42px; mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 75%);}
 
 /* ---------- BOOT ---------- */
 #boot{position:fixed; inset:0; background:#020202; z-index:9999; display:flex; align-items:center; justify-content:center; flex-direction:column; font-family:var(--mono); color:var(--accent); transition:opacity .5s ease;}
-#boot pre{font-family:var(--mono); font-size:20px; line-height:1.15; color:var(--accent); text-shadow:0 0 14px var(--glow); margin:0 0 22px;}
-#boot .bootline{font-size:18px; color:var(--accent2); min-height:22px; letter-spacing:.5px; text-shadow:0 0 6px var(--glow);}
-#boot .barwrap{width:320px; height:4px; background:rgba(255,255,255,0.08); margin-top:22px; border-radius:0; overflow:hidden; border:1px solid var(--line);}
-#boot .bar{height:100%; width:0%; background:var(--accent); box-shadow:0 0 10px var(--glow); transition:width .25s ease;}
+#boot pre{font-family:var(--mono); font-size:15px; line-height:1.15; color:var(--accent); text-shadow:0 0 10px var(--glow); margin:0 0 14px;}
+#boot-log{width:min(680px,86vw); height:340px; overflow:hidden; font-size:13.5px; line-height:1.65; text-align:left;}
+#boot-log .bl-line{white-space:pre-wrap; word-break:break-word; color:#aebac2;}
+#boot-log .bl-ok{color:#33ff66; text-shadow:0 0 5px rgba(51,255,102,0.6); font-weight:700;}
+#boot-log .bl-warn{color:#ffcf3d; text-shadow:0 0 5px rgba(255,207,61,0.6); font-weight:700;}
+#boot .barwrap{width:min(680px,86vw); height:4px; background:rgba(255,255,255,0.08); margin-top:14px; border-radius:0; overflow:hidden; border:1px solid var(--line);}
+#boot .bar{height:100%; width:0%; background:var(--accent); box-shadow:0 0 10px var(--glow); transition:width .2s ease;}
 
 /* ---------- LOCK SCREEN ---------- */
 #lock{position:fixed; inset:0; z-index:9000; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -221,6 +227,10 @@ textarea.editor{width:100%; height:100%; background:#07080a; color:#d7ffe0; bord
 .mp-list .track{display:flex; justify-content:space-between; padding:7px 16px; font-size:14px; font-family:var(--mono); cursor:pointer; color:var(--muted);}
 .mp-list .track:hover{background:rgba(255,255,255,0.05);}
 .mp-list .track.active{color:var(--accent); text-shadow:0 0 4px var(--glow);}
+.mp-list .track .mp-x{color:var(--danger); margin-left:8px; cursor:pointer;}
+.mp-import{padding:8px 16px; border-top:2px solid var(--line); border-bottom:2px solid var(--line);}
+.mp-import button{width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:8px; font-family:var(--pixel); font-size:10px; cursor:pointer;}
+.mp-import-hint{font-size:11px; color:var(--muted); margin-top:5px; font-family:var(--mono); text-align:center;}
 
 /* Notes */
 .notes-shell{display:flex; height:100%;}
@@ -439,7 +449,7 @@ body.powering-off #desktop{
 
 <div id="boot">
   <pre id="boot-logo"></pre>
-  <div class="bootline" id="boot-line">initializing kernel…</div>
+  <div id="boot-log"></div>
   <div class="barwrap"><div class="bar" id="boot-bar"></div></div>
 </div>
 
@@ -452,6 +462,7 @@ body.powering-off #desktop{
 
 <div id="desktop">
   <canvas id="bgAnimCanvas"></canvas>
+  <div id="bgVideoWrap"><iframe id="bgVideoFrame" allow="autoplay" frameborder="0"></iframe></div>
   <div id="grid-overlay"></div>
 
   <div id="topbar">
@@ -509,18 +520,74 @@ body.powering-off #desktop{
 const logo = ` █░█ █▀█ █ █▀▄ █▀█ █▀
  ▀▄▀ █▄█ █ █▄▀ █▄█ ▄█`;
 document.getElementById('boot-logo').textContent = logo;
-const bootLines = ["initializing kernel 2.0…","mounting virtual filesystem…","checking for saved state…","loading window manager…",
-  "arming snap-zone engine…","starting audio subsystem…","waking desktop pet…","calibrating sysmon daemon…","spawning shell…","welcome."];
-let bi=0;
-const bootLineEl = document.getElementById('boot-line'), bootBar = document.getElementById('boot-bar');
-function bootStep(){
-  bootLineEl.textContent = bootLines[bi];
-  bootBar.style.width = Math.round(((bi+1)/bootLines.length)*100)+"%";
-  bi++;
-  if(bi < bootLines.length){ setTimeout(bootStep, 220); }
-  else{ setTimeout(()=>{ const b=document.getElementById('boot'); b.style.opacity='0'; setTimeout(()=>b.remove(), 500); }, 300); }
+
+function buildBootEvents(){
+  const persisted = (typeof hasVStore==='function' && hasVStore());
+  return [
+    {t:'ok', s:'Started Journal Service.'},
+    {t:'ok', s:'Started udev Kernel Device Manager.'},
+    {t:'ok', s:'Mounted /dev/pts.'},
+    {t:'ok', s:'Mounted /sys/kernel/config.'},
+    {t:'ok', s:'Mounted /sys/kernel/debug.'},
+    {t:'tgt', s:'Local File Systems (Pre)'},
+    {t:'ok', s:'Mounted /boot.'},
+    {t:'ok', s:'Mounted /home.'},
+    {t:'ok', s:'Mounted /home/guest.'},
+    {t:'tgt', s:'Local File Systems'},
+    {t:'ok', s:'Started Load Kernel Modules.'},
+    {t:'ok', s:'Started Apply Kernel Variables.'},
+    {t:'ok', s:'Started Remount Root and Kernel File Systems.'},
+    {t:'ok', s:'Started Create System Users.'},
+    {t:'ok', s:'Started Create Static Device Nodes in /dev.'},
+    {t:'tgt', s:'System Initialization'},
+    {t:'svc', s:'void-kernel 2.5 compositor', d:170},
+    {t:'svc', s:'D-Bus System Message Bus', d:80},
+    {t:'svc', s:'Network Manager', d:200},
+    {t:'svc', s:'snap-zone engine', d:120},
+    {t:'svc', s:'audio subsystem (pipewire-void)', d:140},
+    {t:'svc', s:'desktop pet daemon', d:90},
+    {t:'svc', s:'crt phosphor compositor', d:120},
+    {t:'svc', s: persisted ? 'persistence layer (browser storage found)' : 'persistence layer (session-only, no backend found)', d:190},
+    {t:'tgt', s:'Network'},
+    {t:'svc', s:'OpenSSH Daemon', d:90},
+    {t:'svc', s:'Login Service', d:130},
+    {t:'tgt', s:'Multi-User System'},
+    {t:'svc', s:'Light Display Manager', d:220},
+    {t:'tgt', s:'Graphical Interface'},
+  ];
 }
-setTimeout(bootStep, 200);
+const bootLogEl = document.getElementById('boot-log'), bootBar = document.getElementById('boot-bar');
+function bootAddLine(html){
+  const d = document.createElement('div'); d.className='bl-line'; d.innerHTML = html;
+  bootLogEl.appendChild(d);
+  bootLogEl.scrollTop = bootLogEl.scrollHeight;
+  return d;
+}
+let bootEvents = null, bi = 0;
+function bootStep(){
+  if(bi >= bootEvents.length){
+    bootBar.style.width = '100%';
+    setTimeout(()=>{ const b=document.getElementById('boot'); b.style.opacity='0'; setTimeout(()=>b.remove(), 500); }, 320);
+    return;
+  }
+  const e = bootEvents[bi];
+  bootBar.style.width = Math.round((bi/bootEvents.length)*100)+'%';
+  if(e.t==='ok'){
+    bootAddLine('<span class="bl-ok">[  OK  ]</span> '+e.s);
+    bi++; setTimeout(bootStep, 30+Math.random()*45);
+  } else if(e.t==='tgt'){
+    bootAddLine('<span class="bl-ok">[  OK  ]</span> Reached target '+e.s+'.');
+    bi++; setTimeout(bootStep, 70+Math.random()*70);
+  } else if(e.t==='svc'){
+    const line = bootAddLine('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting '+e.s+'…');
+    setTimeout(()=>{
+      line.innerHTML = '<span class="bl-ok">[  OK  ]</span> Started '+e.s+'.';
+      bootLogEl.scrollTop = bootLogEl.scrollHeight;
+      bi++; setTimeout(bootStep, 30+Math.random()*40);
+    }, e.d||200);
+  }
+}
+setTimeout(()=>{ bootEvents = buildBootEvents(); bootStep(); }, 200);
 
 /* ============ LOCK SCREEN ============ */
 const lockEl = document.getElementById('lock');
@@ -700,10 +767,15 @@ function sysTick(){
 sysTick(); setInterval(sysTick, 1400);
 
 /* ============ LIVE WALLPAPER (procedural, generated in-browser — Settings > Live wallpaper) ============
-   No video/image files are downloaded; these are classic demoscene-style
-   effects (starfield / matrix rain / plasma) rendered live on canvas. */
+   No video/image files are downloaded or bundled; the "starfield/matrix/plasma"
+   modes are classic demoscene-style effects rendered live on canvas, and the
+   "video" modes just point an iframe at YouTube's own official embed player
+   (muted, looped) — nothing is fetched or stored by VoidOS itself. */
+const bgVideoIds = { yt1:'R8gGUhfsEo8', yt2:'XebI3THByOY' };
 (function(){
   const canvas = document.getElementById('bgAnimCanvas');
+  const videoWrap = document.getElementById('bgVideoWrap');
+  const videoFrame = document.getElementById('bgVideoFrame');
   const ctx = canvas.getContext('2d');
   let mode = 'off', raf = null, stars = [], mcols = [], t = 0;
   function size(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -754,11 +826,35 @@ sysTick(); setInterval(sysTick, 1400);
     else if(mode==='plasma') drawPlasma();
     raf = requestAnimationFrame(frame);
   }
+  let videoFallbackTimer = null;
+  function setVideo(id, modeTag){
+    clearTimeout(videoFallbackTimer);
+    let loaded = false;
+    videoFrame.onload = () => { loaded = true; };
+    if(videoFrame.dataset.id !== id){ videoFrame.src=''; videoFrame.dataset.id = id; }
+    videoWrap.classList.add('on');
+    // Give the embed a moment to actually load; if it never fires (blocked by
+    // a sandboxed preview, no network, etc.) fall back to a working animated
+    // wallpaper instead of leaving a blank rectangle.
+    videoFallbackTimer = setTimeout(()=>{
+      if(!loaded && mode===modeTag){
+        toast('Background video unavailable here — using Starfield instead.');
+        window.setLiveWallpaper('starfield');
+      }
+    }, 3500);
+    const src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&playsinline=1`;
+    videoFrame.src = src;
+  }
   window.setLiveWallpaper = function(newMode){
     mode = newMode || 'off';
     cancelAnimationFrame(raf);
+    clearTimeout(videoFallbackTimer);
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    canvas.style.display = mode==='off' ? 'none' : 'block';
+    canvas.style.display = (mode==='starfield'||mode==='matrix'||mode==='plasma') ? 'block' : 'none';
+    videoWrap.classList.remove('on');
+    if(mode==='video1') { setVideo(bgVideoIds.yt1, 'video1'); return; }
+    if(mode==='video2') { setVideo(bgVideoIds.yt2, 'video2'); return; }
+    videoFrame.src=''; delete videoFrame.dataset.id;
     if(mode==='off') return;
     size();
     if(mode==='starfield') initStars();
@@ -1501,8 +1597,10 @@ const playlist = [
   {title:'Backrooms Arcade', artist:'8-bit chorus', hue:120, wave:'square', tempo:480, notes:[261.6,293.7,349.2,392.0,440.0,392.0]},
   {title:'Dial-Up Reverie', artist:'null/void', hue:300, wave:'triangle', tempo:900, notes:[207.7,277.2,311.1,415.3]},
 ];
-registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)', w:400, h:600, build(body){
+registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)', w:420, h:660, build(body){
+  let library = playlist.map(t=>({...t, kind:'synth'}));
   let idx=0, playing=false, progress=0, timer=null, audioCtx=null, oscTimeouts=[];
+  let audioEl=null, vaTimer=null, vaFrame=0;
   body.innerHTML = `
     <div class="mp">
       <div class="mp-art"><canvas id="mpCanvas"></canvas></div>
@@ -1511,6 +1609,11 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
       <div class="mp-controls">
         <button id="mpPrev">⏮</button><button class="play" id="mpPlay">▶</button><button id="mpNext">⏭</button>
       </div>
+      <div class="mp-import">
+        <input type="file" id="mpFileInput" accept="audio/*" multiple style="display:none;">
+        <button id="mpImportBtn">+ Import music from this device</button>
+        <div class="mp-import-hint">Plays local files straight from your computer — nothing is uploaded or stored anywhere.</div>
+      </div>
       <div class="mp-list" id="mpList"></div>
     </div>`;
   const canvas = body.querySelector('#mpCanvas');
@@ -1518,29 +1621,46 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
   requestAnimationFrame(fitCanvas); new ResizeObserver(fitCanvas).observe(canvas);
   const ctx = canvas.getContext('2d');
   function drawArt(){
-    const w=canvas.width,h=canvas.height; const t=playlist[idx];
+    const w=canvas.width,h=canvas.height; const t=library[idx]; if(!t) return;
     const g = ctx.createLinearGradient(0,0,w,h);
     g.addColorStop(0, `hsl(${t.hue},70%,55%)`); g.addColorStop(1, `hsl(${(t.hue+60)%360},60%,25%)`);
     ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
     ctx.globalAlpha=0.5;
     for(let i=0;i<5;i++){
-      ctx.beginPath(); ctx.arc((Math.sin(i*1.3+progress/8)*.3+.5)*w, (Math.cos(i*1.7+progress/8)*.3+.5)*h, 40+i*10, 0, Math.PI*2);
-      ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=2; ctx.stroke();
+      ctx.beginPath(); ctx.arc((Math.sin(i*1.3+vaFrame/8)*.3+.5)*w, (Math.cos(i*1.7+vaFrame/8)*.3+.5)*h, 40+i*10, 0, Math.PI*2);
+      ctx.strokeStyle=playing?'rgba(255,255,255,0.3)':'rgba(255,255,255,0.12)'; ctx.lineWidth=2; ctx.stroke();
     }
     ctx.globalAlpha=1;
+    if(t.kind==='local'){ ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.font='11px '+getComputedStyle(document.body).fontFamily; ctx.textAlign='center'; ctx.fillText('LOCAL FILE', w/2, h-10); ctx.textAlign='left'; }
   }
+  function startVisualLoop(){ if(vaTimer) return; vaTimer=setInterval(()=>{ vaFrame++; drawArt(); }, 60); }
+  function stopVisualLoop(){ clearInterval(vaTimer); vaTimer=null; }
   const listEl = body.querySelector('#mpList');
+  function niceName(filename){
+    return filename.replace(/\.[^.]+$/, '').replace(/[_]+/g,' ').replace(/\s+/g,' ').trim();
+  }
   function renderList(){
     listEl.innerHTML='';
-    playlist.forEach((t,i)=>{
+    library.forEach((t,i)=>{
       const row=document.createElement('div'); row.className='track'+(i===idx?' active':'');
-      row.innerHTML=`<span>${t.title}</span><span>${t.artist}</span>`;
-      row.addEventListener('click', ()=>{ idx=i; loadTrack(); if(!playing) togglePlay(); });
+      row.innerHTML=`<span>${t.kind==='local'?'📁 ':''}${t.title}</span><span>${t.artist}${t.kind==='local'?' <span class="mp-x" data-i="'+i+'">×</span>':''}</span>`;
+      row.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('mp-x')){
+          e.stopPropagation();
+          if(t.url) URL.revokeObjectURL(t.url);
+          library.splice(i,1);
+          if(idx>=library.length) idx=library.length-1;
+          if(idx===i && playing) togglePlay();
+          loadTrack();
+          return;
+        }
+        idx=i; loadTrack(); if(!playing) togglePlay(); else { stopPlayback(); playCurrent(); }
+      });
       listEl.appendChild(row);
     });
   }
   function loadTrack(){
-    const t=playlist[idx];
+    const t=library[idx]; if(!t){ body.querySelector('#mpTitle').textContent='—'; body.querySelector('#mpArtist').textContent=''; return; }
     body.querySelector('#mpTitle').textContent=t.title;
     body.querySelector('#mpArtist').textContent=t.artist;
     progress=0; body.querySelector('#mpFill').style.width='0%';
@@ -1549,9 +1669,9 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
   function stopTones(){ oscTimeouts.forEach(clearTimeout); oscTimeouts=[]; }
   function playTones(){
     if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    const t=playlist[idx]; let step=0;
+    const t=library[idx]; let step=0;
     function loopNote(){
-      if(!playing) return;
+      if(!playing || library[idx]!==t) return;
       const freq = t.notes[step % t.notes.length];
       const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
       osc.type=t.wave||'triangle'; osc.frequency.value=freq; gain.gain.value=0.06;
@@ -1563,20 +1683,66 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
     }
     loopNote();
   }
+  function ensureAudioEl(){
+    if(audioEl) return audioEl;
+    audioEl = new Audio();
+    audioEl.addEventListener('ended', ()=>nextTrack());
+    audioEl.addEventListener('timeupdate', ()=>{
+      if(audioEl.duration){ progress=(audioEl.currentTime/audioEl.duration)*200; body.querySelector('#mpFill').style.width=(progress/200*100)+'%'; }
+    });
+    return audioEl;
+  }
+  function playCurrent(){
+    const t = library[idx]; if(!t) return;
+    if(t.kind==='local'){
+      const a = ensureAudioEl();
+      if(a.src !== t.url) a.src = t.url;
+      a.play().catch(()=>toast('Could not start playback — try pressing play again.'));
+    } else {
+      playTones();
+      if(!timer) timer=setInterval(()=>{
+        if(library[idx]!==t) return;
+        progress+=1; if(progress>=200){ nextTrack(); return; }
+        body.querySelector('#mpFill').style.width=(progress/200*100)+'%';
+      }, 300);
+    }
+  }
+  function stopPlayback(){ stopTones(); clearInterval(timer); timer=null; if(audioEl) audioEl.pause(); }
   function togglePlay(){
     playing=!playing;
     body.querySelector('#mpPlay').textContent = playing?'⏸':'▶';
-    if(playing){ playTones(); if(!timer) timer=setInterval(()=>{ progress+=1; if(progress>=200){ nextTrack(); return; } body.querySelector('#mpFill').style.width=(progress/200*100)+'%'; drawArt(); }, 300); }
-    else{ stopTones(); }
+    if(playing){ startVisualLoop(); playCurrent(); } else { stopVisualLoop(); stopPlayback(); }
   }
-  function nextTrack(){ idx=(idx+1)%playlist.length; loadTrack(); if(playing){ stopTones(); playTones(); } }
-  function prevTrack(){ idx=(idx-1+playlist.length)%playlist.length; loadTrack(); if(playing){ stopTones(); playTones(); } }
+  function nextTrack(){ if(!library.length) return; idx=(idx+1)%library.length; loadTrack(); if(playing){ stopPlayback(); playCurrent(); } }
+  function prevTrack(){ if(!library.length) return; idx=(idx-1+library.length)%library.length; loadTrack(); if(playing){ stopPlayback(); playCurrent(); } }
   body.querySelector('#mpPlay').addEventListener('click', togglePlay);
   body.querySelector('#mpNext').addEventListener('click', nextTrack);
   body.querySelector('#mpPrev').addEventListener('click', prevTrack);
-  body.querySelector('#mpProg').addEventListener('click', (e)=>{ const r=e.currentTarget.getBoundingClientRect(); progress=((e.clientX-r.left)/r.width)*200; body.querySelector('#mpFill').style.width=(progress/200*100)+'%'; });
+  body.querySelector('#mpProg').addEventListener('click', (e)=>{
+    const r=e.currentTarget.getBoundingClientRect(); const frac=(e.clientX-r.left)/r.width;
+    progress=frac*200; body.querySelector('#mpFill').style.width=(progress/200*100)+'%';
+    const t=library[idx];
+    if(t && t.kind==='local' && audioEl && audioEl.duration) audioEl.currentTime = frac*audioEl.duration;
+  });
+  body.querySelector('#mpImportBtn').addEventListener('click', ()=>body.querySelector('#mpFileInput').click());
+  body.querySelector('#mpFileInput').addEventListener('change', (e)=>{
+    const files = [...e.target.files];
+    if(!files.length) return;
+    files.forEach(f=>{
+      const url = URL.createObjectURL(f);
+      library.push({ title: niceName(f.name), artist:'Imported', hue: Math.floor(Math.random()*360), kind:'local', file:f, url });
+    });
+    toast(`Imported ${files.length} track${files.length>1?'s':''}`);
+    renderList();
+    if(library.length===files.length){ idx=0; loadTrack(); }
+    e.target.value='';
+  });
   loadTrack();
-  return { onClose(){ playing=false; stopTones(); clearInterval(timer); } };
+  return { onClose(){
+    playing=false; stopTones(); stopVisualLoop(); clearInterval(timer);
+    if(audioEl){ audioEl.pause(); audioEl.src=''; }
+    library.forEach(t=>{ if(t.url) URL.revokeObjectURL(t.url); });
+  } };
 }});
 
 /* ---- Notes ---- */
@@ -1717,6 +1883,14 @@ registerApp('guide', {title:'Guide', glyph:'？', color:'var(--green)', w:480, h
       <li>CRT scanlines are on by default — toggle them off in Settings if they're too much</li>
       <li>Settings → Pet type swaps the desktop companion between cat / dog / rabbit, live</li>
       <li>The power button in the top bar shuts the machine down properly — click the black screen to boot back up</li>
+      <li>Settings → Live wallpaper: Starfield / Matrix rain / Plasma waves, or a looping muted background video</li>
+      <li>Boot up close and read the log — it's a full (fictional) systemd-style startup, not just a spinner</li>
+    </ul>
+    <h3>Music</h3>
+    <ul>
+      <li>Built-in chiptune tracks are synthesized live in the browser — nothing is streamed or downloaded</li>
+      <li>Music Player → "Import music from this device" plays your own local audio files, straight from your computer</li>
+      <li>Imported tracks only last for that window's session — reload and just re-select them, it takes a few seconds</li>
     </ul>
     <h3>Persistence</h3>
     <ul>
@@ -1748,7 +1922,7 @@ const themePresets = [
 const petTypeOptions = [ {id:'cat', label:'Cat', emoji:petEmojis.cat}, {id:'dog', label:'Dog', emoji:petEmojis.dog}, {id:'rabbit', label:'Rabbit', emoji:petEmojis.rabbit} ];
 
 /* Central settings object — hydrated from storage in hydrateAll(), applied immediately, persisted on every change. */
-let voidSettings = { theme:'default', wallpaper: 'default', pet: true, petType:'cat', crt: true, trail: false, autoLock: false, liveWallpaper: 'off' };
+let voidSettings = { theme:'default', wallpaper: 'default', pet: true, petType:'cat', crt: true, trail: false, autoLock: false, liveWallpaper: 'video1' };
 function applyTheme(id){
   const t = themePresets.find(x=>x.id===id) || themePresets[0];
   if(t.id==='default') delete document.body.dataset.theme; else document.body.dataset.theme = t.id;
@@ -1771,6 +1945,7 @@ function persistSettings(){ vSave('voidos:settings', voidSettings); }
 applyCRT(voidSettings.crt);
 applyTheme(voidSettings.theme);
 applyWallpaper(voidSettings.wallpaper);
+setTimeout(()=>applyLiveWallpaper(voidSettings.liveWallpaper), 0);
 
 let idleTimer=null;
 function armIdleLock(){
@@ -1794,12 +1969,14 @@ registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:
     <div class="settings-row"><div><div class="lbl">CRT scanlines</div><div class="desc">Scanlines, vignette, flicker &amp; noise overlay</div></div><div class="toggle" id="crtToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Cursor trail</div><div class="desc">A faint phosphor trail follows your pointer</div></div><div class="toggle" id="trailToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Auto-lock</div><div class="desc">Lock the screen after 5 minutes idle</div></div><div class="toggle" id="lockToggle"><div class="knob"></div></div></div>
-    <div class="settings-row"><div><div class="lbl">Live wallpaper</div><div class="desc">Generated in-browser — no files downloaded</div></div>
+    <div class="settings-row"><div><div class="lbl">Live wallpaper</div><div class="desc">Procedural effects render in-browser; video options embed YouTube (muted)</div></div>
       <select id="liveWpSelect" style="background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:6px 10px; font-family:var(--mono); font-size:14px;">
         <option value="off">Off</option>
         <option value="starfield">Starfield</option>
         <option value="matrix">Matrix rain</option>
         <option value="plasma">Plasma waves</option>
+        <option value="video1">Video: Background 1</option>
+        <option value="video2">Video: Background 2</option>
       </select></div>
     <div class="settings-row"><div><div class="lbl">Reset session</div><div class="desc">Close all windows and empty Trash</div></div>
       <button id="resetBtn" style="background:var(--danger); border:none; color:#2a0a0a; border-radius:var(--radius-sm); padding:6px 12px; cursor:pointer; font-weight:700; font-family:var(--pixel); font-size:10px;">Reset</button></div>
