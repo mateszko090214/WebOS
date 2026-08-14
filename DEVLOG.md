@@ -54,5 +54,4 @@ Terminal bell sound was too sharp—now filtered through CRT speaker simulation
 Cursor blink rate wasn't respecting system accessibility settings
 Fixed a race condition where desktop icons would momentarily snap to grid on theme change
 Notes
-This is a side project of the Retro OS. Download the Retro OS from: https://github.com/mateszko090214/WebOS.git
 You can try VoidOS Retro live at: https://web-void-os.netlify.app
