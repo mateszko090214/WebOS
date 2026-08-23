@@ -1,6 +1,6 @@
 # VoidOS Retro – Phosphor Edition
 
-This is the new retro web OS, **"the void retro"**, a side project of the Retro OS.
+This is the new retro web OS, **"the void retro"**
 
 ## Overview
 
@@ -9,115 +9,130 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 ## Key Features
 
 ### Display & Visual Effects
-- **Authentic CRT curvature simulation** using CSS transforms and filters (not canvas-based)
-- **Dynamic scanline intensity** that responds to brightness levels like real phosphor decay
-- **CRT chromatic aberration** with adjustable color shift
-- **CRT bloom/glow** effects for that classic bloom look
-- **Phosphor persistence simulation** with configurable decay
-- **Degauss command** in terminal that temporarily warps the display with recovery animation
-- **Rainbow mode** easter egg (click VoidOS brand 10x)
-- **Matrix rain** effect (terminal easter egg)
-- **Confetti burst** (Konami code easter egg)
-- **Cursor trail** effect (configurable in settings)
-- **Custom hand-drawn cursor** sprite for authentic retro feel
-- **Procedural live wallpapers** (starfield, matrix rain, plasma waves) - generated in-browser
-- **Video background live wallpapers** (YouTube embeds) with automatic fallback to procedural effects
+| Feature | Description |
+|---------|-------------|
+| Authentic CRT curvature simulation | using CSS transforms and filters (not canvas-based) |
+| Dynamic scanline intensity | that responds to brightness levels like real phosphor decay |
+| CRT chromatic aberration | with adjustable color shift |
+| CRT bloom/glow | effects for that classic bloom look |
+| Phosphor persistence simulation | with configurable decay |
+| Degauss command | in terminal that temporarily warps the display with recovery animation |
+| Rainbow mode | easter egg (click VoidOS brand 10x) |
+| Matrix rain | effect (terminal easter egg) |
+| Confetti burst | (Konami code easter egg) |
+| Cursor trail | effect (configurable in settings) |
+| Custom hand-drawn cursor | sprite for authentic retro feel |
+| Procedural live wallpapers | (starfield, matrix rain, plasma waves) - generated in-browser |
+| Video background live wallpapers | (YouTube embeds) with automatic fallback to procedural effects |
 
 ### Retro Themes & Wallpapers
-- **6 built-in phosphor themes**: Green (classic terminal), Blue, Pink, Purple, White, and custom colors
-- **4 authentic vintage wallpapers**:
-  - IBM green terminal
-  - Apple II monitor 
-  - VT100 amber
-  - RGB composite artifact
-- **ThemeEngine** that accepts spectral power distributions for accurate phosphor emulation
-- **Dynamic theme switching** with persistence via IndexedDB
-- **Live wallpaper system** with procedural generation (starfield/matrix rain/plasma) and video backgrounds
+| Feature | Description |
+|---------|-------------|
+| 6 built-in phosphor themes | Green (classic terminal), Blue, Pink, Purple, White, and custom colors |
+| 4 authentic vintage wallpapers | IBM green terminal, Apple II monitor, VT100 amber, and RGB composite artifact |
+| ThemeEngine | that accepts spectral power distributions for accurate phosphor emulation |
+| Dynamic theme switching | with persistence via IndexedDB |
+| Live wallpaper system | with procedural generation (starfield/matrix rain/plasma) and video backgrounds |
 
 ### Authentic Terminal Experience
-- **True CGA/EGA/VGA color palettes** with customizable intensity
-- **Enhanced boot sequence** with detailed systemd-like boot logs showing service initialization
-- **Persistence layer status** displayed during boot (browser storage vs session-only)
-- **System sounds** regenerated using Web Audio API to emulate SN76489 and AY-3-8910 chips
-- **Power-down surge** shutdown animation with fading glow
-- **"Degauss" command** that temporarily warps display (with recovery)
-- **Cursor blink rate** that respects system accessibility settings
-- **Terminal bell** filtered through CRT speaker simulation
-- **Enhanced command history** and additional utilities
+| Feature | Description |
+|---------|-------------|
+| True CGA/EGA/VGA color palettes | with customizable intensity |
+| Enhanced boot sequence | with detailed systemd-like boot logs showing service initialization |
+| Persistence layer status | displayed during boot (browser storage vs session-only) |
+| System sounds | regenerated using Web Audio API to emulate SN76489 and AY-3-8910 chips |
+| Power-down surge | shutdown animation with fading glow |
+| "Degauss" command | that temporarily warps display (with recovery) |
+| Cursor blink rate | that respects system accessibility settings |
+| Terminal bell | filtered through CRT speaker simulation |
+| Enhanced command history | and additional utilities |
 
 ### Retro Inspector DevTool
-- Real-time toggling of individual CRT effects (scanlines, curvature, bloom, phosphor bloom, chromatic shift)
-- Performance impact overlay showing frame cost
-- Pure CSS solution keeping effects under 2ms frame cost even on integrated graphics
+| Feature | Description |
+|---------|-------------|
+| Real-time toggling | of individual CRT effects (scanlines, curvature, bloom, phosphor bloom, chromatic shift) |
+| Performance impact overlay | showing frame cost |
+| Pure CSS solution | keeping effects under 2ms frame cost even on integrated graphics |
 
 ### Desktop & Window Management
-- **Floating window manager** with compositing and edge-snapping
-- **Window persistence** option that leaves ghost images when dragging (like long-persistence phosphor)
-- **Snap-to-edges** functionality (drag window to screen edge to maximize/split)
-- **Window minimization/maximization** with animations
-- **Resize handles** on windows
-- **Desktop pet** (cat/dog/rabbit) that reacts to system CPU load
-- **Desktop icons** for apps and files
-- **Taskbar/dock** with running indicators
-- **Enhanced titlebar styling** with pulsing indicators
-- **Retro beveled button styling** throughout windows and menus
+| Feature | Description |
+|---------|-------------|
+| Floating window manager | with compositing and edge-snapping |
+| Window persistence | option that leaves ghost images when dragging (like long-persistence phosphor) |
+| Snap-to-edges | functionality (drag window to screen edge to maximize/split) |
+| Window minimization/maximization | with animations |
+| Resize handles | on windows |
+| Desktop pet | (cat/dog/rabbit) that reacts to system CPU load |
+| Desktop icons | for apps and files |
+| Taskbar/dock | with running indicators |
+| Enhanced titlebar styling | with pulsing indicators |
+| Retro beveled button styling | throughout windows and menus |
 
 ### Filesystem & Apps
-- **Virtual FileSystem** with persistence via browser storage (falls back to session-only)
-- **Pre-loaded apps**: Terminal, Files, Text Editor, Calculator, Music Player, Notes, Gallery, Store, Weather, Timer, Kanban, Spotlight, Window Switcher, and more
-- **Persistent settings** stored in IndexedDB with encrypted backup
-- **Drag and drop** file management
-- **Trash can** with restore/permanent delete
-- **IndexedDB-backed preferences** per user
-- **Enhanced drag-and-drop** between folders in Files app
+| Feature | Description |
+|---------|-------------|
+| Virtual FileSystem | with persistence via browser storage (falls back to session-only) |
+| Pre-loaded apps | Terminal, Files, Text Editor, Calculator, Music Player, Notes, Gallery, Store, Weather, Timer, Kanban, Spotlight, Window Switcher, and more |
+| Persistent settings | stored in IndexedDB with encrypted backup |
+| Drag and drop | file management |
+| Trash can | with restore/permanent delete |
+| IndexedDB-backed preferences | per user |
+| Enhanced drag-and-drop | between folders in Files app |
 
 ### System Utilities
-- **System monitor** widget showing CPU, memory, and uptime
-- **Clock widget** with date/time
-- **Quote/widget** system with rotating messages
-- **Settings app** with comprehensive customization
-- **Search/Spotlight** (Cmd+K or Ctrl+K)
-- **About dialog** with system information
-- **Doomscroll** feed for news/social media simulation
-- **Guides/tutorials** system
-- **Classic games**: Snake, Sudoku, Calculator
-- **Terminal utilities**: ls, cd, cat, echo, whoami, date, neofetch, fortune, cowsay, theme, crt, matrix, sudo, help, history, clear, open, apps, mkdir, touch, rm, tree, pwd, echo, etc.
-- **Achievements system** to track unlocked easter eggs and challenges
+| Feature | Description |
+|---------|-------------|
+| System monitor widget | showing CPU, memory, and uptime |
+| Clock widget | with date/time |
+| Quote/widget system | with rotating messages |
+| Settings app | with comprehensive customization |
+| Search/Spotlight | (Cmd+K or Ctrl+K) |
+| About dialog | with system information |
+| Doomscroll | feed for news/social media simulation |
+| Guides/tutorials | system |
+| Classic games | Snake, Sudoku, Calculator |
+| Terminal utilities | ls, cd, cat, echo, whoami, date, neofetch, fortune, cowsay, theme, crt, matrix, sudo, help, history, clear, open, apps, mkdir, touch, rm, tree, pwd, echo, etc. |
+| Achievements system | to track unlocked easter eggs and challenges |
 
 ### Entertainment & Productivity
-- **Music player** with visualization and playlists
-- **Notes app** with rich text editing
-- **Gallery** for image viewing
-- **Calculator** with scientific functions
-- **Weather app** 
-- **Timer/stopwatch**
-- **Kanban board** for task management
-- **Files app** for virtual filesystem browsing
-- **Store** for downloading additional themes/apps
-- **Dotfiles sync** tool
-- **Distro tracker** for logging OS trials
+| Feature | Description |
+|---------|-------------|
+| Music player | with visualization and playlists |
+| Notes app | with rich text editing |
+| Gallery | for image viewing |
+| Calculator | with scientific functions |
+| Weather app |  |
+| Timer/stopwatch |  |
+| Kanban board | for task management |
+| Files app | for virtual filesystem browsing |
+| Store | for downloading additional themes/apps |
+| Dotfiles sync | tool |
+| Distro tracker | for logging OS trials |
 
 ### Easter Eggs & Secrets
-- **Konami code** ( ↑ ↑   ↓   ↓←→←→BA) for confetti burst
-- **Matrix rain** (type "matrix" in terminal)
-- **Rainbow mode** (click VoidOS brand 10x in top bar)
-- **Secret commands** in terminal
-- **Hidden features** throughout the OS
-- **Achievement tracking** for discovering secrets
+| Feature | Description |
+|---------|-------------|
+| Konami code | ( ↑ ↑   ↓   ↓←→←→BA) for confetti burst |
+| Matrix rain | (type "matrix" in terminal) |
+| Rainbow mode | (click VoidOS brand 10x in top bar) |
+| Secret commands | in terminal |
+| Hidden features | throughout the OS |
+| Achievement tracking | for discovering secrets |
 
 ## Technical Implementation
-
-- **Pure HTML/CSS/JavaScript** - no frameworks or external dependencies
-- **CSS Grid/Flexbox** for responsive layouts
-- **CSS Animations/Transitions** for smooth UI interactions
-- **Web Audio API** for authentic chip sound synthesis
-- **LocalStorage/IndexedDB** for persistence
-- **RequestAnimationFrame** for efficient animations
-- **Modular JavaScript** architecture with app registration system
-- **Virtual DOM-like** filesystem implementation
-- **Event-driven** window management system
-- **Procedural generation** for live wallpapers (no external assets)
-- **YouTube embed integration** for video backgrounds with intelligent fallback
+| Implementation Detail | Description |
+|-----------------------|-------------|
+| Pure HTML/CSS/JavaScript | - no frameworks or external dependencies |
+| CSS Grid/Flexbox | for responsive layouts |
+| CSS Animations/Transitions | for smooth UI interactions |
+| Web Audio API | for authentic chip sound synthesis |
+| LocalStorage/IndexedDB | for persistence |
+| RequestAnimationFrame | for efficient animations |
+| Modular JavaScript | architecture with app registration system |
+| Virtual DOM-like | filesystem implementation |
+| Event-driven | window management system |
+| Procedural generation | for live wallpapers (no external assets) |
+| YouTube embed integration | for video backgrounds with intelligent fallback |
 
 ## Getting Started
 
@@ -131,6 +146,7 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 
 Experience VoidOS Retro instantly: [https://web-void-os.netlify.app](https://web-void-os.netlify.app)
 
+## Download the Retro OS (Main Project)
 
 ## Development
 
@@ -160,14 +176,14 @@ Note: Some advanced CSS filters, procedural animations, and YouTube embeds may h
 
 ## Credits
 
-Created by **mateszko090214** as a side project of the Retro OS.
+Created by **mate**
 
 Inspired by retro computing enthusiasts and the demoscene community.
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License - see (LICENSE) file for details.
 
 Copyright (c) 2026 mateszko090214
 
-*Last updated: August 14, 2026*
+*Last updated: August 23, 2026*
