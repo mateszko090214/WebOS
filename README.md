@@ -146,7 +146,6 @@ VoidOS Retro is a nostalgic desktop experience that simulates CRT effects, retro
 
 Experience VoidOS Retro instantly: [https://web-void-os.netlify.app](https://web-void-os.netlify.app)
 
-## Download the Retro OS (Main Project)
 
 ## Development
 
