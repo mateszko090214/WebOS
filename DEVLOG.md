@@ -1,6 +1,5 @@
 VoidOS Retro - Changelog
-[v0.95] - Professional Documentation Update
-Added
+[v0.95] 
 Type	Description
 Updated README.md and DEVLOG.md	to have a more professional presentation with tables and structured information
 Enhanced documentation	clarity and readability
