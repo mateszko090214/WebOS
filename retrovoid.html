@@ -1597,6 +1597,53 @@ const playlist = [
   {title:'Backrooms Arcade', artist:'8-bit chorus', hue:120, wave:'square', tempo:480, notes:[261.6,293.7,349.2,392.0,440.0,392.0]},
   {title:'Dial-Up Reverie', artist:'null/void', hue:300, wave:'triangle', tempo:900, notes:[207.7,277.2,311.1,415.3]},
 ];
+/* ---- Local music library (IndexedDB) — persists the user's own imported audio
+   files in their own browser across reloads. Nothing is ever uploaded anywhere;
+   this only touches storage that already lives on the visitor's own device. */
+const MUSIC_DB_NAME='voidos-music', MUSIC_STORE='tracks';
+function hasIDB(){ try{ return typeof indexedDB !== 'undefined' && !!indexedDB; }catch(e){ return false; } }
+function openMusicDB(){
+  return new Promise((resolve,reject)=>{
+    if(!hasIDB()){ reject(new Error('no indexedDB')); return; }
+    let req;
+    try{ req = indexedDB.open(MUSIC_DB_NAME, 1); }catch(e){ reject(e); return; }
+    req.onupgradeneeded = ()=>{ if(!req.result.objectStoreNames.contains(MUSIC_STORE)) req.result.createObjectStore(MUSIC_STORE, {keyPath:'id'}); };
+    req.onsuccess = ()=>resolve(req.result);
+    req.onerror = ()=>reject(req.error);
+  });
+}
+async function musicDBSave(rec){
+  try{
+    const db = await openMusicDB();
+    return await new Promise((resolve)=>{
+      const tx = db.transaction(MUSIC_STORE,'readwrite');
+      tx.objectStore(MUSIC_STORE).put(rec);
+      tx.oncomplete = ()=>resolve(true); tx.onerror = ()=>resolve(false);
+    });
+  }catch(e){ return false; }
+}
+async function musicDBLoadAll(){
+  try{
+    const db = await openMusicDB();
+    return await new Promise((resolve)=>{
+      const tx = db.transaction(MUSIC_STORE,'readonly');
+      const req = tx.objectStore(MUSIC_STORE).getAll();
+      req.onsuccess = ()=>resolve(req.result||[]); req.onerror = ()=>resolve([]);
+    });
+  }catch(e){ return []; }
+}
+async function musicDBDelete(id){
+  try{
+    const db = await openMusicDB();
+    return await new Promise((resolve)=>{
+      const tx = db.transaction(MUSIC_STORE,'readwrite');
+      tx.objectStore(MUSIC_STORE).delete(id);
+      tx.oncomplete = ()=>resolve(true); tx.onerror = ()=>resolve(false);
+    });
+  }catch(e){ return false; }
+}
+let musicSeq = 1;
+
 registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)', w:420, h:660, build(body){
   let library = playlist.map(t=>({...t, kind:'synth'}));
   let idx=0, playing=false, progress=0, timer=null, audioCtx=null, oscTimeouts=[];
@@ -1612,7 +1659,7 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
       <div class="mp-import">
         <input type="file" id="mpFileInput" accept="audio/*" multiple style="display:none;">
         <button id="mpImportBtn">+ Import music from this device</button>
-        <div class="mp-import-hint">Plays local files straight from your computer — nothing is uploaded or stored anywhere.</div>
+        <div class="mp-import-hint">${hasIDB() ? 'Saved permanently in this browser — import once, they stay after reload.' : 'Plays local files for this session — persistent storage is not available here.'}</div>
       </div>
       <div class="mp-list" id="mpList"></div>
     </div>`;
@@ -1648,6 +1695,7 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
         if(e.target.classList.contains('mp-x')){
           e.stopPropagation();
           if(t.url) URL.revokeObjectURL(t.url);
+          if(t.dbId) musicDBDelete(t.dbId);
           library.splice(i,1);
           if(idx>=library.length) idx=library.length-1;
           if(idx===i && playing) togglePlay();
@@ -1730,14 +1778,30 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
     if(!files.length) return;
     files.forEach(f=>{
       const url = URL.createObjectURL(f);
-      library.push({ title: niceName(f.name), artist:'Imported', hue: Math.floor(Math.random()*360), kind:'local', file:f, url });
+      const dbId = hasIDB() ? ('m'+(musicSeq++)+'_'+Date.now()) : null;
+      const hue = Math.floor(Math.random()*360);
+      library.push({ title: niceName(f.name), artist:'Imported', hue, kind:'local', file:f, url, dbId });
+      if(dbId) musicDBSave({ id:dbId, name:f.name, type:f.type, hue, blob:f });
     });
-    toast(`Imported ${files.length} track${files.length>1?'s':''}`);
+    toast(`Imported ${files.length} track${files.length>1?'s':''}${hasIDB()?' — saved for next time':''}`);
     renderList();
     if(library.length===files.length){ idx=0; loadTrack(); }
     e.target.value='';
   });
   loadTrack();
+  // Restore any tracks the user imported in a previous session (same browser, same device).
+  if(hasIDB()){
+    musicDBLoadAll().then(recs=>{
+      if(!recs || !recs.length) return;
+      recs.forEach(rec=>{
+        try{
+          const url = URL.createObjectURL(rec.blob);
+          library.push({ title: niceName(rec.name), artist:'Imported', hue: rec.hue||Math.floor(Math.random()*360), kind:'local', file:rec.blob, url, dbId: rec.id });
+        }catch(e){ /* skip a corrupt record rather than breaking the whole list */ }
+      });
+      renderList();
+    }).catch(()=>{});
+  }
   return { onClose(){
     playing=false; stopTones(); stopVisualLoop(); clearInterval(timer);
     if(audioEl){ audioEl.pause(); audioEl.src=''; }
@@ -1922,7 +1986,7 @@ const themePresets = [
 const petTypeOptions = [ {id:'cat', label:'Cat', emoji:petEmojis.cat}, {id:'dog', label:'Dog', emoji:petEmojis.dog}, {id:'rabbit', label:'Rabbit', emoji:petEmojis.rabbit} ];
 
 /* Central settings object — hydrated from storage in hydrateAll(), applied immediately, persisted on every change. */
-let voidSettings = { theme:'default', wallpaper: 'default', pet: true, petType:'cat', crt: true, trail: false, autoLock: false, liveWallpaper: 'video1' };
+let voidSettings = { theme:'default', wallpaper: 'default', pet: true, petType:'cat', crt: true, trail: false, autoLock: false, liveWallpaper: 'starfield' };
 function applyTheme(id){
   const t = themePresets.find(x=>x.id===id) || themePresets[0];
   if(t.id==='default') delete document.body.dataset.theme; else document.body.dataset.theme = t.id;
@@ -1969,14 +2033,14 @@ registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:
     <div class="settings-row"><div><div class="lbl">CRT scanlines</div><div class="desc">Scanlines, vignette, flicker &amp; noise overlay</div></div><div class="toggle" id="crtToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Cursor trail</div><div class="desc">A faint phosphor trail follows your pointer</div></div><div class="toggle" id="trailToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Auto-lock</div><div class="desc">Lock the screen after 5 minutes idle</div></div><div class="toggle" id="lockToggle"><div class="knob"></div></div></div>
-    <div class="settings-row"><div><div class="lbl">Live wallpaper</div><div class="desc">Procedural effects render in-browser; video options embed YouTube (muted)</div></div>
+    <div class="settings-row"><div><div class="lbl">Live wallpaper</div><div class="desc">Starfield/Matrix/Plasma always work offline. Video options embed YouTube (muted) and depend on your browser/network allowing it — some sandboxed previews block it.</div></div>
       <select id="liveWpSelect" style="background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:6px 10px; font-family:var(--mono); font-size:14px;">
         <option value="off">Off</option>
         <option value="starfield">Starfield</option>
         <option value="matrix">Matrix rain</option>
         <option value="plasma">Plasma waves</option>
-        <option value="video1">Video: Background 1</option>
-        <option value="video2">Video: Background 2</option>
+        <option value="video1">Video: Background 1 (needs YouTube access)</option>
+        <option value="video2">Video: Background 2 (needs YouTube access)</option>
       </select></div>
     <div class="settings-row"><div><div class="lbl">Reset session</div><div class="desc">Close all windows and empty Trash</div></div>
       <button id="resetBtn" style="background:var(--danger); border:none; color:#2a0a0a; border-radius:var(--radius-sm); padding:6px 12px; cursor:pointer; font-weight:700; font-family:var(--pixel); font-size:10px;">Reset</button></div>
