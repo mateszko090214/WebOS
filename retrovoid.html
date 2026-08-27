@@ -119,8 +119,9 @@ body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow
 
 /* ---------- WINDOWS ---------- */
 .win{position:absolute; min-width:300px; min-height:200px; background:var(--panel-solid); border:2px solid var(--line); border-radius:var(--radius-md);
-  box-shadow:0 22px 60px rgba(0,0,0,0.6); display:flex; flex-direction:column; overflow:hidden;}
+  box-shadow:0 22px 60px rgba(0,0,0,0.6); display:flex; flex-direction:column; overflow:hidden; transition:left .18s cubic-bezier(.2,.8,.2,1), top .18s cubic-bezier(.2,.8,.2,1), width .18s cubic-bezier(.2,.8,.2,1), height .18s cubic-bezier(.2,.8,.2,1);}
 .win.focused{border-color:var(--accent); box-shadow:0 24px 70px rgba(0,0,0,0.65), 0 0 24px var(--glow);}
+.win.no-anim{transition:none !important;}
 .titlebar{height:38px; flex:none; display:flex; align-items:center; gap:8px; padding:0 10px; background:linear-gradient(180deg, rgba(255,255,255,0.05), transparent); border-bottom:2px solid var(--line); cursor:grab; position:relative;}
 .titlebar::after{content:""; position:absolute; right:10px; top:50%; transform:translateY(-50%); width:6px; height:6px; border-radius:50%; background:var(--term-green); box-shadow:0 0 6px var(--term-green); animation:pulse 2.4s infinite;}
 .titlebar .dot{width:12px; height:12px; border-radius:50%; cursor:pointer; border:none;}
@@ -131,6 +132,32 @@ body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow
 .resize-handle{position:absolute; right:0; bottom:0; width:18px; height:18px; cursor:nwse-resize; z-index:2;}
 .wbody::-webkit-scrollbar{width:14px;} .wbody::-webkit-scrollbar-thumb{background:var(--panel-solid); border:2px solid var(--line); box-shadow:inset 0 0 0 2px rgba(255,255,255,0.05);} .wbody::-webkit-scrollbar-track{background:rgba(255,255,255,0.03);} .wbody::-webkit-scrollbar-thumb:hover{border-color:var(--accent);}
 .wbody{scrollbar-width:thin; scrollbar-color:var(--line) transparent;}
+
+/* ---------- HYPRLAND MODE (Settings > Window manager style) ---------- */
+body.hypr-mode .win{
+  border-radius:12px; border-width:2px; border-color:rgba(255,255,255,0.12);
+  box-shadow:0 14px 34px rgba(0,0,0,0.55); background:color-mix(in srgb, var(--panel-solid) 92%, transparent);
+}
+body.hypr-mode .win.focused{ border-color:var(--accent); box-shadow:0 16px 38px rgba(0,0,0,0.6), 0 0 0 1px var(--accent), 0 0 26px var(--glow); }
+body.hypr-mode #crtLayer, body.hypr-mode #crtChroma, body.hypr-mode #crtNoise{ opacity:0 !important; }
+body.hypr-mode .titlebar{ height:26px; background:rgba(0,0,0,0.25); border-bottom:1px solid rgba(255,255,255,0.08); }
+body.hypr-mode .titlebar::after{ display:none; }
+body.hypr-mode .titlebar .ttitle{ font-size:11px; letter-spacing:.5px; }
+body.hypr-mode .titlebar .dot{ width:9px; height:9px; }
+body.hypr-mode #dock{ border-radius:10px; padding:5px 8px; gap:5px; }
+body.hypr-mode .dock-item{ border-radius:8px; }
+body.hypr-mode #icons{ display:none; }
+
+#hyprBar{position:fixed; left:50%; bottom:8px; transform:translateX(-50%); z-index:499; display:none; align-items:center; gap:6px;
+  background:rgba(10,10,16,0.85); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:5px 8px; font-family:var(--mono); font-size:12px;}
+body.hypr-mode #hyprBar{display:flex;}
+body.hypr-mode #dock{ bottom:52px; }
+#hyprBar .ws{ width:24px; height:22px; border-radius:6px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); background:rgba(255,255,255,0.04); }
+#hyprBar .ws:hover{ background:rgba(255,255,255,0.09); }
+#hyprBar .ws.active{ background:var(--accent); color:#04231d; font-weight:700; }
+#hyprBar .ws.has-win::after{ content:""; }
+#hyprBar .tile-btn{ margin-left:6px; padding:3px 10px; border-radius:6px; background:rgba(255,255,255,0.06); color:var(--text); cursor:pointer; border:1px solid rgba(255,255,255,0.1); }
+#hyprBar .tile-btn:hover{ background:rgba(255,255,255,0.12); }
 /* Retro beveled buttons everywhere inside a window or menu, unless the button opts out */
 .win button, #ctxmenu, .toast{ }
 .win button{ box-shadow:2px 2px 0 rgba(0,0,0,0.5), inset 1px 1px 0 rgba(255,255,255,0.12); transition:transform .05s, box-shadow .05s; }
@@ -378,6 +405,11 @@ body.rainbow-mode #topbar{animation:rainbowHue 3.5s linear infinite;}
 #shutdownScreen .msg{font-family:var(--pixel); font-size:16px; text-shadow:0 0 12px var(--term-green); letter-spacing:1px;}
 #shutdownScreen .tip{margin-top:16px; color:#2a6b3d; font-size:16px;}
 #shutdownScreen .hint2{margin-top:60px; color:#1c4a2a; font-size:13px; animation:pulse 2s infinite;}
+
+/* ---------- SCREENSAVER (idle) ---------- */
+#screensaver{position:fixed; inset:0; background:#000; z-index:9800; display:none; cursor:pointer;}
+#screensaver canvas{position:absolute; inset:0; width:100%; height:100%;}
+#screensaver #ssClock{position:absolute; font-family:"Orbitron",var(--mono); font-size:44px; color:var(--accent); text-shadow:0 0 20px var(--glow); transition:top 1.5s ease, left 1.5s ease; white-space:nowrap;}
 body.powering-off #desktop{
   animation:crtPowerOff .5s ease-in forwards;
   transform-origin:center center;
@@ -485,6 +517,7 @@ body.powering-off #desktop{
 
   <div id="windows"></div>
   <div id="dock"></div>
+  <div id="hyprBar"></div>
 </div>
 
 <div id="spotlight">
@@ -511,6 +544,7 @@ body.powering-off #desktop{
   <div class="tip">It is now safe to power off.</div>
   <div class="hint2">click anywhere to power back on</div>
 </div>
+<div id="screensaver"><canvas id="ssCanvas"></canvas><div id="ssClock"></div></div>
 
 <script>
 (function(){
@@ -1110,6 +1144,83 @@ const winsRoot = document.getElementById('windows');
 const dockRoot = document.getElementById('dock');
 const activeLabel = document.getElementById('activeAppLabel');
 let winCounter = 0;
+const WORKSPACE_COUNT = 5;
+let currentWorkspace = 1;
+
+function applyWorkspaceVisibility(){
+  if(!voidSettings.hyprMode) return;
+  openWins.forEach((w)=>{
+    if(w.minimized) return;
+    w.el.style.display = (w.el.dataset.workspace===String(currentWorkspace)) ? '' : 'none';
+  });
+  renderHyprBar();
+}
+function switchWorkspace(n){
+  n = Math.max(1, Math.min(WORKSPACE_COUNT, n));
+  if(n===currentWorkspace) return;
+  currentWorkspace = n;
+  applyWorkspaceVisibility();
+  const onThisWs = [...openWins.values()].filter(w=>!w.minimized && w.el.dataset.workspace===String(currentWorkspace));
+  if(onThisWs.length){
+    const topId = [...openWins.entries()].filter(([id,w])=>onThisWs.includes(w)).sort((a,b)=>+a[1].el.style.zIndex-+b[1].el.style.zIndex).pop();
+    if(topId) focusWin(topId[0]);
+  } else {
+    activeLabel.textContent = 'Desktop';
+  }
+}
+function renderHyprBar(){
+  const bar = document.getElementById('hyprBar');
+  if(!bar) return;
+  if(!voidSettings.hyprMode){ bar.innerHTML=''; return; }
+  const used = new Set([...openWins.values()].filter(w=>!w.minimized).map(w=>w.el.dataset.workspace));
+  let html = '';
+  for(let i=1;i<=WORKSPACE_COUNT;i++){
+    html += `<div class="ws${i===currentWorkspace?' active':''}${used.has(String(i))?' has-win':''}" data-ws="${i}">${i}</div>`;
+  }
+  html += `<div class="tile-btn" id="hyprTileBtn" title="Tile windows on this workspace (Ctrl+Alt+T)">tile</div>`;
+  bar.innerHTML = html;
+  bar.querySelectorAll('.ws').forEach(el=>el.addEventListener('click', ()=>switchWorkspace(+el.dataset.ws)));
+  const tb = bar.querySelector('#hyprTileBtn');
+  if(tb) tb.addEventListener('click', tileWindows);
+}
+function tileWindows(){
+  if(!voidSettings.hyprMode) return;
+  const wins = [...openWins.entries()].filter(([id,w])=>!w.minimized && w.el.dataset.workspace===String(currentWorkspace));
+  if(!wins.length) return;
+  const gap = 10, top = 40, bottom = voidSettings.hyprMode?70:14, left = 8, right = 8;
+  const areaW = window.innerWidth-left-right, areaH = window.innerHeight-top-bottom;
+  wins.forEach(([id,w])=>w.el.classList.add('no-anim'));
+  if(wins.length===1){
+    const [id,w] = wins[0];
+    Object.assign(w.el.style, {left:left+'px', top:top+'px', width:areaW+'px', height:areaH+'px'});
+  } else {
+    const [masterId, masterW] = wins[0];
+    const masterWidth = Math.floor(areaW*0.58);
+    Object.assign(masterW.el.style, {left:left+'px', top:top+'px', width:masterWidth+'px', height:areaH+'px'});
+    const stack = wins.slice(1);
+    const stackW = areaW-masterWidth-gap;
+    const stackH = Math.floor((areaH-gap*(stack.length-1))/stack.length);
+    stack.forEach(([id,w],i)=>{
+      Object.assign(w.el.style, {
+        left:(left+masterWidth+gap)+'px',
+        top:(top+i*(stackH+gap))+'px',
+        width:stackW+'px', height:stackH+'px',
+      });
+    });
+  }
+  setTimeout(()=>{
+    wins.forEach(([id,w])=>{
+      w.el.classList.remove('no-anim');
+      const ctl = w.ctl;
+      if(ctl && ctl.onResize) ctl.onResize();
+    });
+  }, 20);
+  toast('Tiled '+wins.length+' window'+(wins.length>1?'s':'')+' on workspace '+currentWorkspace);
+}
+window.addEventListener('keydown', (e)=>{
+  if(e.ctrlKey && e.altKey && e.key>='1' && e.key<=String(WORKSPACE_COUNT)){ e.preventDefault(); switchWorkspace(+e.key); }
+  if(e.ctrlKey && e.altKey && (e.key==='t'||e.key==='T')){ e.preventDefault(); tileWindows(); }
+});
 
 function focusWin(id){
   const w = openWins.get(id); if(!w) return;
@@ -1128,12 +1239,14 @@ function closeWin(id){
   if(!stillOpen) document.querySelectorAll('.dock-item[data-app="'+w.appId+'"]').forEach(d=>d.classList.remove('running'));
   const rest=[...openWins.values()];
   activeLabel.textContent = rest.length ? rest[rest.length-1].title : 'Desktop';
+  renderHyprBar();
 }
 function openWindow(appId, title, glyph, contentBuilder, opts={}){
   winCounter++;
   const id = 'w'+winCounter;
   const el = document.createElement('div');
   el.className='win focused';
+  el.dataset.workspace = String(currentWorkspace);
   const w = opts.w||620, h=opts.h||440;
   const left = opts.x!=null?opts.x: (70+ (winCounter%6)*32);
   const top = opts.y!=null?opts.y: (60+ (winCounter%6)*28);
@@ -1153,8 +1266,8 @@ function openWindow(appId, title, glyph, contentBuilder, opts={}){
   const body = el.querySelector('.wbody');
   const ctl = contentBuilder(body, id) || {};
 
-  openWins.set(id, {el, appId, title, onClose: ctl.onClose});
-  focusWin(id); refreshDock();
+  openWins.set(id, {el, appId, title, onClose: ctl.onClose, ctl, minimized:false});
+  focusWin(id); refreshDock(); renderHyprBar(); applyWorkspaceVisibility();
 
   const titlebar = el.querySelector('.titlebar');
   let drag=null, pendingSnap=null;
@@ -1209,8 +1322,10 @@ function openWindow(appId, title, glyph, contentBuilder, opts={}){
   el.querySelector('.dot.close').addEventListener('click', ()=>closeWin(id));
   el.querySelector('.dot.min').addEventListener('click', ()=>{
     el.style.display='none';
+    const wEntry = openWins.get(id); if(wEntry) wEntry.minimized = true;
     const remaining = [...openWins.keys()].filter(k=>openWins.get(k).el.style.display!=='none');
     if(remaining.length) focusWin(remaining[remaining.length-1]);
+    renderHyprBar();
   });
   let maxed=false, prevRect=null;
   el.querySelector('.dot.max').addEventListener('click', ()=>{
@@ -1226,7 +1341,14 @@ function openWindow(appId, title, glyph, contentBuilder, opts={}){
 }
 function restoreOrOpen(appId, launcher){
   const existing = [...openWins.entries()].find(([k,v])=>v.appId===appId);
-  if(existing){ const [id,w]=existing; w.el.style.display=''; focusWin(id); return; }
+  if(existing){
+    const [id,w]=existing;
+    w.minimized = false;
+    if(voidSettings.hyprMode && w.el.dataset.workspace!==String(currentWorkspace)) switchWorkspace(+w.el.dataset.workspace);
+    w.el.style.display='';
+    focusWin(id); renderHyprBar();
+    return;
+  }
   launcher();
 }
 
@@ -1672,13 +1794,25 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
     const g = ctx.createLinearGradient(0,0,w,h);
     g.addColorStop(0, `hsl(${t.hue},70%,55%)`); g.addColorStop(1, `hsl(${(t.hue+60)%360},60%,25%)`);
     ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-    ctx.globalAlpha=0.5;
-    for(let i=0;i<5;i++){
-      ctx.beginPath(); ctx.arc((Math.sin(i*1.3+vaFrame/8)*.3+.5)*w, (Math.cos(i*1.7+vaFrame/8)*.3+.5)*h, 40+i*10, 0, Math.PI*2);
-      ctx.strokeStyle=playing?'rgba(255,255,255,0.3)':'rgba(255,255,255,0.12)'; ctx.lineWidth=2; ctx.stroke();
+    if(analyser && playing && t.kind==='local'){
+      analyser.getByteFrequencyData(analyserData);
+      const bars = analyserData.length;
+      const bw = w/bars;
+      ctx.fillStyle='rgba(255,255,255,0.55)';
+      for(let i=0;i<bars;i++){
+        const v = analyserData[i]/255;
+        const bh = v*h*0.8;
+        ctx.fillRect(i*bw, h-bh, bw*0.8, bh);
+      }
+    } else {
+      ctx.globalAlpha=0.5;
+      for(let i=0;i<5;i++){
+        ctx.beginPath(); ctx.arc((Math.sin(i*1.3+vaFrame/8)*.3+.5)*w, (Math.cos(i*1.7+vaFrame/8)*.3+.5)*h, 40+i*10, 0, Math.PI*2);
+        ctx.strokeStyle=playing?'rgba(255,255,255,0.3)':'rgba(255,255,255,0.12)'; ctx.lineWidth=2; ctx.stroke();
+      }
+      ctx.globalAlpha=1;
     }
-    ctx.globalAlpha=1;
-    if(t.kind==='local'){ ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.font='11px '+getComputedStyle(document.body).fontFamily; ctx.textAlign='center'; ctx.fillText('LOCAL FILE', w/2, h-10); ctx.textAlign='left'; }
+    if(t.kind==='local'){ ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.font='11px '+getComputedStyle(document.body).fontFamily; ctx.textAlign='center'; ctx.fillText(analyser?'LOCAL FILE · LIVE':'LOCAL FILE', w/2, h-10); ctx.textAlign='left'; }
   }
   function startVisualLoop(){ if(vaTimer) return; vaTimer=setInterval(()=>{ vaFrame++; drawArt(); }, 60); }
   function stopVisualLoop(){ clearInterval(vaTimer); vaTimer=null; }
@@ -1731,13 +1865,27 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
     }
     loopNote();
   }
+  let analyser=null, analyserData=null, mediaSrcNode=null;
   function ensureAudioEl(){
     if(audioEl) return audioEl;
     audioEl = new Audio();
+    audioEl.crossOrigin = 'anonymous';
     audioEl.addEventListener('ended', ()=>nextTrack());
     audioEl.addEventListener('timeupdate', ()=>{
       if(audioEl.duration){ progress=(audioEl.currentTime/audioEl.duration)*200; body.querySelector('#mpFill').style.width=(progress/200*100)+'%'; }
     });
+    // Real frequency-analysis visualizer for local files. Best-effort: some
+    // sandboxed environments restrict Web Audio routing, so this quietly
+    // falls back to the decorative animation if anything here fails.
+    try{
+      if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      mediaSrcNode = audioCtx.createMediaElementSource(audioEl);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 64;
+      analyserData = new Uint8Array(analyser.frequencyBinCount);
+      mediaSrcNode.connect(analyser);
+      analyser.connect(audioCtx.destination);
+    }catch(e){ analyser=null; }
     return audioEl;
   }
   function playCurrent(){
@@ -1745,6 +1893,7 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
     if(t.kind==='local'){
       const a = ensureAudioEl();
       if(a.src !== t.url) a.src = t.url;
+      if(audioCtx && audioCtx.state==='suspended') audioCtx.resume().catch(()=>{});
       a.play().catch(()=>toast('Could not start playback — try pressing play again.'));
     } else {
       playTones();
@@ -1784,6 +1933,7 @@ registerApp('music', {title:'Music Player', glyph:'♫', color:'var(--accent2)',
       if(dbId) musicDBSave({ id:dbId, name:f.name, type:f.type, hue, blob:f });
     });
     toast(`Imported ${files.length} track${files.length>1?'s':''}${hasIDB()?' — saved for next time':''}`);
+    unlockAchievement('byob');
     renderList();
     if(library.length===files.length){ idx=0; loadTrack(); }
     e.target.value='';
@@ -1949,6 +2099,7 @@ registerApp('guide', {title:'Guide', glyph:'？', color:'var(--green)', w:480, h
       <li>The power button in the top bar shuts the machine down properly — click the black screen to boot back up</li>
       <li>Settings → Live wallpaper: Starfield / Matrix rain / Plasma waves, or a looping muted background video</li>
       <li>Boot up close and read the log — it's a full (fictional) systemd-style startup, not just a spinner</li>
+      <li>Settings → Hyprland mode: thin borders, no desktop icons, 5 workspaces (Ctrl+Alt+1-5) and a tiling shortcut (Ctrl+Alt+T)</li>
     </ul>
     <h3>Music</h3>
     <ul>
@@ -1986,7 +2137,7 @@ const themePresets = [
 const petTypeOptions = [ {id:'cat', label:'Cat', emoji:petEmojis.cat}, {id:'dog', label:'Dog', emoji:petEmojis.dog}, {id:'rabbit', label:'Rabbit', emoji:petEmojis.rabbit} ];
 
 /* Central settings object — hydrated from storage in hydrateAll(), applied immediately, persisted on every change. */
-let voidSettings = { theme:'default', wallpaper: 'default', pet: true, petType:'cat', crt: true, trail: false, autoLock: false, liveWallpaper: 'starfield' };
+let voidSettings = { theme:'default', wallpaper: 'default', pet: true, petType:'cat', crt: true, trail: false, autoLock: false, liveWallpaper: 'starfield', screensaver: true, hyprMode: false };
 function applyTheme(id){
   const t = themePresets.find(x=>x.id===id) || themePresets[0];
   if(t.id==='default') delete document.body.dataset.theme; else document.body.dataset.theme = t.id;
@@ -2002,6 +2153,14 @@ function applyCRT(on){ voidSettings.crt = on; document.body.classList.toggle('cr
 function applyTrail(on){ voidSettings.trail = on; document.body.classList.toggle('trail-on', on); }
 function applyAutoLock(on){ voidSettings.autoLock = on; armIdleLock(); }
 function applyLiveWallpaper(mode){ voidSettings.liveWallpaper = mode; if(window.setLiveWallpaper) setLiveWallpaper(mode); }
+function applyScreensaver(on){ voidSettings.screensaver = on; if(window.armScreensaver) armScreensaver(); }
+function applyHyprMode(on){
+  voidSettings.hyprMode = on;
+  document.body.classList.toggle('hypr-mode', on);
+  if(on){ currentWorkspace = 1; document.querySelectorAll('.win').forEach(el=>{ if(!el.dataset.workspace) el.dataset.workspace='1'; }); applyWorkspaceVisibility(); }
+  else { document.querySelectorAll('.win').forEach(el=>{ if(el.style.display==='none'){ const w=[...openWins.values()].find(x=>x.el===el); if(w && w.minimized) return; } el.style.display=''; }); }
+  renderHyprBar();
+}
 function persistSettings(){ vSave('voidos:settings', voidSettings); }
 // Sync the visible DOM with the in-code defaults immediately (hydrateAll() will
 // re-apply these later if a saved session is found, but the CRT overlay etc.
@@ -2019,6 +2178,62 @@ function armIdleLock(){
     if(lockEl.style.display!=='flex'){ lockEl.style.display='flex'; lockEl.classList.remove('hidden'); tickLock(); }
   }, 5*60*1000);
 }
+
+/* ---- Screensaver: kicks in after a stretch of inactivity, dismissed by any input ---- */
+(function(){
+  const ssEl = document.getElementById('screensaver');
+  const ssCanvas = document.getElementById('ssCanvas');
+  const ssClock = document.getElementById('ssClock');
+  const sctx = ssCanvas.getContext('2d');
+  let ssStars = [], ssRaf = null, ssClockTimer = null, ssTimer = null, ssActive = false;
+  function ssSize(){ ssCanvas.width = window.innerWidth; ssCanvas.height = window.innerHeight; }
+  function ssInitStars(){ ssStars = Array.from({length:140}, () => ({ x:(Math.random()-0.5)*ssCanvas.width, y:(Math.random()-0.5)*ssCanvas.height, z:Math.random()*ssCanvas.width })); }
+  function ssFrame(){
+    sctx.fillStyle='#000'; sctx.fillRect(0,0,ssCanvas.width,ssCanvas.height);
+    const cx=ssCanvas.width/2, cy=ssCanvas.height/2;
+    sctx.fillStyle = cssVar('--accent');
+    ssStars.forEach(s=>{
+      s.z -= 5;
+      if(s.z<=0){ s.x=(Math.random()-0.5)*ssCanvas.width; s.y=(Math.random()-0.5)*ssCanvas.height; s.z=ssCanvas.width; }
+      const k = 128/s.z;
+      const px = s.x*k+cx, py = s.y*k+cy;
+      if(px<0||px>ssCanvas.width||py<0||py>ssCanvas.height) return;
+      sctx.globalAlpha = 1-s.z/ssCanvas.width;
+      sctx.beginPath(); sctx.arc(px,py,Math.max(0.5,(1-s.z/ssCanvas.width)*2.6),0,Math.PI*2); sctx.fill();
+    });
+    sctx.globalAlpha=1;
+    ssRaf = requestAnimationFrame(ssFrame);
+  }
+  function ssMoveClock(){
+    const pad=80;
+    ssClock.style.top = (pad+Math.random()*(window.innerHeight-pad*2))+'px';
+    ssClock.style.left = (pad+Math.random()*(window.innerWidth-pad*2-160))+'px';
+    ssClock.textContent = new Date().toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+  }
+  function showScreensaver(){
+    if(ssActive) return;
+    ssActive = true;
+    ssEl.style.display='block'; ssSize(); ssInitStars();
+    cancelAnimationFrame(ssRaf); ssRaf = requestAnimationFrame(ssFrame);
+    ssMoveClock(); clearInterval(ssClockTimer); ssClockTimer = setInterval(ssMoveClock, 8000);
+    unlockAchievement('screensaver');
+  }
+  function hideScreensaver(){
+    if(!ssActive) return;
+    ssActive = false;
+    ssEl.style.display='none'; cancelAnimationFrame(ssRaf); clearInterval(ssClockTimer);
+  }
+  function armScreensaver(){
+    clearTimeout(ssTimer);
+    if(ssActive){ hideScreensaver(); }
+    if(!voidSettings.screensaver) return;
+    ssTimer = setTimeout(showScreensaver, 90*1000);
+  }
+  window.addEventListener('resize', ()=>{ if(ssActive) ssSize(); });
+  ['mousemove','keydown','mousedown','touchstart','wheel'].forEach(evt=>window.addEventListener(evt, armScreensaver, {passive:true}));
+  window.armScreensaver = armScreensaver;
+})();
+armScreensaver();
 ['mousemove','keydown','mousedown','touchstart','wheel'].forEach(evt=>window.addEventListener(evt, armIdleLock, {passive:true}));
 
 registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:460, h:660, desktopIcon:true, build(body){
@@ -2033,6 +2248,8 @@ registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:
     <div class="settings-row"><div><div class="lbl">CRT scanlines</div><div class="desc">Scanlines, vignette, flicker &amp; noise overlay</div></div><div class="toggle" id="crtToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Cursor trail</div><div class="desc">A faint phosphor trail follows your pointer</div></div><div class="toggle" id="trailToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Auto-lock</div><div class="desc">Lock the screen after 5 minutes idle</div></div><div class="toggle" id="lockToggle"><div class="knob"></div></div></div>
+    <div class="settings-row"><div><div class="lbl">Screensaver</div><div class="desc">Starfield + drifting clock after 90s idle</div></div><div class="toggle" id="ssToggle"><div class="knob"></div></div></div>
+    <div class="settings-row"><div><div class="lbl">Hyprland mode</div><div class="desc">Thin borders, gaps, workspaces (Ctrl+Alt+1-5) &amp; tiling (Ctrl+Alt+T)</div></div><div class="toggle" id="hyprToggle"><div class="knob"></div></div></div>
     <div class="settings-row"><div><div class="lbl">Live wallpaper</div><div class="desc">Starfield/Matrix/Plasma always work offline. Video options embed YouTube (muted) and depend on your browser/network allowing it — some sandboxed previews block it.</div></div>
       <select id="liveWpSelect" style="background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); padding:6px 10px; font-family:var(--mono); font-size:14px;">
         <option value="off">Off</option>
@@ -2075,6 +2292,8 @@ registerApp('settings', {title:'Settings', glyph:'⚙', color:'var(--muted)', w:
   wireToggle('#crtToggle', ()=>voidSettings.crt, applyCRT);
   wireToggle('#trailToggle', ()=>voidSettings.trail, applyTrail);
   wireToggle('#lockToggle', ()=>voidSettings.autoLock, applyAutoLock);
+  wireToggle('#ssToggle', ()=>voidSettings.screensaver, applyScreensaver);
+  wireToggle('#hyprToggle', ()=>voidSettings.hyprMode, applyHyprMode);
   body.querySelector('#resetBtn').addEventListener('click', ()=>{
     [...openWins.keys()].forEach(closeWin);
     FS[TRASH].children.slice().forEach(fsDeletePermanent);
@@ -2595,6 +2814,8 @@ const achievementDefs = [
   {key:'distro', title:'Distro hopper', desc:'Log your first distro in the tracker.'},
   {key:'snap', title:'Snapped in', desc:'Drag a window to a screen edge to snap it.'},
   {key:'nightowl', title:'Session survivor', desc:'Reload VoidOS and find your data still here.'},
+  {key:'byob', title:'Bring your own beat', desc:'Import your own music into the Music Player.'},
+  {key:'screensaver', title:'Idle hands', desc:'Leave VoidOS alone long enough for the screensaver to kick in.'},
 ];
 let unlockedAchievements = new Set();
 const persistAch = debouncedSave('voidos:achievements', ()=>[...unlockedAchievements]);
@@ -2813,6 +3034,8 @@ async function hydrateAll(){
       applyPetVisible(voidSettings.pet); applyPetType(voidSettings.petType||'cat'); applyCRT(voidSettings.crt);
       applyLiveWallpaper(voidSettings.liveWallpaper||'off');
       applyTrail(voidSettings.trail); applyAutoLock(voidSettings.autoLock);
+      if(typeof voidSettings.screensaver==='boolean') applyScreensaver(voidSettings.screensaver);
+      if(typeof voidSettings.hyprMode==='boolean') applyHyprMode(voidSettings.hyprMode);
     }
     const savedFS = await vLoad('voidos:fs', null);
     const restoredFS = savedFS ? restoreFSFromSnapshot(savedFS) : false;
