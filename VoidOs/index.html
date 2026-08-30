@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VoidOS Retro — Phosphor Edition</title>
+<meta name="description" content="A nostalgic CRT-phosphor desktop OS simulation that runs entirely in your browser — window manager, virtual filesystem, terminal, and 30+ built-in apps. Pure HTML/CSS/JS, no framework, no server.">
+<meta name="theme-color" content="#0a0b12">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0b12'/%3E%3Cpath d='M32 10 L50 32 L32 54 L14 32 Z' fill='none' stroke='%23ffb000' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VoidOS Retro — Phosphor Edition">
+<meta property="og:description" content="A nostalgic CRT-phosphor desktop OS simulation that runs entirely in your browser — window manager, virtual filesystem, terminal, and 30+ built-in apps.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VoidOS Retro — Phosphor Edition">
+<meta name="twitter:description" content="A nostalgic CRT-phosphor desktop OS simulation that runs entirely in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="powerOn">
+  <div class="poweron-content">
+    <div class="poweron-glyph">◈</div>
+    <div class="poweron-text">VOIDOS</div>
+    <div class="poweron-hint">click or press any key to power on</div>
+  </div>
+</div>
+
+<div id="boot">
+  <div class="boot-shell">
+    <div class="boot-term">
+      <div class="boot-term-bar">
+        <span class="lt-dot lt-red"></span><span class="lt-dot lt-yellow"></span><span class="lt-dot lt-green"></span>
+        <span class="boot-term-title">SYSTEM BOOT</span>
+      </div>
+      <div class="boot-term-body">
+        <pre id="boot-logo"></pre>
+        <div id="boot-log"></div>
+      </div>
+    </div>
+    <div class="boot-side">
+      <div class="boot-ring">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="44"></circle>
+          <circle class="ring-fg" id="bootRingFg" cx="50" cy="50" r="44"></circle>
+        </svg>
+        <div class="boot-ring-label"><span id="bootPct">0%</span><small>READY</small></div>
+      </div>
+      <div class="boot-stats">
+        <div class="bs-row"><span>OS</span><span>VoidOS 2.7</span></div>
+        <div class="bs-row"><span>KERNEL</span><span>void-kernel 2.0</span></div>
+        <div class="bs-row"><span>THEME</span><span id="bootTheme">amber-phosphor</span></div>
+        <div class="bs-row"><span>ENGINE</span><span>vanilla-js</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="lock">
+  <div class="lavatar">◈</div>
+  <div class="ltime" id="lockTime">00:00</div>
+  <div class="ldate" id="lockDate"></div>
+  <div class="lhint" id="lockHint">click anywhere to unlock</div>
+  <div class="lpin-wrap" id="lockPinWrap">
+    <input type="password" id="lockPinInput" placeholder="PIN" inputmode="numeric" autocomplete="off">
+    <button id="lockPinBtn">Unlock</button>
+  </div>
+</div>
+
+<div id="loginScreen">
+  <canvas id="loginBgCanvas"></canvas>
+  <div id="loginScan"></div>
+  <div class="login-clock">
+    <div class="login-time" id="loginTime">00:00</div>
+    <div class="login-date" id="loginDate"></div>
+  </div>
+  <div class="login-card" id="loginCard">
+    <div class="login-term-bar">
+      <span class="lt-dot lt-red"></span><span class="lt-dot lt-yellow"></span><span class="lt-dot lt-green"></span>
+      <span class="login-term-title">ACCESS · voidos-02</span>
+    </div>
+    <div class="login-body">
+      <div class="login-boot-log" id="loginBootLog"></div>
+      <div class="login-auth" id="loginAuth">
+        <div class="login-avatar">◈</div>
+        <div class="login-user">guest@voidos</div>
+        <div class="login-welcome">Welcome back</div>
+        <input type="password" id="loginPinInput" placeholder="PIN" inputmode="numeric" autocomplete="off">
+        <div class="login-pin-hint">Leave blank if no PIN is set</div>
+        <button id="loginBtn">Sign in</button>
+        <div class="login-hint" id="loginHint">VoidOS 2.7 &quot;Phosphor&quot;</div>
+      </div>
+    </div>
+  </div>
+  <div class="login-power" id="loginPower" title="Shut down">⏼</div>
+  <div class="login-skip">click anywhere or press any key to skip</div>
+</div>
+
+<div id="desktop">
+  <div id="wallpaper-photo"></div>
+  <canvas id="bgAnimCanvas"></canvas>
+  <div id="bgVideoWrap"><iframe id="bgVideoFrame" allow="autoplay" frameborder="0"></iframe></div>
+  <div id="grid-overlay"></div>
+
+  <div id="topbar">
+    <div class="left">
+      <span class="brand">VoidOS</span>
+      <span class="active-app" id="activeAppLabel">Desktop</span>
+    </div>
+    <div class="right">
+      <span class="hot" id="btnSearch" title="Search (Ctrl+K)">⌕</span>
+      <span class="hot" id="btnLock" title="Lock screen">⏻</span>
+      <span class="hot" id="btnAbout" title="About VoidOS">◇</span>
+      <span class="hot" id="btnPower" title="Shut down">⏼</span>
+      <span id="clock">00:00</span>
+    </div>
+  </div>
+
+  <div id="icons"></div>
+  <div id="widgetCol"></div>
+  <div id="pet">🐈‍⬛</div>
+
+  <div id="windows"></div>
+  <div id="dock"></div>
+  <div id="hyprBar"></div>
+</div>
+
+<div id="spotlight">
+  <div class="box">
+    <input id="spotInput" placeholder="Search apps and files…" autocomplete="off" spellcheck="false" />
+    <div class="results" id="spotResults"></div>
+  </div>
+</div>
+
+<div id="switcher"><div class="row" id="switcherRow"></div></div>
+
+<div id="ctxmenu"></div>
+<div class="toast" id="toast"></div>
+<div id="crtLayer"></div>
+<div id="crtChroma"></div>
+<div id="crtNoise"></div>
+<div id="powerLed"></div>
+<div id="snapGhost"></div>
+<canvas id="trailCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+<div id="matrixOverlay"><canvas id="matrixCanvas"></canvas><div class="mx-hint">click or press Esc to wake up</div></div>
+<div id="shutdownScreen">
+  <div class="msg">SYSTEM HALTED</div>
+  <div class="tip">It is now safe to power off.</div>
+  <div class="hint2">click anywhere to power back on</div>
+</div>
+<div id="screensaver"><canvas id="ssCanvas"></canvas><div id="ssClock"></div></div>
+
+<script src="script.js"></script>
+</body>
+</html>
