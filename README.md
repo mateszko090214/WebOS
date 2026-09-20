@@ -194,7 +194,7 @@ This Phosphor Edition (v2.7) represents the culmination of months of development
 
 ### Project Structure
 ```
-asdsdadsa/
+WebOs/
 ├── index.html                    # Markup only
 ├── style.css                     # All styles
 ├── script.js                     # All application logic (OS, apps, music player, wallpapers, etc.)
