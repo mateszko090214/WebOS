@@ -50,7 +50,7 @@ body{font-family:var(--sans); color:var(--text); background:var(--bg0); overflow
    translate never reveals an edge. */
 #wallpaper-photo{position:absolute; inset:-6%; z-index:0; display:none; background-size:cover; background-position:center; will-change:transform;}
 body.photo-wallpaper #wallpaper-photo{display:block;}
-#bgVideoWrap{position:absolute; inset:0; z-index:1; overflow:hidden; display:none; pointer-events:none;}
+#bgVideoWrap{position:absolute; inset:0; z-index:0; overflow:hidden; display:none;}
 #bgVideoWrap.on{display:block;}
 #bgVideoFrame{position:absolute; top:50%; left:50%; width:100vw; height:56.25vw; min-width:177.78vh; min-height:100vh; transform:translate(-50%,-50%); opacity:.6;}
 #grid-overlay{position:absolute; inset:0; pointer-events:none; opacity:.5;
@@ -67,13 +67,13 @@ body.photo-wallpaper #wallpaper-photo{display:block;}
 #powerOn.hidden{opacity:0; pointer-events:none;}
 .poweron-content{text-align:center;}
 .poweron-glyph{font-size:52px; color:var(--accent); text-shadow:0 0 24px var(--glow); animation:pulse 2s ease-in-out infinite;}
-.poweron-text{font-family:var(--pixel); font-size:20px; letter-spacing:6px; color:var(--accent); margin-top:18px; text-shadow:0 0 14px var(--glow);}
+.poweron-text{font-family:var(--picel); font-size:20px; letter-spacing:6px; color:var(--accent); margin-top:18px; text-shadow:0 0 14px var(--glow);}
 .poweron-hint{font-family:var(--mono); font-size:13px; color:var(--muted); margin-top:22px; letter-spacing:1px;}
 
 /* ---------- BOOT ---------- */
 #boot{position:fixed; inset:0; background:#020202; z-index:9999; display:flex; align-items:center; justify-content:center; font-family:var(--mono); color:var(--accent); transition:opacity .5s ease;}
 .boot-shell{display:flex; align-items:flex-start; gap:26px;}
-.boot-term{width:min(660px,80vw); background:var(--panel-solid); border:2px solid var(--line); border-radius:var(--radius-md); overflow:hidden;
+.boot-term{width:min(660px,80vw); background:var(--panel-solid); border:2px solid var(--line); border-radius:var(--radius-md);overflow:hidden;
   box-shadow:0 30px 90px rgba(0,0,0,0.7), 0 0 30px var(--glow), inset 0 1px 0 rgba(255,255,255,0.06); animation:bootTermIn .5s cubic-bezier(.16,1,.3,1);}
 @keyframes bootTermIn{0%{opacity:0; transform:scale(.97) translateY(10px);} 100%{opacity:1; transform:scale(1) translateY(0);}}
 .boot-term-bar{display:flex; align-items:center; gap:6px; height:32px; padding:0 12px; background:linear-gradient(180deg, rgba(255,255,255,0.06), transparent); border-bottom:2px solid var(--line);}
@@ -728,3 +728,109 @@ body.powering-off #desktop{
 .sd-pad{display:grid; grid-template-columns:repeat(9,1fr); gap:4px; width:342px;}
 .sd-pad button{aspect-ratio:1; background:rgba(255,255,255,0.06); border:1px solid var(--line); color:var(--text); border-radius:var(--radius-sm); cursor:pointer; font-family:var(--mono); font-size:15px;}
 .sd-msg{font-family:var(--mono); font-size:14px; color:var(--muted); min-height:16px;}
+
+/* =========================================================
+  RESPONSIVE / MOBILE
+  ---------------------------------------------------------
+  Added for phone-width viewports. VoidOS was built desktop-
+  first — openWindow() in script.js opens every app at a fixed
+  620x440 and cascades new windows by +32/+28px per launch, all
+  written as inline styles. That holds up fine down to tablet
+  width, but a 620px window doesn't fit a 375px screen, and
+  there's no real room to drag windows around on a phone anyway.
+
+  Rather than trying to preserve the floating-window metaphor,
+  windows below the phone breakpoint are pinned to a single
+  near-fullscreen pane with !important — enough to beat the
+  inline left/top/width/height that openWindow() and the drag/
+  resize handlers write straight to el.style, with no JS changes
+  needed. Switching between open apps still works exactly as
+  before (dock, or the window switcher), since those only ever
+  touch z-index and classes, never geometry.
+   ========================================================= */
+
+@media (max-width:760px){
+  /* ---- windows: floating -> single fullscreen-ish pane ---- */
+  .win{
+    left:4px !important; top:40px !important;
+    width:calc(100% - 8px) !important;
+    height:calc(100% - 130px) !important; /* 40px topbar clearance + ~90px dock clearance */
+    --ox:0px !important; --oy:16px !important; --os:.94 !important; /* the genie-from-icon burst is aimed at a small desktop window; once every window lands on the same fullscreen rect, a plain rise+fade reads better than a mismatched direction */
+  }
+  .resize-handle{display:none;} /* nothing left to resize once every window is pinned full-screen */
+  .titlebar{height:42px;} /* a little taller: easier to hit close/min/max by touch */
+  .titlebar .dot{width:15px; height:15px;}
+  .titlebar .ttitle{font-size:13px;}
+
+  /* ---- top bar: same info, tighter ---- */
+  #topbar{padding:0 8px; gap:6px;}
+  #topbar .left{min-width:0; flex:1 1 auto; gap:8px;}
+  #topbar .active-app{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
+  #topbar .right{gap:10px; flex:none;}
+
+  /* ---- dock: a bit smaller so more icons fit before it needs to scroll ---- */
+  #dock{padding:6px 8px; bottom:8px; gap:6px;}
+  .dock-item{width:44px; height:44px; font-size:19px;}
+
+  /* ---- boot / login / lock: stack instead of overflowing sideways ---- */
+  .boot-shell{flex-direction:column; align-items:center; gap:16px; width:92vw; max-width:420px;}
+  .boot-term{width:100%;}
+  #boot-log{height:220px;}
+  .boot-side{width:100%; padding-top:0;}
+
+  #loginScreen .login-card{width:min(340px,90vw);}
+  #loginScreen .login-time{font-size:48px;}
+
+  #lock .ltime{font-size:48px;}
+  #lock .lpin-wrap{flex-wrap:wrap; justify-content:center;}
+
+  /* ---- overlays: fixed pixel widths -> viewport-relative ---- */
+  #spotlight{padding-top:10vh;}
+  #spotlight .box{width:min(480px,92vw);}
+  #switcher .row{flex-wrap:wrap; max-width:92vw; justify-content:center;}
+
+  /* ---- files / notes: narrower side lists leave more room for content ---- */
+  .fm-sidebar{width:120px;}
+  .notes-list{width:130px;}
+}
+
+@media (max-width:420px){
+  /* ---- smallest phones: widgets go, chrome shrinks further ----
+    #widgetCol is purely decorative, and this is the width band
+    where it can actually collide with the desktop icon column
+    (icons sit at 16-104px, widgets at viewportWidth-236 to -16 —
+    those overlap below ~340px; dropped a little earlier here for
+    safety across real device widths, not just the exact overlap
+     point). */
+  #widgetCol{display:none;}
+
+  #topbar{font-size:12px;}
+  #topbar .brand{display:none;} /* wordmark+glyph are the first thing to drop when space is this tight — the active-app label still says what's running */
+  #topbar .right{gap:8px; font-size:13px;}
+
+  .dicon{width:70px;}
+  .dicon .glyph{width:38px; height:38px; font-size:16px;}
+  .dicon .label{font-size:11px;}
+
+  .dock-item{width:40px; height:40px; font-size:17px;}
+
+  #loginScreen .login-time{font-size:38px;}
+  #lock .ltime{font-size:38px;}
+}
+
+@media (max-height:560px){
+  /* ---- short / landscape phones ----
+    boot, login and lock are all vertically-centered flex
+    columns, so they run out of room first when it's height
+    that's tight rather than width — a wide-but-short landscape
+     phone may never even hit the width queries above. */
+  #boot-log{height:140px;}
+  .boot-ring{width:110px; height:110px;}
+  #loginScreen .login-clock{margin-bottom:14px;}
+  #loginScreen .login-time{font-size:40px;}
+  #lock .lhint{margin-top:24px;}
+}
+
+/* Stop iOS/Android's long-press callout (copy/save-image popup) on
+   glyphs and icons that are meant to be tapped, not treated as content. */
+.dicon,.dock-item,#pet{-webkit-touch-callout:none;}
