@@ -194,7 +194,7 @@ This Phosphor Edition (v2.7) represents the culmination of months of development
 
 ### Project Structure
 ```
-WebOs/
+asdsdadsa/
 ├── index.html                    # Markup only
 ├── style.css                     # All styles
 ├── script.js                     # All application logic (OS, apps, music player, wallpapers, etc.)
@@ -240,6 +240,12 @@ WebOs/
 Inspired by the retro computing community, demoscene artists, and preservationists who keep the spirit of vintage technology alive.
 
 Special thanks to all contributors, testers, and the open-source community for their invaluable feedback and support.
+
+---
+
+## A Note on AI Assistance
+
+I have severe dysgraphia, which makes spelling and written text difficult for me. I used AI to correct spelling mistakes throughout the entire project — not just this documentation, but the code, comments, and UI text as well — which is why AI shows up a lot in the writing. The project itself — the ideas, design, and all the code — is about 90% my own work; AI was only used to clean up the spelling, not to build the project.
 
 ---
 
